@@ -2,6 +2,7 @@ import React, { useEffect } from "react";
 import { Routes, Route, useLocation } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { getProducts } from "./store/actions/products-actions";
+// import { getOrders } from "./store/actions/order-actions";
 import { AnimatePresence } from "framer-motion";
 
 import Home from './pages/Home';
@@ -25,6 +26,11 @@ import LoginRedirect from "./components/auth/LoginRedirect";
 import RegisterRedirect from "./components/auth/RegisterRedirect";
 import DashboardRedirect from "./components/auth/DashboardRedirect";
 import HomeRedirect from "./components/auth/HomeRedirect";
+import Orders from "./pages/Orders";
+import { getOrders } from "./store/actions/oder-action";
+import DragDrop from "./pages/DragDrop";
+import OrderDetails from "./pages/OrderDetail";
+// import { getOrders } from "./store/actions/order-actions";
 
 
 
@@ -32,6 +38,7 @@ import HomeRedirect from "./components/auth/HomeRedirect";
 
 const App = () => {
   const dispatch = useDispatch();
+  const dispatchOrders = useDispatch();
   const location = useLocation();
   const isAdmin = useSelector((state) => state.auth.isAdmin);
   // const products = useSelector((state) => state.products.products);
@@ -39,15 +46,16 @@ const App = () => {
   useEffect(() => {
     dispatch(getProducts());
   }, [dispatch]);
+    useEffect(() => {
+      dispatchOrders(getOrders());
+    }, [dispatchOrders]);
 
   
   return (
     <>
       {!isAdmin && <MainNavigation />}
-      <AnimatePresence exitBeforeEnter >
-
+      <AnimatePresence exitBeforeEnter>
         <Routes location={location} key={location.pathname}>
-
           <Route element={<HomeRedirect />}>
             <Route path="/" element={<Home />} />
             <Route path="/about" element={<About />} />
@@ -55,6 +63,9 @@ const App = () => {
             <Route path="/checkout" element={<Checkout />} />
             <Route path="/products" element={<Products />} />
             <Route path="/products/:productId" element={<ProductDetail />} />
+            <Route path="/orders/:orderId" element={<OrderDetails />} />
+            <Route path="/orders" element={<Orders />} />
+            <Route path="/drag" element={<DragDrop />} />
           </Route>
 
           <Route element={<LoginRedirect />}>
@@ -77,9 +88,7 @@ const App = () => {
           </Route>
 
           <Route path="*" element={<NotFound />} />
-
         </Routes>
-
       </AnimatePresence>
       {!isAdmin && <Footer />}
     </>

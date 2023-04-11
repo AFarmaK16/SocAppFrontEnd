@@ -35,7 +35,7 @@ const Checkout = () => {
             animate="visible"
             exit="exit"
         >
-            <PageHero title='checkout' />
+            <PageHero title='Valider Commande' />
             <div className="w-[80%] mx-auto mb-40 mt-24">
                 {cart.length < 1 && <CartEmpty />}
                 {cart.length > 0 && <CheckoutContent totalPrice={totalPrice} name={name} />}

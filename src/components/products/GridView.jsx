@@ -1,6 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { FaSearch } from "react-icons/fa";
+import { FaCartPlus, FaPlus, FaSearch } from "react-icons/fa";
 import { formatPrice } from "../../utils/helpers";
 // import product_img from "../assets/CEMIIB-LL32-5RCE.jpg";
 import product_img from "../../assets/cemiib-ll32-5rce.jpg";
@@ -20,7 +20,7 @@ const GridView = ({ products }) => {
                   className="flex items-center justify-center absolute bg-[#222] w-full h-[175px] rounded-md opacity-0 hover:opacity-70 transition-all duration-300"
                 >
                   <span className="flex items-center justify-center bg-secondary-100 w-10 h-10 rounded-full">
-                    <FaSearch />
+                    <FaCartPlus/>
                   </span>
                 </Link>
                 <img

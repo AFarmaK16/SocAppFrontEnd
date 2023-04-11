@@ -2,16 +2,10 @@ import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useParams } from "react-router-dom";
 import { motion } from "framer-motion";
-
-import ProductImages from "../components/productDetail/ProductImages";
-import Stars from "../components/productDetail/Stars";
 import PageHero from "../layout/PageHero";
-import AddToCart from "../components/productDetail/AddToCart";
-import { getProductDetails } from "../store/actions/products-actions";
 import { formatPrice } from "../utils/helpers";
 import TheSpinner from "../layout/TheSpinner";
-// -----------------JUST FOR TEST PURPOSE
-import product_img from "../assets/cemiib-ll32-5rce.jpg";
+import { getOrdersById } from "../store/actions/oder-action";
 
 const containerVariants = {
   hidden: {
@@ -27,25 +21,52 @@ const containerVariants = {
   },
 };
 
-const ProductDetail = () => {
-  const { productId } = useParams();
+const OrderDetails = () => {
+  const { orderId } = useParams();
   const dispatch = useDispatch();
-  const loading = useSelector((state) => state.ui.productDetailLoading);
+  const loading = useSelector((state) => state.ui.orderDetailLoading);
 
   useEffect(() => {
-    dispatch(getProductDetails(productId));
-  }, [dispatch, productId]);
+    dispatch(getOrdersById(orderId));
+  }, [dispatch, orderId]);
 
-  const product = useSelector((state) => state.products.productDetails);
+  const order = useSelector((state) => state.orders.ordersDetails);
+  // console.log(order)
+
+  // const { idAccount, login, password, role, dateOuverture, userRefID } = account;
+
   const {
-    product_id,
-    product_name,
-    product_description,
-    product_price,
-    product_label,
-    product_image,
-  } = product;
-
+    order_id,
+    order_Date,
+    order_Amount,
+    order_status,
+    deliverRef,
+    customerRef,
+    customer,
+    facture,
+    orderItems,
+  } = order;
+  // const { id, quantity, product } = order.orderItems;
+  console.log("ORDER ITEM");
+  console.log(orderItems);
+  // const {
+  //   product_id,
+  //   product_price,
+  //   product_label,
+  //   product_type,
+  //   product_description,
+  //   product_image,
+  // } = product;
+  // const { facture_id, justificatif, payment_date, paymentStatus } = facture;
+  // const {
+  //   customerID,
+  //   customerFirstName,
+  //   customerLastName,
+  //   customerAddress,
+  //   customerPhoneNumber,
+  //   account
+  // } = customer;
+  // console.log(order)
   return (
     <motion.div
       className="mb-48"
@@ -54,10 +75,10 @@ const ProductDetail = () => {
       animate="visible"
       exit="exit"
     >
-      <PageHero title={product_name} product />
+      <PageHero title={order_id} order />
       <div className="mt-16 space-y-16 w-[80vw] mx-auto">
         <Link
-          to="/products"
+          to="/orders"
           className="uppercase bg-primary px-4 py-2 rounded text-white font-semibold shadow-lg"
         >
           Retour
@@ -66,36 +87,46 @@ const ProductDetail = () => {
           <TheSpinner />
         ) : (
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-16">
-            {/* <ProductImages product_image={product_image} /> */}
-            <img src={product_img} />
+            {/* <ProductImages order_image={order_image} /> */}
+            <h1>ivosff</h1>
             <div>
               <h2 className="font-bold text-5xl tracking-wide mb-5">
-                {product_name}
+                {order_Amount}
               </h2>
               <p className="text-lg  tracking-wider text-gray-600">
-                <b> Product ID:</b> {product_id}
+                <b> Order ID:</b> {order_id}
               </p>
               <div className="flex flex-col w-full sm:w-3/4 lg:w-1/2 space-y-5">
                 <div className=" ">
                   <p className="text-lg  tracking-wider text-gray-600">
                     <b>Reférence :</b>
-                    {product_label}
+                    {order_status}
                   </p>
                 </div>
               </div>
               <p className="text-lg  tracking-wider text-gray-600">
                 {/* <p className="text-lg font-semibold text-secondary-100 tracking-widest italic my-4"> */}
-                <b>P.U HT: </b> {formatPrice(product_price)}
+                <b>Montant TTC </b> {formatPrice(order_Amount)}
               </p>
-              <br />
-              <AddToCart product={product} />
               <hr className="my-6" />
               <p className="text-lg  tracking-wider text-gray-600">
                 {/* <p className="max-w-3xl tracking-wider leading-8 text-gray-500 mb-6"> */}
                 <b> Domaines d’utilisation :</b>
-                {product_description}
               </p>
-
+              <ul>
+                <li>ded</li>
+                <li>dede</li>
+                <li>dedeee</li>
+                <li>{orderItems.length}</li>
+              </ul>
+              <div>
+                {orderItems.map((item) => {
+                  <div key={item.id}>wepfepuep
+                    <div>{item.quantity}</div>
+                    <div>{item.product}</div>
+                  </div>;
+                })}
+              </div>
               <hr className="my-6" />
             </div>
           </div>
@@ -105,4 +136,4 @@ const ProductDetail = () => {
   );
 };
 
-export default ProductDetail;
+export default OrderDetails;

@@ -12,10 +12,9 @@ const Overview = () => {
           CRÉATRICE D'IMPACTS ET DE SYNERGIES
         </p>
         <p className="text-lg text-[#555] tracking-widest font-normal mb-5 leading-7">
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Nostrum dicta
-          ex excepturi illum, necessitatibus quisquam nesciunt ab, molestias
-          iure blanditiis, natus aspernatur ea rerum! Optio quia dicta
-          voluptatibus non et!
+          Culture, emploi, science, formation… La Fondation créée en 2010
+          s’implique auprès d’associations sénégalaises pour le développement de
+          projets socio-économiques et culturels.
         </p>
         {/* <Link
           className="inline-block px-6 py-3 font-semibold tracking-wider text-white bg-primary uppercase mt-8 text-lg hover:bg-secondary-200 transition-all duration-300"

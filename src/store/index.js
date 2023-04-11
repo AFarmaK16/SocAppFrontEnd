@@ -15,6 +15,7 @@ import {
     REGISTER,
   } from 'redux-persist';
   import storage from 'redux-persist/lib/storage';
+import ordersSlice from './orders-slice';
 
   const cartPersistConfig = {
     key: 'cart',
@@ -37,6 +38,7 @@ const store = configureStore({
     reducer: {
         cart: cartReducer,
         products: productsSlice.reducer,
+        orders: ordersSlice.reducer,
         auth: authReducer,
         ui: uiSlice.reducer,
     },

@@ -16,7 +16,7 @@ const CartContent = ({ cart, totalPrice }) => {
   return (
     <div className="mb-40">
       <h2 className="uppercase text-3xl tracking-wide text-center my-8">
-        Votre Panier
+        Mon Panier
       </h2>
       <div className="flex justify-between my-12">
         <div>
@@ -24,7 +24,7 @@ const CartContent = ({ cart, totalPrice }) => {
             to="/products"
             className="text-primary bg-secondary-200 uppercase px-4 py-2 rounded-md shadow-lg"
           >
-            continue shopping
+            Poursuivre Achat
           </Link>
         </div>
         <div>
@@ -32,7 +32,7 @@ const CartContent = ({ cart, totalPrice }) => {
             onClick={clearCart}
             className="text-primary bg-secondary-200 uppercase px-4 py-2 rounded-md shadow-lg"
           >
-            clear cart
+            Vider Panier
           </button>
         </div>
       </div>

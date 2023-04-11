@@ -1,6 +1,8 @@
 import React from "react";
 import ProductAmount from "./ProductAmount";
 
+import product_img from "../../assets/cemiib-ll32-5rce.jpg";
+
 import { formatPrice } from "../../utils/helpers";
 
 
@@ -18,9 +20,8 @@ const CartItem = ({ cart }) => {
             key={product.product_id}
             className="flex justify-between mb-6 pb-6 border-b-2 border-gray-200"
           >
-
-            <h4>***Put product Image</h4>
             <div className="flex flex-2">
+              <img src={product_img} width={100} height={100}/>
               {/* <img
                 src={product.product_image[0]}
                 alt=""

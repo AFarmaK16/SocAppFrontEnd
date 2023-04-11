@@ -115,14 +115,11 @@ const Hero = () => {
               initial="hidden"
               animate="visible"
             >
-              <b>
-                {" "}
-                Take le texte sur le site"avec plus de 4 millions de tonnes....
-              </b>
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Quas nam
-              sit neque expedita vitae ex maiores numquam praesentium impedit,
-              reiciendis autem, laborum repellat mollitia similique quisquam
-              repellendus! Repellat, aperiam eligendi.
+              Avec plus de 4 millions de TON produites par an, le ciment est
+              notre savoir-faire historique depuis 1948. Cette riche expérience
+              à laquelle s’ajoutent rigueur et qualité, nous a valu les
+              certifications <b>ISO 9001</b> et <b>ISO 14001</b> et la
+              reconnaissance de nos ciments par la Communauté Européenne.
             </motion.p>
             <motion.div
               variants={linksAnimate}

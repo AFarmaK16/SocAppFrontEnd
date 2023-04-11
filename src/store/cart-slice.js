@@ -38,7 +38,7 @@ const cartSlice = createSlice({
         // newItem.quantity = existingItem.quantity; // <-- set the correct quantity value
       }
       state.totalPrice += newItem.totalPrice;
-      state.totalQuantity += newItem.quantity.toFixed(2);
+      state.totalQuantity += newItem.quantity;
       // state.totalQuantity += newItem.quantity.tofixed(2);
       console.log(state.totalQuantity.toFixed(2)+" 🥱🌶")
     },
@@ -62,7 +62,16 @@ const cartSlice = createSlice({
        console.log("$$$$$$-------------$$$$$$$$$");
        console.log(existingItem.totalPrice);
     },
-
+dropItemFromCart(state,action){
+  const productId = action.payload.product_id;
+  const existingItem = state.items.find(
+    (item) => item.product_id === productId
+  );
+  state.totalQuantity-=  existingItem.quantity;
+  state.totalPrice -= existingItem.totalPrice;
+  state.items=
+      state.items.filter((item) => item.product_id !== productId)
+},
     clearCart(state) {
       Object.assign(state, initialState);
     },

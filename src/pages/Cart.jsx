@@ -37,7 +37,7 @@ const Cart = () => {
             animate="visible"
             exit="exit"
         >
-            <PageHero title='cart' />
+            <PageHero title='Panier' />
             <div className='w-[90%] mx-auto'>
                 {cart.length < 1 && <CartEmpty />}
                 {cart.length > 0 && <CartContent cart={cart} totalPrice={totalPrice} />}
