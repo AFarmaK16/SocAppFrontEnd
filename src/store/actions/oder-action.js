@@ -14,7 +14,7 @@ export const getOrders = () => {
 
       const data = await response.data;
       // console.log("😀😀😀😀😀");
-      console.log(data);
+      // console.log(data);
       return data;
     };
 
@@ -35,9 +35,10 @@ export const getOrdersById = (id) => {
       const response = await axios.get(
         `http://localhost:8081/api/v1/orders/lists/${id}`
       );
-
+      console.log("😀😀getOrdersId😀😀😀");
       const data = await response.data;
-      console.log("hello " + data);
+      console.log(data);
+      console.log("😀😀-----------------😀😀😀");
       return data;
     };
 
@@ -51,21 +52,26 @@ export const getOrdersById = (id) => {
   };
 };
 
-export const addOrder = ({ order, token }) => {
+export const addOrder = ({ orderRequest }) => {
+  // export const addOrder = ({ order, token }) => {
+  console.log("------______")
+    console.log(JSON.stringify(orderRequest));
+
   return async (dispatchOrders) => {
     dispatchOrders(uiActions.addOrderLoading());
     // await api.get("/sanctum/csrf-cookie");
-
+   
     const postData = async () => {
       const response = await axios.post(
-        "http://localhost:8081/api/orders/add",
-        order,
+        "http://localhost:8081/api/v1/orders/add",
+  JSON.stringify(orderRequest),
         {
           headers: {
-            "Content-Type": "multipart/form-data",
-            Authorization: "Bearer " + token,
+            // "Content-Type": "multipart/form-data",
+            "Content-Type": "application/json",
+            // // Authorization: "Bearer " + token,
           },
-          withCredentials: true,
+          // withCredentials: true,
         }
       );
       const data = response.data;
@@ -76,8 +82,8 @@ export const addOrder = ({ order, token }) => {
       const message = await postData();
       console.log("message : ", message);
       // dispatchOrders(getOrders());
-      dispatchOrders(ordersActions.addOrder(order));
-      dispatchOrders(uiActions.addPrductLoading());
+      // dispatch(ordersActions.addOrder(orderRequest));
+      dispatchOrders(uiActions.addOrderLoading());
     } catch (error) {
       console.log(error);
     }
@@ -126,6 +132,29 @@ export const getCustomerOrdersById = ({ customerId, ordeId, token }) => {
       dispatchOrders(uiActions.customerOrdersDetailsLoading());
     } catch (error) {
       console.log("Oops, Ofailed to fetch orders for customer " + customerId);
+    }
+  };
+};
+
+export const getOperators = () => {
+  return async (dispatch) => {
+    dispatch(uiActions.operatorsLoading());
+    const fetchData = async () => {
+      const response = await axios.get(
+        `http://localhost:8081/api/v1/operators`
+      );
+
+      const data = await response.data;
+      console.log(data);
+      return data;
+    };
+
+    try {
+      const operators = await fetchData();
+      dispatch(ordersActions.setOperators(operators));
+      dispatch(uiActions.operatorsLoading());
+    } catch (error) {
+      console.log("failed to fetch operators");
     }
   };
 };

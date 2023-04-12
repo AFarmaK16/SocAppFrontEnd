@@ -11,7 +11,6 @@ const AddToCart = ({ product }) => {
     handleSubmit,
     formState: { errors },
   } = useForm();
-  const [subTotal, setsubTotal]= useState(0);
 
   const existingItem = useSelector((state) =>
     state.cart.items.find((item) => item.product_id === product.product_id)
@@ -19,33 +18,34 @@ const AddToCart = ({ product }) => {
   const [amount, setAmount] = useState(existingItem?.quantity || ""); // set initial value of amount to existingItem quantity if it exists, else to an empty string
   const dispatch = useDispatch();
 
+  const [subTotal, setsubTotal] = useState(product.product_price * amount);
 const increase = (event) => {
   setAmount(Number(event.target.value));
   setsubTotal(Number(event.target.value) * product.product_price);
 };
 
-  console.log("In addToCart, passed product stuff is ");
-  console.log(product);
+  // console.log("In addToCart, passed product stuff is ");
+  // console.log(product);
 
 
       const tc = 3000 * amount;
        const rh = 2000 * amount ;
     const tva =  ( 18 * subTotal) / 100;
-    const TTC = tc + rh + tva+ subTotal;
-    console.log("%c"+TTC,'color: green')
+    const totalPrice = tc + rh + tva+ subTotal;
+    console.log("%c" + totalPrice, "color: green");
   const addItemsToCart = () => {
     const quantity = amount;
-    const totalPrice = product.product_price * amount;
+    // const totalPrice = product.product_price * amount;
     const payload = {
       ...product,
       quantity,
       totalPrice,
     };
     // alert('hello'+payload)
-    console.log("------------------------");
-    console.log(payload);
+    // console.log("------------------------");
+    // console.log(payload);
     dispatch(cartActions.addItemsToCart(payload));
-    console.log("------------------------");
+    // console.log("------------------------");
   };
 
   return (
@@ -69,7 +69,7 @@ const increase = (event) => {
 
       <hr />
       <hr />
-      <b>Montant TTC : {formatPrice(TTC)}</b>
+      <b>Montant TTC : {formatPrice(totalPrice)}</b>
       <hr />
       <hr />
       <Link

@@ -2,7 +2,6 @@ import React, { useEffect } from "react";
 import { Routes, Route, useLocation } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { getProducts } from "./store/actions/products-actions";
-// import { getOrders } from "./store/actions/order-actions";
 import { AnimatePresence } from "framer-motion";
 
 import Home from './pages/Home';
@@ -30,7 +29,6 @@ import Orders from "./pages/Orders";
 import { getOrders } from "./store/actions/oder-action";
 import DragDrop from "./pages/DragDrop";
 import OrderDetails from "./pages/OrderDetail";
-// import { getOrders } from "./store/actions/order-actions";
 
 
 

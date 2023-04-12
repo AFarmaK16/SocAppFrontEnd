@@ -7,11 +7,11 @@ import { formatPrice } from "../../utils/helpers";
 
 
 const CartItem = ({ cart }) => {
-               console.log(
-                 "In CartItem the cart passed in params is " +
-                  JSON.stringify(cart)
-                  //  Object.getOwnPropertyNames(cart).length
-               );
+              //  console.log(
+              //    "In CartItem the cart passed in params is " +
+              //     JSON.stringify(cart)
+              //     //  Object.getOwnPropertyNames(cart).length
+              //  );
   return (
     <>
       {cart.map((product) => {

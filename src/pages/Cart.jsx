@@ -25,11 +25,11 @@ const containerVariants = {
 const Cart = () => {
     const cart = useSelector((state) => state.cart.items);
     const totalPrice = useSelector((state) => state.cart.totalPrice);
-  console.log(
-    "%c Current cart content " + JSON.stringify(cart),
-    "color: cyan"
-  );
-  console.log("%c " + Object.getOwnPropertyNames(cart).length, "color: yellow");
+  // console.log(
+  //   "%c Current cart content " + JSON.stringify(cart),
+  //   "color: cyan"
+  // );
+  // console.log("%c " + Object.getOwnPropertyNames(cart).length, "color: yellow");
     return (
         <motion.div
             variants={containerVariants}

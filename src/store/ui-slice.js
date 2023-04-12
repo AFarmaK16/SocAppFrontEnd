@@ -15,6 +15,7 @@ const initialState = {
   ordersLoading: false,
   addOrderLoading: false,
   updateOrderLoading: false,
+  operatorsLoading: false,
 };
 
 const uiSlice = createSlice({
@@ -24,7 +25,7 @@ const uiSlice = createSlice({
     toggleView(state) {
       state.gridView = !state.gridView;
     },
-    
+
     pDetailLoading(state) {
       state.productDetailLoading = !state.productDetailLoading;
     },
@@ -49,6 +50,9 @@ const uiSlice = createSlice({
     },
     ordersLoading(state) {
       state.ordersLoading = !state.ordersLoading;
+    },
+    operatorsLoading(state) {
+      state.operatorsLoading = !state.operatorsLoading;
     },
     addOrderLoading(state) {
       state.addOrderLoading = !state.addOrderLoading;

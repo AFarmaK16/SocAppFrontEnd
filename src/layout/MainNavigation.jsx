@@ -120,7 +120,7 @@ const MainNavigation = () => {
 
             <li>
               {isAuthenticated && (
-                <>
+                <ul>
                   <li>
                     <div className="relative">
                       <button
@@ -159,7 +159,7 @@ const MainNavigation = () => {
                       Factures
                     </NavLink>
                   </li>
-                </>
+                </ul>
               )}
             </li>
             <li>

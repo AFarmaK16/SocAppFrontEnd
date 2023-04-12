@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useParams } from "react-router-dom";
 import { motion } from "framer-motion";
@@ -23,32 +23,35 @@ const containerVariants = {
 
 const OrderDetails = () => {
   const { orderId } = useParams();
-  const dispatch = useDispatch();
+  const dispatchOrders = useDispatch();
   const loading = useSelector((state) => state.ui.orderDetailLoading);
 
   useEffect(() => {
-    dispatch(getOrdersById(orderId));
-  }, [dispatch, orderId]);
+    dispatchOrders(getOrdersById(orderId));
+  }, [dispatchOrders, orderId]);
 
-  const order = useSelector((state) => state.orders.ordersDetails);
-  // console.log(order)
-
+  const [orders,setOrder] = useState(useSelector((state) => state.orders.ordersDetails));
+// console.log("-----------------ORDER ITEM");
+console.log(orders);
+// console.log("-----------------ORDER ITEM");
   // const { idAccount, login, password, role, dateOuverture, userRefID } = account;
 
-  const {
-    order_id,
-    order_Date,
-    order_Amount,
-    order_status,
-    deliverRef,
-    customerRef,
-    customer,
-    facture,
-    orderItems,
-  } = order;
+  // const {
+  //   order_id,
+  //   order_Date,
+  //   order_Amount,
+  //   order_status,
+  //   deliverRef,
+  //   customerRef,
+  //   customer,
+  //   facture,
+  //   orderItems,
+  // } = orders;
   // const { id, quantity, product } = order.orderItems;
-  console.log("ORDER ITEM");
-  console.log(orderItems);
+  
+  
+                const nbTonnes = 0;
+                
   // const {
   //   product_id,
   //   product_price,
@@ -66,7 +69,6 @@ const OrderDetails = () => {
   //   customerPhoneNumber,
   //   account
   // } = customer;
-  // console.log(order)
   return (
     <motion.div
       className="mb-48"
@@ -75,7 +77,7 @@ const OrderDetails = () => {
       animate="visible"
       exit="exit"
     >
-      <PageHero title={order_id} order />
+      <PageHero title={"Commande #" + 1} order />
       <div className="mt-16 space-y-16 w-[80vw] mx-auto">
         <Link
           to="/orders"
@@ -88,45 +90,67 @@ const OrderDetails = () => {
         ) : (
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-16">
             {/* <ProductImages order_image={order_image} /> */}
-            <h1>ivosff</h1>
+            <h1>CUSTOMER INFORMATION</h1>
+            <hr />
+            <div>
+              <div key={orders.customer.customerID}>
+                {orders.customer.customerID}
+              </div>
+              <div>{orders.customer.customerFirstName}</div>
+              <div>{orders.customer.customerLastName}</div>
+              <div>{orders.customer.customerAddress}</div>
+              <div>{orders.customer.customerPhoneNumber}</div>
+            </div>
+
             <div>
               <h2 className="font-bold text-5xl tracking-wide mb-5">
-                {order_Amount}
+                {/* {order_Amount} */}
               </h2>
               <p className="text-lg  tracking-wider text-gray-600">
-                <b> Order ID:</b> {order_id}
+                {/* <b> Order ID:</b> {order_id} */}
               </p>
               <div className="flex flex-col w-full sm:w-3/4 lg:w-1/2 space-y-5">
                 <div className=" ">
                   <p className="text-lg  tracking-wider text-gray-600">
                     <b>Reférence :</b>
-                    {order_status}
+                    {/* {order_status} */}
                   </p>
                 </div>
               </div>
               <p className="text-lg  tracking-wider text-gray-600">
                 {/* <p className="text-lg font-semibold text-secondary-100 tracking-widest italic my-4"> */}
-                <b>Montant TTC </b> {formatPrice(order_Amount)}
+                {/* <b>Montant TTC </b> {formatPrice(order_Amount)} */}
               </p>
+              <p className="text-lg  tracking-wider text-gray-600">
+                {/* <p className="text-lg font-semibold text-secondary-100 tracking-widest italic my-4"> */}
+                {/* <b>Nombre de produits: </b> {orderItems.length} */}
+              </p>
+
               <hr className="my-6" />
               <p className="text-lg  tracking-wider text-gray-600">
                 {/* <p className="max-w-3xl tracking-wider leading-8 text-gray-500 mb-6"> */}
-                <b> Domaines d’utilisation :</b>
+                <b> Details Commandes:</b>
               </p>
-              <ul>
-                <li>ded</li>
-                <li>dede</li>
-                <li>dedeee</li>
-                <li>{orderItems.length}</li>
-              </ul>
-              <div>
-                {orderItems.map((item) => {
-                  <div key={item.id}>wepfepuep
-                    <div>{item.quantity}</div>
-                    <div>{item.product}</div>
-                  </div>;
+              <hr />
+              {/* <div>
+                {orders.orderItems.map((item) => {
+                  nbTonnes += item.quantity;
+                  return (
+                    <ol key={item.id}>
+                      <h1>{item.product.product_label}</h1>
+                      <li>{item.product.product_price}</li>
+                      <li>Quantity: {item.quantity}</li>
+                      <li>{item.product.product_type}</li>
+                      <li>{item.product.product_description}</li>
+                      <li>{item.product.product_imag}</li>
+                    </ol>
+                  );
                 })}
-              </div>
+              </div> */}
+              <p className="text-lg  tracking-wider text-gray-600">
+                <b>Nombre total de tonnes: </b> {nbTonnes}
+              </p>
+              <hr />
               <hr className="my-6" />
             </div>
           </div>

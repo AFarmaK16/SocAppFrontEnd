@@ -1,11 +1,8 @@
 import React, { useEffect } from 'react';
 
 import PageHero from '../layout/PageHero';
-// import Filters from '../components/Orders/Filters';
 import OrdersList from '../components/orders/OrdersList';
-import { useDispatch, useSelector } from 'react-redux';
 import { motion } from 'framer-motion';
-import { getOrders } from '../store/actions/oder-action';
 
 
 const containerVariants = {

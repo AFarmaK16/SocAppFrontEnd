@@ -12,14 +12,9 @@ const ProductAmount = ({ product }) => {
   //     dispatch(cartActions.removeItemFromCart(id));
   // };
 
-  console.log(
-    "code in ProductAmount for prod " + JSON.stringify(product)
-    //  +
-    //   " hay quantitty " +
-    //   product.quantity +
-    //   " <<quantity and then product id is " +
-    //   product.product_id
-  );
+  // console.log(
+  //   "code in ProductAmount for prod " + JSON.stringify(product)
+  // );
   const dropItemFromCart = (itemId)=>{
      const payload = {
        ...product,
@@ -28,20 +23,20 @@ const ProductAmount = ({ product }) => {
 
   }
   const increase = (event) => {
-    console.log(event.target.value);
-    console.log(Number(event.target.value) - 1);
+    // console.log(event.target.value);
+    // console.log(Number(event.target.value) - 1);
     setAmnt(Number(event.target.value));
-    console.log(amnt);
-    console.log(
-      "---------------" +
-        product.product_price * event.target.value +
-        "^^^^^^^^^^"
-    );
+    // console.log(amnt);
+    // console.log(
+    //   "---------------" +
+    //     product.product_price * event.target.value +
+    //     "^^^^^^^^^^"
+    // );
     // alert(amnt)
     const quantity = event.target.value;
 
     const totalPrice = product.product_price * event.target.value;
-    console.log(totalPrice);
+    // console.log(totalPrice);
     const payload = {
       ...product,
       quantity,
