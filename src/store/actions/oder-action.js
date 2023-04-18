@@ -52,19 +52,21 @@ export const getOrdersById = (id) => {
   };
 };
 
-export const addOrder = ({ orderRequest }) => {
+export const addOrder = ({ orderRequest,itemList }) => {
   // export const addOrder = ({ order, token }) => {
-  console.log("------______")
-    console.log(JSON.stringify(orderRequest));
-
+  // console.log("------____ADDORDER__");
+  // for (const [name, value] of orderRequest.entries()) {
+  //   console.log(`${name}: ${value}`);
+  // }
+  // console.log("------____LLL__");
   return async (dispatchOrders) => {
     dispatchOrders(uiActions.addOrderLoading());
     // await api.get("/sanctum/csrf-cookie");
-   
+
     const postData = async () => {
       const response = await axios.post(
         "http://localhost:8081/api/v1/orders/add",
-  JSON.stringify(orderRequest),
+        orderRequest,
         {
           headers: {
             // "Content-Type": "multipart/form-data",
@@ -80,7 +82,9 @@ export const addOrder = ({ orderRequest }) => {
 
     try {
       const message = await postData();
-      console.log("message : ", message);
+      console.log(" %c message : "+ message, "color:pink");
+      console.log(" %c message : "+ itemList, "color:darkblue");
+
       // dispatchOrders(getOrders());
       // dispatch(ordersActions.addOrder(orderRequest));
       dispatchOrders(uiActions.addOrderLoading());
@@ -145,7 +149,7 @@ export const getOperators = () => {
       );
 
       const data = await response.data;
-      console.log(data);
+      // console.log(data);
       return data;
     };
 

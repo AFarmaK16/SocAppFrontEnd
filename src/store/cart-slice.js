@@ -23,9 +23,9 @@ const cartSlice = createSlice({
     addItemsToCart(state, action) { // cest pour le button
   
       const newItem = action.payload;
-          console.log("💖🥱🥱");
-      console.log(newItem)
-      console.log("💖🥱🥱");
+          // console.log("💖🥱🥱");
+      // console.log(newItem)
+      // console.log("💖🥱🥱");
       const existingItem = state.items.find((item) => item.product_id === newItem.product_id);
       newItem.product_price = Number(newItem.product_price);
       if (!existingItem) {//rajoute le produits au panier s'il n'y existe pas deja
@@ -40,7 +40,7 @@ const cartSlice = createSlice({
       state.totalPrice += newItem.totalPrice;
       state.totalQuantity += newItem.quantity;
       // state.totalQuantity += newItem.quantity.tofixed(2);
-      console.log(state.totalQuantity.toFixed(2)+" 🥱🌶")
+      // console.log(state.totalQuantity.toFixed(2)+" 🥱🌶")
     },
 
 

@@ -36,7 +36,6 @@ import OrderDetails from "./pages/OrderDetail";
 
 const App = () => {
   const dispatch = useDispatch();
-  const dispatchOrders = useDispatch();
   const location = useLocation();
   const isAdmin = useSelector((state) => state.auth.isAdmin);
   // const products = useSelector((state) => state.products.products);
@@ -44,9 +43,7 @@ const App = () => {
   useEffect(() => {
     dispatch(getProducts());
   }, [dispatch]);
-    useEffect(() => {
-      dispatchOrders(getOrders());
-    }, [dispatchOrders]);
+
 
   
   return (
@@ -64,6 +61,14 @@ const App = () => {
             <Route path="/orders/:orderId" element={<OrderDetails />} />
             <Route path="/orders" element={<Orders />} />
             <Route path="/drag" element={<DragDrop />} />
+            <Route path="admin/dashboard" element={<Dashboard />}>
+              <Route path="products" element={<TheProducts />} />
+              <Route path="addproduct" element={<AddProduct />} />
+              <Route path="updateproducts">
+                <Route index element={<UpdateProducts />} />
+                <Route path=":productId" element={<ProductUpdate />} />
+              </Route>
+            </Route>
           </Route>
 
           <Route element={<LoginRedirect />}>

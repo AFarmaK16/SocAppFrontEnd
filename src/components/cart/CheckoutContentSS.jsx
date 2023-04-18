@@ -31,6 +31,7 @@ const CheckoutContent = ({ totalPrice, name }) => {
   const dechargement = totalQuantity * 400;
   const transport = totalQuantity * 200;
   const cartContent = useSelector((state) => state.cart);
+  // console.log(cartContent);
   useEffect(() => {
     dispatchOrders(getOperators());
   }, [dispatchOrders]);
@@ -51,7 +52,7 @@ const CheckoutContent = ({ totalPrice, name }) => {
   //   setDechargeChecked(false)
   // }
   const [order_data, setOrderData] = useState(() => ({
-    order_Amount: finalTotal,
+    order_Amount: totalPrice,
     order_status: 1,
     deliverRef: 1,
     customerRef: 1,
@@ -78,7 +79,7 @@ const CheckoutContent = ({ totalPrice, name }) => {
     // alert(selectedFile)
     order_data.facture.justificatif = selectedFile;
     const formData = new FormData();
-    formData.append("order_Amount", finalTotal);
+    formData.append("order_Amount", totalPrice);
 
     formData.append("deliverRef", 1);
 
@@ -86,16 +87,16 @@ const CheckoutContent = ({ totalPrice, name }) => {
 
     formData.append("customerID", 2);
 
-    formData.append("items", JSON.stringify(items));
-    // items.forEach((item, index) => {
-    //   // formData.append(`items[]`, JSON.stringify(item));
-    //   formData.append(`items[${index}].productId`, item.productId);
-    //   formData.append(`items[${index}].quantity`, item.quantity);
-    // });
+    // formData.append("items", items);
+    items.forEach((item, index) => {
+      // formData.append(`items[]`, JSON.stringify(item));
+      formData.append(`items[${index}].productId`, item.productId);
+      formData.append(`items[${index}].quantity`, item.quantity);
+    });
 
     formData.append("justificatif", selectedFile);
     formData.append("facture.paymentStatus", 1);
-    console.log("%c formData", "color:green");
+    console.log("%c order_data", "color:green");
     for (const [name, value] of formData.entries()) {
       console.log(`${name}: ${value}`);
     }
@@ -108,18 +109,17 @@ const CheckoutContent = ({ totalPrice, name }) => {
     //A faire que si la commande a bien ete enregistree ❌❌❌❌❌❌❌❌❌
     // dispatchOrders(cartActions.clearCart());
     // If u have the answer i'd be glad to know it🥺🥺🥺
-    // swal({
-    //   title: "Commande payée!",
-    //   text: `Vous avez payée ${formatPrice(totalPrice)} joint ${selectedFile}`,
-    //   // html: `<h1>hey</h1>`,
-    //   icon: "success",
-    //   button: "OK!",
-    // });
+    swal({
+      title: "Commande payée!",
+      text: `Vous avez payée ${formatPrice(totalPrice)} joint ${selectedFile}`,
+      // html: `<h1>hey</h1>`,
+      icon: "success",
+      button: "OK!",
+    });
     // -------------
     ///TRYING TO ADD ORDER
     const payload = {
-      orderRequest: formData,
-      itemList: items,
+      orderRequest: order_data,
     };
 
     try {
@@ -132,7 +132,6 @@ const CheckoutContent = ({ totalPrice, name }) => {
         icon: "success",
         button: "OK!",
       });
-      dispatchOrders(cartActions.clearCart());
       // dispatchOrders(cartActions.clearCart());
     } catch (error) {
       console.log("%c" + error, "color:purple");

@@ -31,11 +31,10 @@ const increase = (event) => {
       const tc = 3000 * amount;
        const rh = 2000 * amount ;
     const tva =  ( 18 * subTotal) / 100;
-    const totalPrice = tc + rh + tva+ subTotal;
-    console.log("%c" + totalPrice, "color: green");
+    const subTot1 = tc + rh + tva+ subTotal;
   const addItemsToCart = () => {
     const quantity = amount;
-    // const totalPrice = product.product_price * amount;
+     const totalPrice = subTotal;
     const payload = {
       ...product,
       quantity,
@@ -53,13 +52,33 @@ const increase = (event) => {
       <div className="w-[140px] flex justify-between items-center">
         <b>Quantité: </b> ||
         <input
+          name="amount"
           type="number"
           value={amount}
           onChange={increase}
           placeholder="Entrer la quantité que vous souhaitez commander"
         />{" "}
-        ||
-        <p>TON</p>
+        {/* <input
+          className={`form-control ${errors.amount ? "is-invalid" : ""}`}
+          type="number"
+          value={amount}
+          onChange={increase}
+          name="amount"
+          placeholder="Entrer la quantité que vous souhaitez commander"
+          {...register("amount", {
+            required: true,
+            pattern: /^[0-9]+$/
+          })}
+        /> */}
+        {errors.amount && (
+          <div>
+            <hr />
+            <span className="text text-danger">
+              La quantité saisie incorrecte(max 2 chiffres aprés la virgule)
+            </span>
+            <hr />
+          </div>
+        )}
       </div>
       <hr />
       <b>Montant HT: {formatPrice(subTotal)}</b>
@@ -69,13 +88,14 @@ const increase = (event) => {
 
       <hr />
       <hr />
-      <b>Montant TTC : {formatPrice(totalPrice)}</b>
+      <b>Montant TTC : {formatPrice(subTot1)}</b>
       <hr />
       <hr />
       <Link
         to="/cart"
         className="w-[200px] uppercase text-primary bg-secondary-100 rounded-md px-4 py-3 shadow-md flex justify-center items-center"
         onClick={addItemsToCart}
+        // onClick={handleSubmit(addItemsToCart)}
       >
         Ajouter au panier <FaCartPlus color="#E7B84E" />
       </Link>

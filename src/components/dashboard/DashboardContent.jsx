@@ -1,6 +1,6 @@
 import React from "react";
 
-import { FaWallet } from "react-icons/fa";
+import { FaStore, FaStoreAltSlash, FaWallet } from "react-icons/fa";
 import BarChart from "../../charts/BarChart";
 import LineChart from "../../charts/LineChart";
 import DoughnutChart from "../../charts/DoughnutChart";
@@ -26,7 +26,7 @@ const DashboardContent = () => {
             <FaWallet />
           </span>
           <h2 className="font-bold text-xl text-gray-700">
-            SOCOCIM INDUSTRIES
+           BAR
           </h2>
           <h3 className="uppercase my-3 font-bold text-sm text-gray-400">
             products
@@ -42,9 +42,10 @@ const DashboardContent = () => {
         <div className="w-1/2 bg-white p-4">
           <span className="text-amber-400 text-2xl">
             <FaWallet />
+            <FaStore/>
           </span>
           <h2 className="font-bold text-xl text-gray-700">
-            SOCOCIM INDUSTRIES
+            LINE
           </h2>
           <h3 className="uppercase my-3 font-bold text-sm text-gray-400">
             products
@@ -65,7 +66,7 @@ const DashboardContent = () => {
             <FaWallet />
           </span>
           <h2 className="font-bold text-xl text-gray-700">
-            SOCOCIM INDUSTRIES
+            DOGNUT
           </h2>
           <h3 className="uppercase my-3 font-bold text-sm text-gray-400">
             products
@@ -83,7 +84,7 @@ const DashboardContent = () => {
             <FaWallet />
           </span>
           <h2 className="font-bold text-xl text-gray-700">
-            SOCOCIM INDUSTRIES
+           RADAR 
           </h2>
           <h3 className="uppercase my-3 font-bold text-sm text-gray-400">
             products

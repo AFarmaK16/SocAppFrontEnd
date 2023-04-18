@@ -22,8 +22,8 @@ const TheSidebar = () => {
             <div className='mb-12 mt-8 flex flex-col justify-center items-center'>
                 <span className='block text-6xl text-white'><AiFillDashboard /></span>
                 <h1 className='uppercase text-3xl tracking-wider font-extrabold text-center'>
-                    <span className='text-primary'>SOCOCIM</span>
-                    <span className='text-secondary-200'>INDUSTRIES</span>
+                    <span className='text-primary'>DASH</span>
+                    <span className='text-secondary-200'>BOARD</span>
                 </h1>
             </div>
             <div className='flex flex-col text-gray-200 font-semibold tracking-wider text-lg space-y-3'>

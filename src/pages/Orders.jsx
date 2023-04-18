@@ -3,6 +3,8 @@ import React, { useEffect } from 'react';
 import PageHero from '../layout/PageHero';
 import OrdersList from '../components/orders/OrdersList';
 import { motion } from 'framer-motion';
+import { getOrders } from '../store/actions/oder-action';
+import { useDispatch } from 'react-redux';
 
 
 const containerVariants = {
@@ -26,6 +28,12 @@ const Orders = () => {
 //     useEffect(() => {
 //       dispatchOrders(getOrders());
 //     }, [dispatchOrders]);
+
+
+  const dispatchOrders = useDispatch();
+    useEffect(() => {
+      dispatchOrders(getOrders());
+    }, [dispatchOrders]);
     return (
         <motion.main
             variants={containerVariants}

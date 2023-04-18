@@ -9,7 +9,7 @@ const BarChart = () => {
         labels: ['Desktop', 'Laptop', 'Printer', 'Scanner', 'Tablet', 'Monitor'],
         datasets: [{
             label: '# of prods',
-            data: [6, 6, 2, 1, 3, 5],
+            data: [6, 6, 2, 1, 3, 5],//ORDERAMOUNT OF EACH PRODUCT
             backgroundColor: [
                 'rgba(255, 99, 132, 1)',
                 'rgba(54, 162, 235, 1)',
@@ -40,6 +40,7 @@ const BarChart = () => {
 
     return (
         <div>
+            <h1>BAR CHART🤞</h1>
             <Bar data={data} options={options} />
         </div>
     );

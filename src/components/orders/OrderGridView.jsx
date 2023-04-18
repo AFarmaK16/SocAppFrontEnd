@@ -4,7 +4,7 @@ import { FaCartPlus, FaPlus, FaSearch } from "react-icons/fa";
 import { formatPrice } from "../../utils/helpers";
 // import product_img from "../assets/CEMIIB-LL32-5RCE.jpg";
 import product_img from "../../assets/cemiib-ll32-5rce.jpg";
-import { CardBody } from "reactstrap";
+import { Button, CardBody } from "reactstrap";
 
 const OrderGridView = ({ orders }) => {
   return (
@@ -17,10 +17,13 @@ const OrderGridView = ({ orders }) => {
             order_Amount,
             order_status,
             customer,
-            orderItems
+            orderItems,
+            facture,
           } = order;
+          const formattedDate = new Date(order_Date);
           return (
             <CardBody key={order_id}>
+             
               <div className="relative rounded-md">
                 <Link
                   to={`/orders/${order_id}`}
@@ -35,30 +38,31 @@ const OrderGridView = ({ orders }) => {
                 Client :</h4> */}
               <ul>
                 <li>
-                  <b>Nom</b>:{customer.customerFirstName}
+                  <b>Nom</b>:{customer.customerFirstName.toUpperCase()}
                 </li>
                 <li>
-                  <b>Prenom</b>:{customer.customerLastName}
+                  <b>Prenom</b>:{customer.customerLastName.toUpperCase()}
                 </li>
               </ul>
               <h4 className="mb-0 font-normal">
-                <b>Date</b>: {order_Date}
+                <b>Date</b>: {formattedDate.toLocaleString("fr-FR")}
               </h4>
-
               <h4>
                 <b>Nombre de produits: </b>
                 {orderItems.length}
               </h4>
-
               <h4 className="mb-0 font-normal">
                 <b>Statut</b>: {order_status}
               </h4>
-
+              <h4 className="mb-0 font-normal">
+                <img src={facture.justificatifURI} alt="justificatif" />
+              </h4>
               <footer className="flex mt-4 justify-between items-center">
                 <p className="mb-0 font-normal text-secondary-100 tracking-widest">
                   {formatPrice(order_Amount)}
                 </p>
               </footer>
+              <Button className="btn">Justificatif:</Button>
             </CardBody>
           );
         })}
