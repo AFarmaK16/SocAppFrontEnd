@@ -95,7 +95,6 @@ const CheckoutContent = ({ totalPrice, name }) => {
     });
 
     formData.append("justificatif", selectedFile);
-    formData.append("facture.paymentStatus", 1);
     console.log("%c order_data", "color:green");
     for (const [name, value] of formData.entries()) {
       console.log(`${name}: ${value}`);
@@ -254,7 +253,7 @@ const CheckoutContent = ({ totalPrice, name }) => {
               </div>
               <div className="form-group">
                 Commentaire
-                <textarea></textarea>
+                <textarea placeholder="Quelques précisions sur la livraison?..."></textarea>
               </div>
               <div className="form-group">
                 Adresse:
@@ -306,7 +305,7 @@ const CheckoutContent = ({ totalPrice, name }) => {
       </div>
       <div className="w-[95%] sm:w-[80%] lg:w-[50%] mx-auto px-8 py-12 shadow-lg rounded-xl">
         <h2 className="capitalize text-3xl font-bold tracking-wider mb-10 leading-relaxed">
-          Hello, <b>Nom client desactivel manuTention si rendu unchecked:</b>
+          Hello, <b>Nom client</b>
           {name}
         </h2>
         <div className="flex justify-between items-center">

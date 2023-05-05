@@ -14,8 +14,12 @@ const initialState = {
   orderDetailLoading: false,
   ordersLoading: false,
   addOrderLoading: false,
+validateOrderLoading: false,
   updateOrderLoading: false,
   operatorsLoading: false,
+  // -----------------------CUSTOMER----------------
+  customerOrdersLoading: false,
+  customerOrdersDetailsLoading:false,
 };
 
 const uiSlice = createSlice({
@@ -57,9 +61,19 @@ const uiSlice = createSlice({
     addOrderLoading(state) {
       state.addOrderLoading = !state.addOrderLoading;
     },
+    validateOrderLoading(state) {
+      state.validateOrderLoading = !state.validateOrderLoading;
+    },
     // updateProductLoading(state) {
     //   state.updateProductLoading = !state.updateProductLoading;
     // }
+    //////////////////////////CUSTOMERS
+    customerOrdersLoading(state) {
+      state.customerOrdersLoading = !state.customerOrdersLoading;
+    },
+    cOrdersDetailsLoading(state) {
+      state.customerOrdersDetailsLoading = !state.customerOrdersDetailsLoading;
+    },
   },
 });
 

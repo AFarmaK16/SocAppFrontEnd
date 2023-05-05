@@ -4,15 +4,15 @@ import { useDispatch, useSelector } from "react-redux";
 import { getProducts } from "./store/actions/products-actions";
 import { AnimatePresence } from "framer-motion";
 
-import Home from './pages/Home';
-import About from './pages/About';
-import Products from './pages/Products';
-import ProductDetail from './pages/ProductDetail';
-import Cart from './pages/Cart';
-import Checkout from './pages/Checkout';
+import Home from "./pages/Home";
+import About from "./pages/About";
+import Products from "./pages/Products";
+import ProductDetail from "./pages/ProductDetail";
+import Cart from "./pages/Cart";
+import Checkout from "./pages/Checkout";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
-import NotFound from './pages/NotFound';
+import NotFound from "./pages/NotFound";
 import MainNavigation from "./layout/MainNavigation";
 import Footer from "./layout/Footer";
 import Dashboard from "./pages/dashboard/Dashboard";
@@ -26,13 +26,12 @@ import RegisterRedirect from "./components/auth/RegisterRedirect";
 import DashboardRedirect from "./components/auth/DashboardRedirect";
 import HomeRedirect from "./components/auth/HomeRedirect";
 import Orders from "./pages/Orders";
-import { getOrders } from "./store/actions/oder-action";
 import DragDrop from "./pages/DragDrop";
-import OrderDetails from "./pages/OrderDetail";
-
-
-
-
+import OrderDetail from "./pages/OrderDetail";
+import OrderHistory from "./components/orders/OrderHistory";
+import CustomerOrderDetail from "./pages/CustomerOrderDetail";
+import PaymentHistory from "./pages/PaymentHistory";
+import ModalExample from "./pages/ModalExample";
 
 const App = () => {
   const dispatch = useDispatch();
@@ -44,8 +43,6 @@ const App = () => {
     dispatch(getProducts());
   }, [dispatch]);
 
-
-  
   return (
     <>
       {!isAdmin && <MainNavigation />}
@@ -58,9 +55,12 @@ const App = () => {
             <Route path="/checkout" element={<Checkout />} />
             <Route path="/products" element={<Products />} />
             <Route path="/products/:productId" element={<ProductDetail />} />
-            <Route path="/orders/:orderId" element={<OrderDetails />} />
             <Route path="/orders" element={<Orders />} />
-            <Route path="/drag" element={<DragDrop />} />
+            <Route path="/orders/:orderId" element={<OrderDetail />} />
+            <Route path="/drag" element={<ModalExample />} />
+            <Route path="/order-history" element={<OrderHistory />} />
+            <Route path="/payment-history" element={<PaymentHistory />} />
+            <Route path="/order-history/:customerId/order/:orderId" element={<CustomerOrderDetail />} />
             <Route path="admin/dashboard" element={<Dashboard />}>
               <Route path="products" element={<TheProducts />} />
               <Route path="addproduct" element={<AddProduct />} />
@@ -69,6 +69,7 @@ const App = () => {
                 <Route path=":productId" element={<ProductUpdate />} />
               </Route>
             </Route>
+
           </Route>
 
           <Route element={<LoginRedirect />}>
@@ -96,6 +97,6 @@ const App = () => {
       {!isAdmin && <Footer />}
     </>
   );
-}
+};
 
 export default App;

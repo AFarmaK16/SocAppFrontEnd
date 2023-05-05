@@ -19,12 +19,12 @@ const DashboardNavbar = () => {
             <div className='flex items-center justify-between w-full h-full px-10 mb-8'>
                 <div className='flex items-center space-x-2'>
                     <img src={AdminIcon} alt="admin icon" />
-                    <h3 className='font-semibold'>Administrator.</h3>
+                    <h3 className='font-semibold'>Administrateur.</h3>
                 </div>
                 <div className='ml-auto'>
-                    <button className='px-3 py-2 font-semibold text-white bg-primary rounded-lg shadow-lg flex items-center' onClick={logoutUser}>
+                    <button className='px-3 py-2 font-semibold text-white bg-success rounded-lg shadow-lg flex items-center' onClick={logoutUser}>
                         <span className='inline-flex mr-3 font-bold'><BiLogOutCircle /></span>
-                        logout
+                        Deconnexion
                     </button>
                 </div>
             </div>

@@ -29,8 +29,11 @@ const GridView = ({ products }) => {
                   alt={product_label}
                 />
               </div>
-              <footer className="flex mt-4 justify-between items-center">
+              <footer className="
+               flex mt-4 
+              justify-between items-center">
                 <h4 className="mb-0 font-normal">{product_label}</h4>
+                {/* <br /> */}
                 <p className="mb-0 font-normal text-secondary-100 tracking-widest">
                   {formatPrice(product_price)}
                 </p>

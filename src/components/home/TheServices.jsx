@@ -21,7 +21,7 @@ const TheServices = () => {
               </NavLink>
             </h3>
             <div className="w-1/2 leading-relaxed text-[#795744]">
-              <img src={gamme_img} alt="" srcset="" width={900} height={900} />
+              <img src={gamme_img} alt=""  width={900} height={900} />
             </div>
           </div>
         </div>

@@ -106,7 +106,7 @@ const AddProduct = () => {
           <IoMdAddCircle />
         </span>
         <h2 className="uppercase text-4xl tracking-widest font-semibold">
-          Add product
+          Ajouter un produit
         </h2>
       </div>
       <div className="flex m-4 p-8 bg-white shadow-lg">
@@ -115,7 +115,7 @@ const AddProduct = () => {
             {/* name input */}
             <div className="flex flex-col space-y-1 mb-8">
               <label htmlFor="name" className="tracking-wider">
-                Product name:
+                Nom Produit :
               </label>
               <input
                 type="text"
@@ -156,7 +156,7 @@ const AddProduct = () => {
             {/* price input */}
             <div className="flex flex-col space-y-1 mb-8">
               <label htmlFor="price" className="tracking-wider">
-                Price:
+                Prix:
               </label>
               <div className="flex">
                 <span className="flex items-center justify-center border border-gray-300 border-r-0 py-2 px-3 bg-gray-300 text-black">
@@ -181,141 +181,6 @@ const AddProduct = () => {
                 </p>
               )}
             </div>
-            {/* category input */}
-            <div className="flex flex-col space-y-1 mb-8">
-              <label htmlFor="category" className="tracking-wider">
-                Category:
-              </label>
-              <select
-                name="category"
-                id="category"
-                onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
-                value={formik.values.category}
-                className="form-select bg-gray-100"
-              >
-                <option value=""></option>
-                <option value="desktop">Desktop</option>
-                <option value="laptop">Laptop</option>
-                <option value="printer">Printer</option>
-                <option value="scanner">Scanner</option>
-                <option value="tablet">Tablet</option>
-                <option value="monitor">Monitor</option>
-              </select>
-              {formik.touched.category && formik.errors.category && (
-                <p className="text-xs font-semibold text-red-500">
-                  {formik.errors.category}
-                </p>
-              )}
-            </div>
-            {/* brand input */}
-            <div className="flex flex-col space-y-1 mb-8">
-              <label htmlFor="brand" className="tracking-wider mb-3">
-                Brand:
-              </label>
-              <div className="flex justify-between items-center">
-                <div className="flex items-center space-x-2">
-                  <input
-                    type="radio"
-                    name="brand"
-                    id="apple"
-                    value="apple"
-                    onChange={formik.getFieldProps("brand").onChange}
-                    className="form-radio"
-                  />
-                  <label htmlFor="apple" className="tracking-widest">
-                    Apple
-                  </label>
-                </div>
-                <div className="flex items-center space-x-2">
-                  <input
-                    type="radio"
-                    name="brand"
-                    id="dell"
-                    value="dell"
-                    onChange={formik.getFieldProps("brand").onChange}
-                    className="form-radio"
-                  />
-                  <label htmlFor="dell" className="tracking-widest">
-                    Dell
-                  </label>
-                </div>
-                <div className="flex items-center space-x-2">
-                  <input
-                    type="radio"
-                    name="brand"
-                    id="hp"
-                    value="hp"
-                    onChange={formik.getFieldProps("brand").onChange}
-                    className="form-radio"
-                  />
-                  <label htmlFor="hp" className="tracking-widest">
-                    HP
-                  </label>
-                </div>
-                <div className="flex items-center space-x-2">
-                  <input
-                    type="radio"
-                    name="brand"
-                    id="samsung"
-                    value="samsung"
-                    onChange={formik.getFieldProps("brand").onChange}
-                    className="form-radio"
-                  />
-                  <label htmlFor="samsung" className="tracking-widest">
-                    Samsung
-                  </label>
-                </div>
-              </div>
-              {formik.touched.brand && formik.errors.brand && (
-                <p className="text-xs font-semibold text-red-500">
-                  {formik.errors.brand}
-                </p>
-              )}
-            </div>
-            {/* shipping input */}
-            <div className="flex items-center space-x-3 mb-8">
-              <input
-                type="checkbox"
-                name="shipping"
-                id="shipping"
-                onChange={() => formik.setFieldValue('shipping', !formik.values.shipping)}
-                value={formik.values.shipping}
-                className="form-checkbox"
-              />
-              <label htmlFor="shipping" className="tracking-wider">
-                Free shipping
-              </label>
-            </div>
-            {/* thumbnail input */}
-            <div className="flex flex-col space-y-1 mb-8">
-              <label htmlFor="thumbnail" className="tracking-wider">
-                Thumbnail:
-              </label>
-              <input
-                type="file"
-                name="thumbnail"
-                id="thumbnail"
-                accept="image/*"
-                // onChange={(event) => {
-                //   formik.setFieldValue("thumbnail", () => {
-                //     const fd = new FormData();
-                //     fd.append('thumbnail', event.currentTarget.files[0]);
-                //     return fd;
-                //   });
-                // }}
-                // onChange={(event) => {
-                //   formik.setFieldValue('thumbnail', event.target.files[0]);
-                // }}
-                onChange={(e) => thumbnailHandler(e.target.files[0])}
-                className="w-full"
-              />
-              {formik.touched.thumbnail && formik.errors.thumbnail && (
-                <p className="text-xs font-semibold text-red-500">
-                  {formik.errors.thumbnail}
-                </p>
-              )}
-            </div>
             {/* images input */}
             <div className="flex flex-col space-y-1 mb-8">
               <label htmlFor="images" className="tracking-wider">
@@ -323,7 +188,7 @@ const AddProduct = () => {
               </label>
               <input
                 type="file"
-                name="images[]"
+                name="images"
                 id="images"
                 accept="image/*"
                 // onChange={(event) => {
@@ -365,14 +230,16 @@ const AddProduct = () => {
               )} */}
             </div>
             <hr />
-            {loading ? <TheSpinner /> : 
-            <button
-              type="submit"
-              className="px-4 py-2 block mt-3 ml-auto text-primary border border-primary hover:text-white hover:bg-primary rounded-md"
-            >
-              Create Product
-            </button>
-            }
+            {loading ? (
+              <TheSpinner />
+            ) : (
+              <button
+                type="submit"
+                className="px-4 py-2 block mt-3 ml-auto border border-green-500 hover:text-white hover:bg-green-500 rounded-md"
+              >
+                Ajouter Produit
+              </button>
+            )}
           </form>
         </div>
       </div>

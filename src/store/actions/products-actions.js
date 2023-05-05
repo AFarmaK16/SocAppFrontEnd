@@ -50,21 +50,55 @@ export const getProductDetails = (id) => {
   };
 };
 
-export const addProduct = ({ product, token }) => {
+// export const addProduct = ({ product, token }) => {
+//   return async (dispatch) => {
+//     dispatch(uiActions.addPrductLoading());
+//     // await api.get("/sanctum/csrf-cookie");
+
+//     const postData = async () => {
+//       const response = await axios.post(
+//         "http://localhost:8081/api/products",
+//         product,
+//         {
+//           headers: {
+//             "Content-Type": "multipart/form-data",
+//             // Authorization: "Bearer " + token,
+//           },
+//           withCredentials: true,
+//         }
+//       );
+//       const data = response.data;
+//       return data;
+//     };
+
+//     try {
+//       const message = await postData();
+//       console.log("message : ", message);
+//       dispatch(getProducts());
+//       // dispatch(productsActions.addProduct(product));
+//       dispatch(uiActions.addPrductLoading());
+//     } catch (error) {
+//       console.log(error);
+//     }
+//   };
+// };
+
+export const addProduct = ({ product }) => {
   return async (dispatch) => {
     dispatch(uiActions.addPrductLoading());
     // await api.get("/sanctum/csrf-cookie");
 
     const postData = async () => {
       const response = await axios.post(
-        "http://localhost:8081/api/products",
+        "http://localhost:8081/api/v1/orders/add",
         product,
         {
           headers: {
-            "Content-Type": "multipart/form-data",
-            Authorization: "Bearer " + token,
+            // "Content-Type": "multipart/form-data",
+            "Content-Type": "application/json",
+            // // Authorization: "Bearer " + token,
           },
-          withCredentials: true,
+          // withCredentials: true,
         }
       );
       const data = response.data;
@@ -82,6 +116,7 @@ export const addProduct = ({ product, token }) => {
     }
   };
 };
+
 
 export const updateProduct = ({ product, id, token }) => {
   return async (dispatch) => {

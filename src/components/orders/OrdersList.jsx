@@ -9,10 +9,6 @@ const OrdersList = () => {
      const orderGridView = useSelector((state) => state.ui.orderGridView);
     const orders= useSelector((state) => state.orders.filteredOrders);
     const loading = useSelector((state) => state.ui.ordersLoading);
-    // console.log(state.orders)
-    //     const gridView = useSelector((state) => state.ui.gridView);
-    // const orders = useSelector((state) => state.products.filteredProducts);
-    // const loading = useSelector((state) => state.ui.productsLoading);
 
     if (loading) {
       return <TheSpinner />;
@@ -25,7 +21,7 @@ const OrdersList = () => {
     }
 
     if (orderGridView) {
-      return <OrderGridView orders={orders} />;
+      return <OrderGridView orders={orders.toReversed()} />;
     }
     return (
       <Card>

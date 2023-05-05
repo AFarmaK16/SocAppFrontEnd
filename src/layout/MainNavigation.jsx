@@ -10,6 +10,7 @@ import soc_logo from "../assets/soc_logo.png";
 // import Logo from '../assets/logo.svg';
 import NavCartButton from "../components/cart/NavCartButton";
 import { logout } from "../store/actions/auth-actions";
+import { DropdownItem, DropdownMenu, DropdownToggle, UncontrolledDropdown } from "reactstrap";
 
 const MainNavigation = () => {
   const [showNav, setShowNav] = useState(false);
@@ -120,55 +121,90 @@ const MainNavigation = () => {
 
             <li>
               {isAuthenticated && (
-                <ul>
-                  <li>
-                    <div className="relative">
-                      <button
-                        className="text-lg font-semibold mr-2 p-2 lg:text-lg"
-                        onClick={toggleDropdown}
+                <UncontrolledDropdown>
+                  <DropdownToggle
+                    caret
+                    className="nav-link ml-2 p-2 lg:text-lg font-semibold"
+                    tag="a"
+                  >
+                    Admin
+                  </DropdownToggle>
+                  <DropdownMenu>
+                    <DropdownItem>
+                      {" "}
+                      <NavLink
+                        className="ml-2 p-2 lg:text-lg font-semibold"
+                        to="/orders"
                       >
                         Commandes
-                      </button>
-                      {showDropdown && (
-                        <ul className="absolute top-full right-0 mt-2 py-2 px-4 bg-gray-800 rounded-lg shadow-lg">
-                          <li>
-                            <NavLink
-                              className="block p-2 text-white hover:bg-gray-700"
-                              to="/checkout"
-                            >
-                              Valider Commande
-                            </NavLink>
-                          </li>
-                          <li>
-                            <NavLink
-                              className="block p-2 text-white hover:bg-gray-700"
-                              to="/order-history"
-                            >
-                              Historique des commandes
-                            </NavLink>
-                          </li>
-                        </ul>
-                      )}
-                    </div>
-                  </li>
-                  <li>
-                    <NavLink
-                      className="ml-2 p-2 lg:text-lg font-semibold"
-                      to="/products"
-                    >
-                      Factures
-                    </NavLink>
-                  </li>
-                </ul>
+                      </NavLink>
+                    </DropdownItem>
+                    <DropdownItem>
+                      <NavLink
+                        className="ml-2 p-2 lg:text-lg font-semibold"
+                        to="/allFactures"
+                      >
+                        Factures
+                      </NavLink>
+                    </DropdownItem>
+                    <DropdownItem>
+                      <NavLink
+                        className="ml-2 p-2 lg:text-lg font-semibold"
+                        to="/admin/dashboard/addproduct"
+                      >
+                        Gerer Produits
+                      </NavLink>
+                    </DropdownItem>
+                    <DropdownItem>
+                      <NavLink
+                        className="ml-2 p-2 lg:text-lg font-semibold"
+                        to="/addproduct"
+                      >
+                        Dashboard
+                      </NavLink>
+                    </DropdownItem>
+                  </DropdownMenu>
+                </UncontrolledDropdown>
               )}
             </li>
             <li>
-              <NavLink
-                className="ml-2 p-2 lg:text-lg font-semibold"
-                to="/orders"
-              >
-                All Orders
-              </NavLink>
+              <UncontrolledDropdown>
+                <DropdownToggle
+                  caret
+                  className="nav-link ml-2 p-2 lg:text-lg font-semibold"
+                  tag="a"
+                >
+                  Mes commandes
+                </DropdownToggle>
+                <DropdownMenu>
+                  <DropdownItem>
+                    {" "}
+                    <NavLink
+                      className="ml-2 p-2 lg:text-lg font-semibold"
+                      to="/checkout"
+                    >
+                      Valider Commande
+                    </NavLink>
+                  </DropdownItem>
+                  <DropdownItem>
+                    {" "}
+                    <NavLink
+                      className="ml-2 p-2 lg:text-lg font-semibold"
+                      to="/order-history"
+                    >
+                      Historique des commandes
+                    </NavLink>
+                  </DropdownItem>
+                  <DropdownItem>
+                    <NavLink
+                      className="ml-2 p-2 lg:text-lg font-semibold"
+                      to="/payment-history"
+                    >
+                      Historique des factures
+                    </NavLink>
+                  </DropdownItem>
+                </DropdownMenu>
+              </UncontrolledDropdown>
             </li>
           </ul>
         </div>
@@ -188,7 +224,7 @@ const MainNavigation = () => {
           {isAuthenticated && (
             <motion.button
               onClick={logoutUser}
-              className="border-primary border-4 text-primary font-bold px-4 py-2 ml-2 rounded-full shadow-lg"
+              className="border-success border-4 font-bold px-4 py-2 ml-2 rounded-full shadow-lg"
               variants={buttonVariants}
               whileHover="hover"
             >
@@ -214,12 +250,7 @@ const MainNavigation = () => {
       >
         <li className="border-b-2 border-zinc-300 w-full text-lg font-semibold text-gray-600">
           <NavLink to="/" onClick={navHandler}>
-            Home
-          </NavLink>
-        </li>
-        <li className="border-b-2 border-zinc-300 w-full mt-4 text-lg font-semibold text-gray-600">
-          <NavLink to="/about" onClick={navHandler}>
-            About
+            Accueil
           </NavLink>
         </li>
         <li className="border-b-2 border-zinc-300 w-full mt-4 text-lg font-semibold text-gray-600">
@@ -228,18 +259,92 @@ const MainNavigation = () => {
           </NavLink>
         </li>
         <li className="border-b-2 border-zinc-300 w-full mt-4 text-lg font-semibold text-gray-600">
-          <NavLink to="/orders" onClick={navHandler}>
-            All Orders
-          </NavLink>
-        </li>
-
-        <li className="border-b-2 border-zinc-300 w-full mt-4 text-lg font-semibold text-gray-600">
           {isAuthenticated && (
-            <NavLink to="/checkout" onClick={navHandler}>
-              Checkout
-            </NavLink>
+            <UncontrolledDropdown>
+              <DropdownToggle
+                caret
+                className="nav-link ml-2 p-2 lg:text-lg font-semibold"
+                tag="a"
+              >
+                Admin
+              </DropdownToggle>
+              <DropdownMenu>
+                <DropdownItem>
+                  <NavLink
+                    className="ml-2 p-2 lg:text-lg font-semibold"
+                    to="/orders"
+                  >
+                    Commandes
+                  </NavLink>
+                </DropdownItem>
+                <DropdownItem>
+                  <NavLink
+                    className="ml-2 p-2 lg:text-lg font-semibold"
+                    to="/allFactures"
+                  >
+                    Factures
+                  </NavLink>
+                </DropdownItem>
+                <DropdownItem>
+                  <NavLink
+                    className="ml-2 p-2 lg:text-lg font-semibold"
+                    to="/admin/dashboard/addproduct"
+                  >
+                    Gerer Produits
+                  </NavLink>
+                </DropdownItem>
+                <DropdownItem>
+                  <NavLink
+                    className="ml-2 p-2 lg:text-lg font-semibold"
+                    to="/manageProducts"
+                  >
+                    Dashboard
+                  </NavLink>
+                </DropdownItem>
+              </DropdownMenu>
+            </UncontrolledDropdown>
           )}
         </li>
+        <li className="border-b-2 border-zinc-300 w-full mt-4 text-lg font-semibold text-gray-600">
+          <UncontrolledDropdown>
+            <DropdownToggle
+              caret
+              className="nav-link ml-2 p-2 lg:text-lg font-semibold"
+              tag="a"
+            >
+              Mes commandes
+            </DropdownToggle>
+            <DropdownMenu>
+              <DropdownItem>
+                {" "}
+                <NavLink
+                  className="ml-2 p-2 lg:text-lg font-semibold"
+                  to="/checkout"
+                >
+                  Valider Commande
+                </NavLink>
+              </DropdownItem>
+              <DropdownItem>
+                {" "}
+                <NavLink
+                  className="ml-2 p-2 lg:text-lg font-semibold"
+                  to="/order-history"
+                >
+                  Historique des commandes
+                </NavLink>
+              </DropdownItem>
+              <DropdownItem>
+                <NavLink
+                  className="ml-2 p-2 lg:text-lg font-semibold"
+                  to="/payment-history"
+                >
+                  Historique des factures
+                </NavLink>
+              </DropdownItem>
+            </DropdownMenu>
+          </UncontrolledDropdown>
+        </li>
+
         <div className="flex flex-col items-center m-4 space-y-4">
           <div onClick={navHandler}>
             <NavCartButton />
