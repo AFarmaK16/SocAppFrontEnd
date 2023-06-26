@@ -26,6 +26,7 @@ import {
 } from "../../store/actions/oder-action";
 import { FaSearch } from "react-icons/fa";
 import { isEmptyArray } from "formik";
+import { DotsHorizontalIcon, InformationCircleIcon } from "@heroicons/react/solid";
 
 const OrderHistory = () => {
   const containerVariants = {
@@ -46,8 +47,8 @@ const OrderHistory = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(getCustomerOrders(1));
-  }, [dispatch, 1]);
+    dispatch(getCustomerOrders(4));
+  }, [dispatch, 4]);
     
   const [modalShow, setModalShow] = useState(false);
   
@@ -56,6 +57,7 @@ const OrderHistory = () => {
   const [selectedOrder, setselectedOrder] = useState();
   const loading = useSelector((state) => state.ui.customerOrdersLoading);
   const orders = useSelector((state) => state.orders.filteredOrders);
+  console.log(orders)
   let count = 0;
   for (const order in orders) {
     if (orders[order].order_status === "ATTENTE") {
@@ -67,6 +69,7 @@ const OrderHistory = () => {
   console.log(loading);
 
   return (
+    
     <div>
       <motion.div
         className="mb-48"
@@ -109,7 +112,7 @@ const OrderHistory = () => {
                           <FaSearch />
                         </InputGroupText>
                         <Input
-                          placeholder="Tapez le nom du client "
+                          placeholder="Tapez l'id de la commande "
                           onChange={(e) => {
                             setSearch(e.target.value);
                           }}
@@ -133,8 +136,7 @@ const OrderHistory = () => {
                             .filter((order) => {
                               return search.toLowerCase() === ""
                                 ? order
-                                : order.customer.customerFirstName
-                                    .toLowerCase()
+                                : order.id
                                     .includes(search);
                             })
                             .map((order) => {
@@ -156,21 +158,19 @@ const OrderHistory = () => {
                                   </td>
                                   <td>{orderItems.length}</td>
                                   <td>
-                                    <Badge
-                                      color={`${
+                                    <span
+                                      className={`rounded-full lowercase ${
                                         order_status === "VALIDEE"
-                                          ? "success"
+                                          ? "bg-green-200 text-green-700"
                                           : order_status === "ATTENTE"
-                                          ? "warning"
+                                          ? "bg-yellow-100 text-yellow-600"
                                           : order_status === "ANNULEE"
-                                          ? "danger"
-                                          : "primary"
+                                          ? "bg-red-100 text-red-600"
+                                          : "bg-blue-100 text-blue-600"
                                       }`}
-                                      className="text-white"
-                                      pill
                                     >
                                       {order_status}
-                                    </Badge>
+                                    </span>
                                   </td>
                                   <td>{formatPrice(order_Amount)}</td>
                                   {/* <footer className="flex mt-4 justify-between items-center">
@@ -178,13 +178,14 @@ const OrderHistory = () => {
               </footer> */}
                                   <td>
                                     <button
-                                      className="btn btn-success "
+                                      className="btn flex bg-blue-100  text-blue-600"
                                       onClick={() => {
                                         setModalShow(true);
                                         setselectedOrder(order_id);
                                       }}
                                     >
-                                      Details
+                                      Détails <DotsHorizontalIcon className="h-2 w-2" />
+                                     
                                       {/* <BiDotsHorizontal color="white" /> */}
                                     </button>{" "}
                                   </td>

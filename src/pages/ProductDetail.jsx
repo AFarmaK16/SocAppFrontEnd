@@ -41,21 +41,21 @@ const ProductDetail = () => {
   //  useEffect(() => {
   //    dispatchOrders(getOrders());
   //  }, [dispatchOrders]);
-  
 
   const product = useSelector((state) => state.products.productDetails);
-//     const orders = useSelector((state) => state.orders.filteredOrders);
-//     // alert(product)
-// console.log(orders)
+  //     const orders = useSelector((state) => state.orders.filteredOrders);
+  //     // alert(product)
+  console.log(product)
   const {
-    product_id,
+    id,
     product_name,
     product_description,
+    tarification,
     product_price,
     product_label,
     product_image,
   } = product;
-
+const {montant}= tarification || {};
   //   const {
   //   order_id,
   //   order_Date,
@@ -75,7 +75,7 @@ const ProductDetail = () => {
       animate="visible"
       exit="exit"
     >
-      <PageHero title={product_name} product />
+      <PageHero title={product_label} product />
       <div className="mt-16 space-y-16 w-[80vw] mx-auto">
         <Link
           to="/products"
@@ -103,7 +103,7 @@ const ProductDetail = () => {
                     {product_name}
                   </h2>
                   <p className="text-lg  tracking-wider text-gray-600">
-                    <b> Product ID:</b> {product_id}
+                    <b> Product ID:</b> {id}
                   </p>
                   <div className="flex flex-col w-full sm:w-3/4 lg:w-1/2 space-y-5">
                     <div className=" ">
@@ -115,7 +115,7 @@ const ProductDetail = () => {
                   </div>
                   <p className="text-lg  tracking-wider text-gray-600">
                     {/* <p className="text-lg font-semibold text-secondary-100 tracking-widest italic my-4"> */}
-                    <b>P.U HT: </b> {formatPrice(product_price)}
+                    <b>P.U HT: </b> {formatPrice(montant)}
                   </p>
                 </div>
               </Row>

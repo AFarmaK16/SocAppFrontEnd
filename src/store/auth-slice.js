@@ -31,10 +31,16 @@ const authSlice = createSlice({
             state.isAuthenticated = true;
             state.isAdmin = false;
         },
+         test(state) {
+            // state = initialState;
+           state.isAdmin = true;
+        }
+        ,
         logout(state) {
             // state = initialState;
             Object.assign(state, initialState);
         }
+
     }
 });
 

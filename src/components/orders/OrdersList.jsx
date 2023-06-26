@@ -5,7 +5,7 @@ import { useSelector } from "react-redux";
 import TheSpinner from "../../layout/TheSpinner";
 import { Card } from 'reactstrap';
 
-const OrdersList = () => {
+const OrdersList = (props) => {
      const orderGridView = useSelector((state) => state.ui.orderGridView);
     const orders= useSelector((state) => state.orders.filteredOrders);
     const loading = useSelector((state) => state.ui.ordersLoading);
@@ -21,7 +21,7 @@ const OrdersList = () => {
     }
 
     if (orderGridView) {
-      return <OrderGridView orders={orders.toReversed()} />;
+      return <OrderGridView orders={orders.toReversed()}  role={props.role}/>;
     }
     return (
       <Card>

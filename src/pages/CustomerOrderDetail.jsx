@@ -19,8 +19,25 @@ import {
 } from "../store/actions/oder-action";
 // import { Col, Modal, ModalBody, ModalHeader, Row } from "reactstrap";
 import { Modal } from "react-bootstrap";
+// import {
+//   Button,
+//   Card,
+//   CardHeader,
+//   CardBody,
+//   FormGroup,
+//   Form,
+//   Input,
+//   InputGroupAddon,
+//   InputGroupText,
+//   InputGroup,
+//   Modal,
+//   Row,
+//   Col,
+// } from "reactstrap";
 import { isEmptyArray } from "formik";
-import { CardImg, CardSubtitle, CardTitle } from "reactstrap";
+import { CardImg, CardSubtitle, CardTitle,Carousel, CarouselCaption, CarouselControl, CarouselIndicators, CarouselItem, Col, Row, Table } from "reactstrap";
+import { AiFillFile } from "react-icons/ai";
+// import { Carousel } from "@material-tailwind/react";
 const containerVariants = {
   hidden: {
     opacity: 0,
@@ -37,11 +54,35 @@ const containerVariants = {
 const CustomerOrderDetail = (props) => {
   const order = props.orders.find((ord) => ord.order_id === props.order_id);
   //  const formattedDate = new Date(order.order_Date);
-  const[showJustificatif, setShowJustificatif] = useState(false);
-  const handleShowJustificatif=()=>{
-    setShowJustificatif(true)
-  }
+  const [showJustificatif, setShowJustificatif] = useState(false);
+  const handleShowJustificatif = () => {
+    setShowJustificatif(true);
+  };
+  const [activeIndex, setActiveIndex] = useState(0);
+   const [animating, setAnimating] = useState(false);
 
+ const next = () => {
+   if (animating) return;
+   const nextIndex =
+     activeIndex === order.facture.justificatifURIs.length - 1
+       ? 0
+       : activeIndex + 1;
+   setActiveIndex(nextIndex);
+ };
+
+ const previous = () => {
+   if (animating) return;
+   const nextIndex =
+     activeIndex === 0
+       ? order.facture.justificatifURIs.length - 1
+       : activeIndex - 1;
+   setActiveIndex(nextIndex);
+ };
+
+ const goToIndex = (newIndex) => {
+   if (animating) return;
+   setActiveIndex(newIndex);
+ };
   // const {
   //   order_id,
   //   order_Date,
@@ -55,7 +96,7 @@ const CustomerOrderDetail = (props) => {
   // } = order;
   console.log(order);
 
-  const nbTonnes = 0;
+  let nbTonnes = 0;
 
   return (
     <div>
@@ -77,77 +118,113 @@ const CustomerOrderDetail = (props) => {
               >
                 {/* <button className="btn btn-danger">Fermer</button> */}
                 <Modal.Title className="card-title text-white">
-                  <h4>Details Commande #{order.order_id}</h4>
+                  <h4> Commande #{order.order_id}</h4>
                   {/* <button className="btn-close" aria-label="Close" type="button"></button> */}
                 </Modal.Title>
               </Modal.Header>
               <Modal.Body className="card-body">
                 {/* <CardImg src={order.facture.justificatifURI} top alt="uiuiuh" /> */}
-                <div className="">
-                  <div className="d-flex items-center">
-                    <div className="flex-grow border-t h-px mr-3"></div>
+                <Row className="flex gap-6">
+                  <Col className="">
+                    <div className="d-flex items-center">
+                      {/* <div className="flex-grow border-t h-px mr-3"></div> */}
 
-                    <span className="bg-green-400 text-white rounded-full p-1.5 uppercase ">
+                      {/* <span className="bg-green-400 text-white rounded-full p-1.5 uppercase ">
                       Informations du Client
-                    </span>
-                    <div className="flex-grow border-t h-px mr-3"></div>
-                  </div>
-                  <div>
-                    <b>Client: </b>
-                    <span className="uppercase">
-                      {order.customer.customerFirstName}
-                    </span>{" "}
-                    --
-                    <span className="uppercase">
-                      {order.customer.customerLastName}
-                    </span>
-                  </div>
-                  <div>
-                    <b>Numéro: </b>
-                    {order.customer.customerPhoneNumber}
-                  </div>
-                  <div>
-                    <b>Addresse: </b>
-                    {order.customer.customerAddress}
-                  </div>
-                </div>
-                <br />
-                <div className="">
-                  {/* <div className="flex my-2 text-sm font-semibold items-center text-gray-800"> */}
-                  <div className="d-flex items-center">
-                    <div className="flex-grow border-t h-px mr-3"></div>
-                    <span className="bg-green-400 text-white rounded-full p-1.5 uppercase ">
-                      Details Commande
-                    </span>
+                    </span> */}
+                      {/* <div className="flex-grow border-t h-px mr-3"></div> */}
+                    </div>
+                    <h1 className="text-xl font-bold">Client</h1>
+                    <div className="pl-4">
+                      {" "}
+                      <div>
+                        <span className="uppercase">{order.customer.name}</span>{" "}
+                        &nbsp;
+                        <span className="uppercase">
+                          {order.customer.surname}
+                        </span>
+                      </div>
+                      <div>{order.customer.phoneNumber}</div>
+                      <div>{order.customer.address}</div>
+                    </div>
+                  </Col>
+                  <Col>
+                    {" "}
+                    {order.delivery !== null && (
+                      <div className="">
+                        {/* <div className="border border-green-700 rounded-full shadow-md shadow-green-300"> */}
+                        <h1 className=" text-xl font-bold">Livraison</h1>
+                        {/* </div> */}
+                        <div className="pl-4">
+                          {" "}
+                          <div>
+                            {/* <b>Destination :</b> */}
+                            {order.delivery.destination.nom} &nbsp;[
+                            {formatPrice(
+                              order.delivery.destination.tarification.montant
+                            )}
+                            &nbsp;/TON&nbsp;]
+                          </div>
+                          <div>
+                            {/* <b>Adresse :</b> */}
+                            {order.delivery.delivery_address}
+                          </div>
+                          {order.delivery.decharged && (
+                            <div>
+                              <b>Déchargement :</b>OUI
+                            </div>
+                          )}
+                          {order.delivery.delivery_comment !== "" && (
+                            <div>
+                              <b>Commentaire :</b>
+                              {order.delivery.delivery_comment}
+                            </div>
+                          )}
+                        </div>
+                      </div>
+                    )}
+                  </Col>
+                </Row>
 
-                    <div className="flex-grow border-t h-px mr-3"></div>
-                  </div>
-
-                  <div>
-                    <b>Date: </b>
-                    {order.order_Date}
-                  </div>
-                  <div>
-                    <b>Montant TTC: </b>
-                    <span className="uppercase">
-                      {formatPrice(order.order_Amount)}
-                    </span>
-                  </div>
-                  <div>
-                    <b>Nombre d'articles: </b>
-                    {order.orderItems.length}
-                  </div>
-  <br />
-                  <div>
+                {/* <div className="flex my-2 text-sm font-semibold items-center text-gray-800"> */}
+                {/* <div className="d-flex items-center"> */}
+                <Row className="flex gap-8 pt-5">
+                  {" "}
+                  <Col>
+                    {" "}
+                    <div className="text-xl font-bold">
+                      {/* <span className="bg-green-400 text-white rounded-full p-1.5 uppercase "> */}
+                      Détails Commande
+                    </div>
+                    {/* </span> */}
+                    {/* <div className="flex-grow border-t h-px mr-3"></div> */}
+                    {/* </div> */}
+                    <div>
+                      <b>Statut: </b>
+                      {order.order_status}
+                    </div>
+                    <div>
+                      <b>Date: </b>
+                      {order.order_Date}
+                    </div>
+                    <div>
+                      <b>Montant TTC: </b>
+                      <span className="uppercase">
+                        {formatPrice(order.order_Amount)}
+                      </span>
+                    </div>
+                    <div>
+                      <b>Nombre d'articles: </b>
+                      {order.orderItems.length}
+                    </div>
+                  </Col>
+                  <Col>
                     <div className="">
-                    
-                      <h1 className="border border-green-700   rounded-full p-1.5 shadow-md shadow-green-300">
-                        Réglement
-                      </h1>
+                      <h1 className="text-xl font-bold">Réglement</h1>
                     </div>
                     <div>
                       <b>Type: </b>
-                      {order.facture.payment_type}
+                      {order.facture.paymenType.libelle}
                     </div>
                     <div>
                       <b>Statut : </b>
@@ -157,107 +234,158 @@ const CustomerOrderDetail = (props) => {
                       <b>Reference: </b>
                       {order.facture.payment_reference}
                     </div>
-                    {order.facture.payment_type === "TRANSFERT" ? (
-                      <div>
-                        <b>Operateur: </b>
-                        {order.facture.operator.operator_name}
-                      </div>
-                    ) : (
-                      <div>
-                        <b>Banque: </b>
-                        {order.facture.payment_bank}
-                      </div>
-                    )}
-                  </div>
 
-                  <div className="">
-                    <div className="border border-green-700 rounded-full shadow-md shadow-green-300 ">
-                      <h1 className="  p-2">Produits commandés</h1>
+                    <div>
+                      <b>{order.facture.paymentModes.type.toLowerCase()} : </b>
+                      {order.facture.paymentModes.name}
                     </div>
-                    <br />
-                    {order.orderItems.map((item) => {
-                      return (
-                        <ol key={item.id}>
-                          <li>
-                            <b>Nom :</b>{item.product.product_label}
-                          </li>
-                          <li>
-                            <b>PU:</b>
-                            {formatPrice(item.product.product_price)}
-                          </li>
-                          <li>
-                            <b>Quantité:</b> {item.quantity} <i>TON</i>
-                          </li>
-                          <li>
-                            <br />
-                          </li>
-                          {/* <div className="deide-y devide-dashed"></div>
-                          <div className=""></div>
-                          <div className="hr hr-blurry"></div> */}
-                          <div className="flex-grow border-t h-px mr-3"></div>
-                        </ol>
-                      );
-                    })}
-                  </div>
-                  {order.delivery !== null && (
-                    <div className="">
-                      <div className="border border-green-700 rounded-full shadow-md shadow-green-300">
-                        <h1 className=" p-1.5">Livraison</h1>
-                      </div>
-                      <div>
-                        <b>Destination :</b>
-                        {order.delivery.delivery_destination}
-                      </div>
-                      <div>
-                        <b>Adresse :</b>
-                        {order.delivery.delivery_address}
-                      </div>
-                      <div>
-                        <b>Commentaire :</b> {order.delivery.delivery_comment}
-                      </div>
+                  </Col>
+                </Row>
 
-                      {order.delivery.decharged && (
-                        <div>
-                          <b>Déchargement :</b>OUI
-                        </div>
+                <div className="pt-5">
+                  {/* <div className="border border-green-700 rounded-full shadow-md shadow-green-300 "> */}
+                  <h1 className=" text-xl p-2 font-bold">Produits commandés</h1>
+                  {/* </div> */}
+                  <Table>
+                    <thead>
+                      <th></th> <th>#</th>
+                      <th>Nom</th>
+                      <th>Prix Unitaire</th>
+                      <th>
+                        Quantité &nbsp;(<i>TON</i>)
+                      </th>
+                      <th>Total</th>
+                    </thead>
+                    <tbody>
+                      {order.orderItems.map((item) => {
+                        {
+                          nbTonnes += item.quantity;
+                        }
+                        return (
+                          <tr key={item.id}>
+                            <td></td>
+                            <td>{item.product.id}</td>
+                            <td>{item.product.product_label}</td>
+                            <td>
+                              {formatPrice(item.product.tarification.montant)}
+                            </td>
+                            <td>{item.quantity}</td>
+                            <td>
+                              {formatPrice(
+                                item.quantity * item.tarification.montant
+                              )}
+                            </td>
+                          </tr>
+                        );
+                      })}
+                      {order.delivery !== null && (
+                        <tr>
+                          <th>Livraison</th> <td></td>
+                          <td></td>
+                          <td>
+                            {formatPrice(
+                              order.delivery.destination.tarification.montant
+                            )}{" "}
+                            / TON
+                          </td>
+                          <td></td>
+                          <td>
+                            {formatPrice(
+                              order.delivery.destination.tarification.montant *
+                                nbTonnes
+                            )}
+                          </td>
+                        </tr>
+                      )}
+                    </tbody>
+                  </Table>
+                </div>
+
+                <div>
+                  <button
+                    className=" 
+                    group rounded-2xl h-12 w-48  text-lg relative overflow-hidden
+                    
+                    bg-green-400 text-white showJusttificatif flex hover:text-black hover:border-2"
+                    onClick={() => handleShowJustificatif()}
+                  >
+                    <AiFillFile />
+                    <b>Voir justificatif : </b>
+                  </button>
+                </div>
+                <Modal
+                  show={showJustificatif}
+                  onHide={() => setShowJustificatif(false)}
+                  className=" modal-xl"
+                >
+                  <Modal.Header closeButton className="bg-slate-800 text-white">
+                    <Modal.Title>Justificatif de paiement</Modal.Title>
+                  </Modal.Header>
+                  <Modal.Body>
+                    {/* {order.factyre.justificatifURIs.length} */}
+                    <Carousel
+                      activeIndex={activeIndex}
+                      next={next}
+                      className="rounded-full"
+                      previous={previous}
+                      // {...args}
+                    >
+                      <CarouselIndicators
+                        items={order.facture.justificatifURIs}
+                        activeIndex={activeIndex}
+                        onClickHandler={goToIndex}
+                      />
+                      {order.facture.justificatifURIs.map(
+                        (justificatifURI, index) => (
+                          <CarouselItem
+                            // className="w-100 d-block"
+                            key={index}
+                            onExiting={() => setAnimating(true)}
+                            onExited={() => setAnimating(false)}
+                          >
+                            <img
+                              src={justificatifURI}
+                              alt={`Justificatif ${index + 1}`}
+                            />
+                            <CarouselCaption
+                              captionText={index + 1}
+                              captionHeader={"item.caption"}
+                            />
+                            {/* <div>{justificatifURI}</div>
+                            <div>{order.facture.justificatifURIs[1]}</div> */}
+                          </CarouselItem>
+                        )
                       )}
 
-                      <br />
-                      <div className="hr hr-blurry"></div>
-                    </div>
-                  )}
-                  <div>
-                    <button
-                      className="btn btn-success showJusttificatif"
-                      onClick={() => handleShowJustificatif()}
-                    >
-                      <b>Voir justificatif: </b>
-                      {/* <img src={order.facture.justificatifURI} /> */}
-                    </button>
-                  </div>
-                  <Modal
-                    show={showJustificatif}
-                    onHide={() => setShowJustificatif(false)}
-                    className=" modal-xl"
-                  >
-                    <Modal.Header
-                      closeButton
-                      className="bg-slate-800 text-white"
-                    >
-                      <Modal.Title>Justificatif de paiement</Modal.Title>
-                    </Modal.Header>
-                    <Modal.Body>
-                      <img
-                        src={order.facture.justificatifURI}
-                        style={{
-                          width: "100%",
-                          height: "100%",
-                          objectFit: "cover",
-                        }}
+                      <CarouselControl
+                        direction="prev"
+                        directionText="Précédent"
+                        onClickHandler={previous}
+                        className="bg-slate-600 border-2 rounded-full w-5"
                       />
-                    </Modal.Body>
-                  </Modal>
-                </div>
+                      <CarouselControl
+                        direction="next"
+                        directionText="Suivant"
+                        onClickHandler={next}
+                        className="bg-slate-600 border-2 rounded-full w-5"
+                      />
+                      {/* <CarouselIndicators
+                        items={order.facture.justificatifURIs}
+                        activeIndex={activeIndex}
+                        onClickHandler={goToIndex}
+                      /> */}
+                    </Carousel>
+                    <img
+                      src={order.facture.justificatifURI}
+                      style={{
+                        width: "100%",
+                        height: "100%",
+                        objectFit: "cover",
+                      }}
+                    />
+                    {/* <div>HEY</div> */}
+                  </Modal.Body>
+                </Modal>
               </Modal.Body>
               {/* </div> */}
             </div>

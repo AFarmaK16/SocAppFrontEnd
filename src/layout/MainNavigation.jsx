@@ -10,7 +10,12 @@ import soc_logo from "../assets/soc_logo.png";
 // import Logo from '../assets/logo.svg';
 import NavCartButton from "../components/cart/NavCartButton";
 import { logout } from "../store/actions/auth-actions";
-import { DropdownItem, DropdownMenu, DropdownToggle, UncontrolledDropdown } from "reactstrap";
+import {
+  DropdownItem,
+  DropdownMenu,
+  DropdownToggle,
+  UncontrolledDropdown,
+} from "reactstrap";
 
 const MainNavigation = () => {
   const [showNav, setShowNav] = useState(false);
@@ -90,6 +95,7 @@ const MainNavigation = () => {
               <NavLink to="/">
                 <h1 className="text-3xl font-bold ml-2 select-none">
                   <span className="text-success">SOCOCIM</span>
+                  &nbsp;
                   <span className="text-secondary-200">INDUSTRIES.</span>
                 </h1>
               </NavLink>
@@ -119,7 +125,7 @@ const MainNavigation = () => {
               </NavLink>
             </li>
 
-            <li>
+            {/* <li>
               {isAuthenticated && (
                 <UncontrolledDropdown>
                   <DropdownToggle
@@ -147,26 +153,11 @@ const MainNavigation = () => {
                         Factures
                       </NavLink>
                     </DropdownItem>
-                    <DropdownItem>
-                      <NavLink
-                        className="ml-2 p-2 lg:text-lg font-semibold"
-                        to="/admin/dashboard/addproduct"
-                      >
-                        Gerer Produits
-                      </NavLink>
-                    </DropdownItem>
-                    <DropdownItem>
-                      <NavLink
-                        className="ml-2 p-2 lg:text-lg font-semibold"
-                        to="/addproduct"
-                      >
-                        Dashboard
-                      </NavLink>
-                    </DropdownItem>
+
                   </DropdownMenu>
                 </UncontrolledDropdown>
               )}
-            </li>
+            </li> */}
             <li>
               <UncontrolledDropdown>
                 <DropdownToggle
@@ -177,7 +168,7 @@ const MainNavigation = () => {
                   Mes commandes
                 </DropdownToggle>
                 <DropdownMenu>
-                  <DropdownItem>
+                  {/* <DropdownItem>
                     {" "}
                     <NavLink
                       className="ml-2 p-2 lg:text-lg font-semibold"
@@ -185,7 +176,7 @@ const MainNavigation = () => {
                     >
                       Valider Commande
                     </NavLink>
-                  </DropdownItem>
+                  </DropdownItem> */}
                   <DropdownItem>
                     {" "}
                     <NavLink
@@ -258,7 +249,7 @@ const MainNavigation = () => {
             Products
           </NavLink>
         </li>
-        <li className="border-b-2 border-zinc-300 w-full mt-4 text-lg font-semibold text-gray-600">
+        {/* <li className="border-b-2 border-zinc-300 w-full mt-4 text-lg font-semibold text-gray-600">
           {isAuthenticated && (
             <UncontrolledDropdown>
               <DropdownToggle
@@ -304,7 +295,7 @@ const MainNavigation = () => {
               </DropdownMenu>
             </UncontrolledDropdown>
           )}
-        </li>
+        </li> */}
         <li className="border-b-2 border-zinc-300 w-full mt-4 text-lg font-semibold text-gray-600">
           <UncontrolledDropdown>
             <DropdownToggle

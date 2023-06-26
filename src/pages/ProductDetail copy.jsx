@@ -37,13 +37,13 @@ const ProductDetail = () => {
     dispatch(getOrdersById(635));
   }, [dispatch, 635]);
   const product = useSelector((state) => state.products.productDetails);
-    const orders = useSelector((state) => state.orders.ordersDetails);
-console.log(orders)
+  const orders = useSelector((state) => state.orders.ordersDetails);
+  console.log(orders);
   const {
-    product_id,
+    id,
     product_name,
     product_description,
-    product_price,
+    tarification,
     product_label,
     product_image,
   } = product;
@@ -75,7 +75,7 @@ console.log(orders)
                 {product_name}
               </h2>
               <p className="text-lg  tracking-wider text-gray-600">
-                <b> Product ID:</b> {product_id}
+                <b> Product ID:</b> {id}
               </p>
               <div className="flex flex-col w-full sm:w-3/4 lg:w-1/2 space-y-5">
                 <div className=" ">
@@ -87,7 +87,7 @@ console.log(orders)
               </div>
               <p className="text-lg  tracking-wider text-gray-600">
                 {/* <p className="text-lg font-semibold text-secondary-100 tracking-widest italic my-4"> */}
-                <b>P.U HT: </b> {formatPrice(product_price)}
+                <b>P.U HT: </b> {formatPrice(tarification.montant)}
               </p>
               <br />
               <AddToCart product={product} />

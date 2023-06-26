@@ -15,13 +15,12 @@ const ProductAmount = ({ product }) => {
   // console.log(
   //   "code in ProductAmount for prod " + JSON.stringify(product)
   // );
-  const dropItemFromCart = (itemId)=>{
-     const payload = {
-       ...product,
-     };
-     dispatch(cartActions.dropItemFromCart(payload));
-
-  }
+  const dropItemFromCart = (itemId) => {
+    const payload = {
+      ...product,
+    };
+    dispatch(cartActions.dropItemFromCart(payload));
+  };
   const increase = (event) => {
     // console.log(event.target.value);
     // console.log(Number(event.target.value) - 1);
@@ -35,7 +34,7 @@ const ProductAmount = ({ product }) => {
     // alert(amnt)
     const quantity = event.target.value;
 
-    const totalPrice = product.product_price * event.target.value;
+    const totalPrice = product.tarification.montant * event.target.value;
     // console.log(totalPrice);
     const payload = {
       ...product,
@@ -50,28 +49,18 @@ const ProductAmount = ({ product }) => {
   };
 
   return (
-    <div
-    //  className="w-[70px] lg:w-[100px] xl:w-[150px] grid grid-cols-3 justify-center items-center ml-auto"
-    >
-      {/* <button type='button' onClick={decrease} className='lg:w-4 lg:h-3 xl:py-2 xl:w-6 xl:h-3 flex justify-center items-center'>
-                <FaMinus />
-            </button> */}
-      {/* product.Quantity:  <input
-          // className="text-sm lg:text-lg xl:text-2xl font-bold text-gray-700"
-          // className="text-sm lg:text-lg xl:text-2xl font-bold text-gray-700"
-          type="number"
-          value={amnt}
-          onChange={increase}
-        /> */}
-      <div>
-        <span>
-          <b>Nb Tonnes:</b> {product.quantity} TON<FaTrash onClick={()=>{dropItemFromCart(product.product_id)}} color="#E7B84E" />
-        </span>
-      
-      </div>
-      {/* <button type='button' onClick={increase} className='lg:w-4 lg:h-3 xl:py-2 xl:w-6 xl:h-3 flex justify-center items-center'>
-                <FaPlus />
-            </button> */}
+    <div>
+      <span className="flex gap-5">
+        <div>
+          <b>Nb Tonnes:</b> {product.quantity} TON
+        </div>
+        <FaTrash
+          onClick={() => {
+            dropItemFromCart(product.id);
+          }}
+          color="#E7B84E"
+        />
+      </span>
     </div>
   );
 };

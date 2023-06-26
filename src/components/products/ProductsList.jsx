@@ -9,6 +9,7 @@ import TheSpinner from '../../layout/TheSpinner';
 const ProductsList = () => {
     const gridView = useSelector((state) => state.ui.gridView);
     const products = useSelector((state) => state.products.filteredProducts);
+    console.log(products)
     const loading = useSelector((state) => state.ui.productsLoading);
 
     if (loading) {

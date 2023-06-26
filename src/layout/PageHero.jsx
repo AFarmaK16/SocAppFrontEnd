@@ -12,10 +12,10 @@ const PageHero = ({ title, product ,alert}) => {
             </Link>
             {product && (
               <Link className="text-white" to="/products">
-                / Produits{" "}
+                &gt; Produits{" "}
               </Link>
             )}
-            / {title}{" "}
+            &gt; {title}{" "}
             <span className=" top-0 start-100 translate-middle badge rounded-pill bg-danger">
               {alert}
             </span>

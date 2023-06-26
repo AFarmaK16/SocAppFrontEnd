@@ -46,7 +46,7 @@ const CheckoutContent = ({ totalPrice, name }) => {
   const tva = (18 * totalPrice) / 100;
   const finalTotal = tc + rh + tva + totalPrice;
   const items = cartContent.items.map((item) => {
-    return { productId: item.product_id, quantity: item.quantity };
+    return { productId: item.id, quantity: item.quantity };
   });
   // if (!isRenduChecked) {
   //   setDechargeChecked(false)

@@ -14,12 +14,22 @@ const initialState = {
   orderDetailLoading: false,
   ordersLoading: false,
   addOrderLoading: false,
-validateOrderLoading: false,
+  validateOrderLoading: false,
   updateOrderLoading: false,
   operatorsLoading: false,
+  banksLoading: false,
+  destinationLoading: false,
+  paymentMLoading: false,
   // -----------------------CUSTOMER----------------
   customerOrdersLoading: false,
-  customerOrdersDetailsLoading:false,
+  customerOrdersDetailsLoading: false,
+  //--------------------USERS-------
+  userGridView: true,
+  userDetailLoading: false,
+  usersLoading: false,
+  addUserLoading: false,
+  updateUserLoading: false,
+  deleteUserLoading: false,
 };
 
 const uiSlice = createSlice({
@@ -58,6 +68,15 @@ const uiSlice = createSlice({
     operatorsLoading(state) {
       state.operatorsLoading = !state.operatorsLoading;
     },
+    banksLoading(state) {
+      state.banksLoading = !state.banksLoading;
+    },
+    destinationLoading(state) {
+      state.destinationLoading = !state.destinationLoading;
+    },
+    paymentMLoading(state) {
+      state.paymentMLoading = !state.paymentMLoading;
+    },
     addOrderLoading(state) {
       state.addOrderLoading = !state.addOrderLoading;
     },
@@ -73,6 +92,22 @@ const uiSlice = createSlice({
     },
     cOrdersDetailsLoading(state) {
       state.customerOrdersDetailsLoading = !state.customerOrdersDetailsLoading;
+    },
+    //--------------USERS
+    userDetailLoading(state) {
+      state.userDetailLoading = !state.userDetailLoading;
+    },
+    usersLoading(state) {
+      state.usersLoading = !state.usersLoading;
+    },
+    addUserLoading(state) {
+      state.addUserLoading = !state.addUserLoading;
+    },
+    updateUserLoading(state) {
+      state.updateUserLoading = !state.updateUserLoading;
+    },
+    deleteUserLoading(state) {
+      state.deleteUserLoading = !state.deleteUserLoading;
     },
   },
 });

@@ -4,21 +4,24 @@ import { Navigate, Outlet } from "react-router-dom";
 
 
 const LoginRedirect = () => {
-    const { isAdmin, user } = useSelector((state) => state.auth);
-    // const navigate = useNavigate();
+  const { isAdmin, user } = useSelector((state) => state.auth);
 
-    // if (isAdmin) {
-    //     navigate('/admin/dashboard', { replace: true });
-    // } else if (user) {
-    //     navigate('/products', {replace: true});
-    // } else {
-    //     <Outlet />
-    // }
+  // const navigate = useNavigate();
 
-    return (
-        // isAdmin ? navigate('/admin/dashboard', { replace: true }) : <Outlet />
-        isAdmin ? <Navigate to='/admin/dashboard' replace /> : user ? <Navigate to='/products' replace /> : <Outlet />
-    );
+  // if (isAdmin) {
+  //     navigate('/admin/dashboard', { replace: true });
+  // } else if (user) {
+  //     navigate('/products', {replace: true});
+  // } else {
+  //     <Outlet />
+  // }
+
+  return (
+    // isAdmin ? navigate('/admin/dashboard', { replace: true }) : <Outlet />
+    // isAdmin ? <Navigate to='/admin/dashboard' replace /> : user ? <Navigate to='/products' replace /> : <Outlet />
+    isAdmin ? (<Navigate to="/admin/dashboard" replace />) : user ? (<Navigate to="/products" replace />) : (<Outlet />)
+    
+  );
 
 };
 

@@ -16,6 +16,9 @@ import {
   } from 'redux-persist';
   import storage from 'redux-persist/lib/storage';
 import ordersSlice from './orders-slice';
+import userSlice from './user-slice';
+import formSlice from './form-slice';
+import settingsSlice from './admin-slice';
 
   const cartPersistConfig = {
     key: 'cart',
@@ -35,20 +38,23 @@ import ordersSlice from './orders-slice';
 
 
 const store = configureStore({
-    reducer: {
-        cart: cartReducer,
-        products: productsSlice.reducer,
-        orders: ordersSlice.reducer,
-        auth: authReducer,
-        ui: uiSlice.reducer,
-    },
-    middleware: (getDefaultMiddleware) =>
-        getDefaultMiddleware({
-            serializableCheck: {
-                ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
-            },
-            // serializableCheck: false
-        }),
+  reducer: {
+    cart: cartReducer,
+    products: productsSlice.reducer,
+    orders: ordersSlice.reducer,
+    users: userSlice.reducer,
+    auth: authReducer,
+    ui: uiSlice.reducer,
+    shippingForm: formSlice.reducer,
+    settings: settingsSlice.reducer
+  },
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware({
+      serializableCheck: {
+        ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
+      },
+      // serializableCheck: false
+    }),
 });
 
 

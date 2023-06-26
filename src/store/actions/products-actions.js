@@ -4,12 +4,20 @@ import { productsActions } from "../products-slice";
 import { uiActions } from "../ui-slice";
 import api from "../../utils/api";
 
+const token = "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJsaW5kYSIsImlhdCI6MTY4NDE0NDkwOSwiZXhwIjoxNjg0MTQ2MzQ5fQ.XxoxNyqaSDA70l1-Yf6s2MQFk4NHnDywn468lpVhXfk";
 export const getProducts = () => {
   return async (dispatch) => {
     dispatch(uiActions.productsLoading());
     const fetchData = async () => {
       const response = await axios.get(
-        "http://localhost:8081/api/v1/products/lists"
+        "http://localhost:8081/api/v1/products/lists",
+        {
+          headers: {
+            // Authorization:
+            //   "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJsaW5kYSIsImlhdCI6MTY4NDEzODU0MiwiZXhwIjoxNjg0MTM5OTgyfQ.5DF3OezUXT0L3rB1BGm2BLMV7dDQeTjBl85LgN8-v80",
+          },
+        }
+        //
       );
 
       const data = await response.data;
@@ -83,15 +91,15 @@ export const getProductDetails = (id) => {
 //   };
 // };
 
-export const addProduct = ({ product }) => {
+export const addProduct = ({ addRequest }) => {
   return async (dispatch) => {
     dispatch(uiActions.addPrductLoading());
     // await api.get("/sanctum/csrf-cookie");
 
     const postData = async () => {
       const response = await axios.post(
-        "http://localhost:8081/api/v1/orders/add",
-        product,
+        "http://localhost:8081/api/v1/products/add",
+        addRequest,
         {
           headers: {
             // "Content-Type": "multipart/form-data",
@@ -116,19 +124,53 @@ export const addProduct = ({ product }) => {
     }
   };
 };
-
-
-export const updateProduct = ({ product, id, token }) => {
+export const deleteProduct = (id) => {
   return async (dispatch) => {
     dispatch(uiActions.updateProductLoading());
     // await api.get("/sanctum/csrf-cookie");
 
     const putData = async () => {
-      const response = await api.put(`/api/products/${id}`, product, {
-        headers: {
-          Authorization: "Bearer " + token,
-        },
-      });
+      const response = await axios.put(
+        `http://localhost:8081/api/v1/products/delete/${id}`,
+        console.log( `http://localhost:8081/api/v1/products/delete/${id}`)
+        // {
+        //   // headers: {
+        //   //   // Authorization: "Bearer " + token,
+        //   // },
+        // }
+      );
+      const data = response.data;
+      return data;
+    };
+
+    try {
+       const message = await putData();
+      console.log(" %c message : " + message, "color:pink"+"finMessage");
+      // await putData();
+      // dispatch(getProducts());
+      // dispatch(uiActions.updateProductLoading());
+    } catch (error) {
+      console.log(error);
+    }
+  };
+};
+
+
+export const updateProduct = (payload) => {
+  return async (dispatch) => {
+    dispatch(uiActions.updateProductLoading());
+    // await api.get("/sanctum/csrf-cookie");
+console.log(payload)
+    const putData = async () => {
+      const response = await axios.put(
+        `http://localhost:8081/api/v1/products/update/${payload.id}`,
+        payload.addRequest,
+        // {
+        //   headers: {
+        //     Authorization: "Bearer " + token,
+        //   },
+        // }
+      );
       const data = response.data;
       return data;
     };

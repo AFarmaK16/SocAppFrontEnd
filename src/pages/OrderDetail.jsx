@@ -40,7 +40,7 @@ const OrderDetail = () => {
   // console.log(loading);
   console.log(order);
   // console.log("-----------------ORDER ITEM");
-  // const { idAccount, login, password, role, dateOuverture, userRefID } = account;
+  // const { id, login, password, role, dateOuverture, userRefID } = account;
 
   const {
     order_id,
@@ -55,10 +55,10 @@ const OrderDetail = () => {
   } = order;
   // const {
   //   customerID,
-  //   customerFirstName,
-  //   customerLastName,
-  //   customerAddress,
-  //   customerPhoneNumber,
+  //   name,
+  //   surname,
+  //   address,
+  //   phoneNumber,
   //   account
   // } = order.customer;
   // const { id, quantity, product } = order.orderItems;
@@ -97,25 +97,25 @@ const OrderDetail = () => {
                 {customer}
               </div> */}
                   <h1>hey</h1>
-                  <div>{customer.customerFirstName}</div>
-              <div>{customer.customerLastName}</div>
-              <div>{customer.customerAddress}</div>
-              <div>{customer.customerPhoneNumber}</div>
+                  <div>{customer.name}</div>
+                  <div>{customer.surname}</div>
+                  <div>{customer.address}</div>
+                  <div>{customer.phoneNumber}</div>
                   {/* {order.customer.map((customer) => {
                     const {
                       customerID,
-                      customerFirstName,
-                      customerLastName,
-                      customerAddress,
-                      customerPhoneNumber,
+                      name,
+                      surname,
+                      address,
+                      phoneNumber,
                       account
                     } = customer;
                     return (
             <div>
-               <div>{customerFirstName}</div>
-              <div>{customerLastName}</div>
-              <div>{customerAddress}</div>
-              <div>{customerPhoneNumber}</div>
+               <div>{name}</div>
+              <div>{surname}</div>
+              <div>{address}</div>
+              <div>{phoneNumber}</div>
             </div>
                     )
                   })} */}

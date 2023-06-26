@@ -13,6 +13,8 @@ import {
 } from "../store/actions/oder-action";
 import { FaSearch } from "react-icons/fa";
 import { isEmptyArray } from "formik";
+import { GiCardKingHearts } from "react-icons/gi";
+import { MdDetails } from "react-icons/md";
 
 const PaymentHistory = () => {
   const containerVariants = {
@@ -33,14 +35,14 @@ const PaymentHistory = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(getCustomerOrders(1));
-  }, [dispatch, 1]);
+    dispatch(getCustomerOrders(4));
+  }, [dispatch, 4]);
 
   const loading = useSelector((state) => state.ui.customerOrdersLoading);
   const orders = useSelector((state) => state.orders.filteredOrders);
   // alert(product)
   // console.log("ord:")
-  console.log(loading);
+  console.log(orders);
 
   return (
     <div>
@@ -65,12 +67,8 @@ const PaymentHistory = () => {
               <TheSpinner />
             </div>
           ) : (
-            
             <Card>
-              <CardHeader>
-                Impayee/10 ECHUES/ 12 ENCOURS/57
-
-              </CardHeader>
+              <CardHeader>Impayee/10 ECHUES/ 12 ENCOURS/57</CardHeader>
               <CardBody>
                 <Table>
                   <tbody>
@@ -97,7 +95,7 @@ const PaymentHistory = () => {
                         <b>Montant TTC </b>
                       </td>
                       <td>
-                        <b>Details </b>
+                        <b>Actions </b>
                       </td>
                     </tr>
                     {orders.map((order) => {
@@ -113,10 +111,10 @@ const PaymentHistory = () => {
                       const formattedPayDate = new Date(facture.payment_date);
                       // console.log(facture)
                       return (
-                        <tr key={facture.facture_id}>
+                        <tr key={facture.id}>
                           <td>
                             {" "}
-                            <h1>{facture.facture_id}</h1>
+                            <h1>{facture.id}</h1>
                           </td>
                           <td>
                             <h4 className="mb-0 font-normal">
@@ -128,7 +126,7 @@ const PaymentHistory = () => {
                           </td>
                           <td>
                             {" "}
-                            <h4>{facture.payment_type}</h4>
+                            <h4>{facture.paymentModes.libelle}</h4>
                           </td>
                           <td>
                             <Badge
@@ -142,7 +140,7 @@ const PaymentHistory = () => {
                                   : "primary"
                               }`}
                               className="text-white"
-                              pill
+                              
                             >
                               {facture.paymentStatus}
                             </Badge>
@@ -161,8 +159,9 @@ const PaymentHistory = () => {
                     </footer> */}
                           <td>
                             {" "}
-                            <Link to="/products" className="">
-                              Voir details
+                            <Link to="#" className="btn btn-success">
+                              {/* Voir details */}
+                              Details
                             </Link>
                           </td>
                         </tr>

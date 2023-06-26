@@ -32,6 +32,11 @@ import OrderHistory from "./components/orders/OrderHistory";
 import CustomerOrderDetail from "./pages/CustomerOrderDetail";
 import PaymentHistory from "./pages/PaymentHistory";
 import ModalExample from "./pages/ModalExample";
+import Accounts from "./pages/Accounts";
+import Forms from "./components/dashboard/Forms";
+import TheAccounts from "./components/dashboard/TheAccounts";
+import TheSettings from "./components/dashboard/TheSettings";
+import Example from "./components/MyComp";
 
 const App = () => {
   const dispatch = useDispatch();
@@ -56,20 +61,96 @@ const App = () => {
             <Route path="/products" element={<Products />} />
             <Route path="/products/:productId" element={<ProductDetail />} />
             <Route path="/orders" element={<Orders />} />
+            <Route path="/users" element={<Accounts type="users" />} />
+            <Route path="/CUSTOMER" element={<Accounts type="CUSTOMER" />} />
             <Route path="/orders/:orderId" element={<OrderDetail />} />
             <Route path="/drag" element={<ModalExample />} />
+            <Route path="/new" element={<Forms about="account" />} />
             <Route path="/order-history" element={<OrderHistory />} />
             <Route path="/payment-history" element={<PaymentHistory />} />
-            <Route path="/order-history/:customerId/order/:orderId" element={<CustomerOrderDetail />} />
-            <Route path="admin/dashboard" element={<Dashboard />}>
+            <Route path="/pay" element={<Example />} />
+            <Route
+              path="/order-history/:customerId/order/:orderId"
+              element={<CustomerOrderDetail />}
+            />
+            <Route path="admin/dashboard" element={<Dashboard role={0} />}>
+              {/* <Route path="products" element={<TheProducts />} /> */}
+              {/* <Route path="addproduct" element={<AddProduct />} /> */}
+              <Route path="users" element={<TheAccounts type="users" />} />
+
+              {/* <Route
+                path="customers"
+                element={<TheAccounts type="CUSTOMER" />}
+              /> */}
+              {/* <Route path="updateproducts">
+                <Route index element={<UpdateProducts />} />
+                <Route path=":productId" element={<ProductUpdate />} />
+              </Route> */}
+            </Route>
+            <Route path="comm/dashboard" element={<Dashboard role={1} />}>
               <Route path="products" element={<TheProducts />} />
-              <Route path="addproduct" element={<AddProduct />} />
+              <Route
+                path="tarification"
+                element={<TheSettings setof="tarification" />}
+              />
+              <Route path="payMode" element={<TheSettings setof="payMode" />} />{" "}
+              <Route
+                path="paymMode"
+                element={<TheSettings setof="destination" />}
+              />
+              <Route path="payType" element={<TheSettings setof="payType" />} />
+              <Route
+                path="destination"
+                element={<TheSettings setof="destination" />}
+              />
+              {/* <Route path="addproduct" element={<AddProduct />} /> */}
+              {/* <Route path="users" element={<TheAccounts type="users" />} /> */}
+              {/* <Route
+                path="tarification"
+                element={<TheSettings setof="tarification" />}
+              />
+              <Route path="payMode" element={<TheSettings setof="payMode" />} />{" "}
+            
+              <Route path="payType" element={<TheSettings setof="payType" />} />
+              <Route
+                path="destination"
+                element={<TheSettings setof="destination" />}
+              /> */}
+              <Route path="orders" element={<Orders role={1} />} />
+              {/* <Route path="updateproducts">
+                <Route index element={<UpdateProducts />} />
+                <Route path=":productId" element={<ProductUpdate />} />
+              </Route> */}
+            </Route>
+            <Route path="adv/dashboard" element={<Dashboard role={2} />}>
+              <Route path="products" element={<TheProducts />} />
+              <Route
+                path="customers"
+                element={<TheAccounts type="CUSTOMER" />}
+              />
+              {/* <Route path="addproduct" element={<AddProduct />} />
+              <Route path="users" element={<TheAccounts type="users" />} />
+              <Route
+                path="tarification"
+                element={<TheSettings setof="tarification" />}
+              />
+              <Route path="payMode" element={<TheSettings setof="payMode" />} />{" "}
+             
+              <Route path="payType" element={<TheSettings setof="payType" />} />
+              <Route
+                path="destination"
+                element={<TheSettings setof="destination" />}
+              />
+              <Route
+                path="customers"
+                element={<TheAccounts type="CUSTOMER" />}
+              />
               <Route path="updateproducts">
                 <Route index element={<UpdateProducts />} />
                 <Route path=":productId" element={<ProductUpdate />} />
-              </Route>
+              </Route> */}
+              <Route path="orders" element={<Orders role={2} />} />
             </Route>
-
           </Route>
 
           <Route element={<LoginRedirect />}>
@@ -83,6 +164,15 @@ const App = () => {
           <Route element={<DashboardRedirect />}>
             <Route path="admin/dashboard" element={<Dashboard />}>
               <Route path="products" element={<TheProducts />} />
+              <Route path="users" element={<TheAccounts type="users" />} />
+              <Route
+                path="tarification"
+                element={<TheSettings setof="tarificationHeader" />}
+              />
+              <Route
+                path="customers"
+                element={<TheAccounts type="CUSTOMER" />}
+              />
               <Route path="addproduct" element={<AddProduct />} />
               <Route path="updateproducts">
                 <Route index element={<UpdateProducts />} />

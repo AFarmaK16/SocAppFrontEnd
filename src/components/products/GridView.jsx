@@ -10,17 +10,16 @@ const GridView = ({ products }) => {
     <div>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-y-12 gap-x-6">
         {products.map((product) => {
-          const { product_id, product_label, product_price, product_image } =
-            product;
+          const { id, product_label, tarification, product_image } = product;
           return (
-            <div key={product_id}>
+            <div key={id}>
               <div className="relative rounded-md">
                 <Link
-                  to={`/products/${product_id}`}
+                  to={`/products/${id}`}
                   className="flex items-center justify-center absolute bg-[#222] w-full h-[175px] rounded-md opacity-0 hover:opacity-70 transition-all duration-300"
                 >
                   <span className="flex items-center justify-center bg-secondary-100 w-10 h-10 rounded-full">
-                    <FaCartPlus/>
+                    <FaCartPlus />
                   </span>
                 </Link>
                 <img
@@ -29,13 +28,15 @@ const GridView = ({ products }) => {
                   alt={product_label}
                 />
               </div>
-              <footer className="
+              <footer
+                className="
                flex mt-4 
-              justify-between items-center">
+              justify-between items-center"
+              >
                 <h4 className="mb-0 font-normal">{product_label}</h4>
                 {/* <br /> */}
                 <p className="mb-0 font-normal text-secondary-100 tracking-widest">
-                  {formatPrice(product_price)}
+                  {formatPrice(tarification.montant)}
                 </p>
               </footer>
             </div>

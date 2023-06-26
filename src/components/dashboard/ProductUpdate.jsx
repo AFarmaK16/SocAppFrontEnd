@@ -39,7 +39,7 @@ const ProductUpdate = () => {
     onSubmit: async (values) => {
       
       try {
-        await dispatch(updateProduct({ product: values, id: productId, token }));
+        // await dispatch(updateProduct({ product: values, id: productId, token }));
         swal({
           title: "Product Updated!",
           text: `Product: ${values.name} UPDATED!`,

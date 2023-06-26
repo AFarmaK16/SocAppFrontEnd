@@ -1,24 +1,22 @@
 import React, { useEffect, useState } from "react";
+import Swal from "sweetalert2";
 
-import swal from "sweetalert";
-
-import {
-  FaCcVisa,
-  FaCheckDouble,
-  FaFile,
-  FaPrayingHands,
-} from "react-icons/fa";
-import { formatPrice } from "../../utils/helpers";
+import { useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
-import { cartActions } from "../../store/cart-slice";
-import { addOrder, getOperators } from "../../store/actions/oder-action";
-import { type } from "@testing-library/user-event/dist/type";
-import Dropzone from "react-dropzone";
-import { set, useForm } from "react-hook-form";
 import { Col, Row } from "reactstrap";
+import {
+  addOrder,
+  // getBanks,
+  getOperators,
+  getPaymentModes,
+} from "../../store/actions/oder-action";
+import { formatPrice } from "../../utils/helpers";
+import { cartActions } from "../../store/cart-slice";
+import { formActions } from "../../store/form-slice";
 
-const CheckoutContent = ({ totalPrice, name }) => {
+const CheckoutContent = ({ totalPrice, name, deliveryData }) => {
   // alert("hello")
+  // console.log(deliveryData);
   const dispatchOrders = useDispatch();
 
   const {
@@ -32,117 +30,151 @@ const CheckoutContent = ({ totalPrice, name }) => {
   const totalQuantity = useSelector((state) =>
     state.cart.totalQuantity.toFixed(2)
   );
-  const [dechargement, setDechargement] = useState(0);
-  const transport = totalQuantity * 200;
   const cartContent = useSelector((state) => state.cart);
   useEffect(() => {
     dispatchOrders(getOperators());
   }, [dispatchOrders]);
+  useEffect(() => {
+    dispatchOrders(getPaymentModes());
+  }, [dispatchOrders]);
+  const payModes = useSelector((state) => state.orders.paymentMode);
+
 
   const operators = useSelector((state) => state.orders.operators);
-  const [selectedFile, setSelectedFile] = useState(null);
-  const [isRenduChecked, setRenduChecked] = useState(false);
-  const [isDechargeChecked, setDechargeChecked] = useState(false);
   const [selectedPaymentOpt, setSelectedPaymentOpt] = useState(null);
   const tc = 3000 * totalQuantity;
   const rh = 2000 * totalQuantity;
-  const tva = ((18 * totalPrice) / 100).toFixed();
-  const [finalTotal, setTotal] = useState(tc + rh + Number(tva) + totalPrice);
+  const tva = 18;
+  // const [finalTotal, setTotal] = useState(tc + rh + Number(tva) + totalPrice);
   const items = cartContent.items.map((item) => {
-    return { productId: item.product_id, quantity: item.quantity };
+    return {
+      productId: item.id,
+      quantity: item.quantity.toFixed(2),
+    };
   });
 
-  const handleRendu = () => {
-    // alert(isRenduChecked)
-    //  if (!isRenduChecked) {
-    console.log("Rendu unchecked");
-    console.log("decharge doit etre annuler car rendu " + isDechargeChecked);
-    setDechargeChecked(false);
-    setDechargement(0);
-    console.log(
-      "la vakeur de la decharrge too doit etre set a 0 cause it is tralala " +
-        isDechargeChecked +
-        " ett val = " +
-        dechargement
-    );
+  const delivery_address = useSelector(
+    (state) => state.shippingForm.delivery_address
+  );
+  const ttc = useSelector((state) => state.shippingForm.ttc);
+  const delivery_destination = useSelector(
+    (state) => state.shippingForm.delivery_destination
+  );
+  const delivery_comment = useSelector(
+    (state) => state.shippingForm.delivery_comment
+  );
+  const Montant_Tva = Number(
+    useSelector((state) => state.shippingForm.Montant_Tva)
+  );
+  console.log(useSelector((state) => state.shippingForm));
+  const isRendu = useSelector((state) => state.shippingForm.isRendu);
+  const isDecharged = useSelector((state) => state.shippingForm.isDecharged);
+  const maxFileSize = 1048576; // 1MB in bytes
+  const maxFileCount = 2;
+  const [selectedFiles, setSelectedFiles] = useState([]);
 
-    setTotal(finalTotal - transport - dechargement);
-    //  } else {
-    //    console.log("Rendu checked");
-    //    setTotal(finalTotal + transport);
-    //  }
-  };
-  const handleDecharg = (e) => {
-    // setRenduChecked(e.target.checked);
-    // if (isDechargeChecked) {
-    //   finalTotal += dechargement;
-    // } else {
-    setTotal(finalTotal - dechargement);
-    // }
-    // console.log(" rendu " + e.target.checked);
+  const currentDate = new Date().toISOString().split("T")[0];
+  const validateFiles = (files) => {
+    let totalSize = 0;
+    for (let i = 0; i < files.length; i++) {
+      totalSize += files[i].size;
+    }
+
+    if (files.length > maxFileCount) {
+      return "Vous ne pouvez joindre que  a maximum of 2 files";
+    }
+
+    if (totalSize > maxFileSize) {
+      return "La taille maximale ne doit pas exéceder 1MB";
+    }
+
+    return true;
   };
   const handleFileChange = async (event) => {
-   
     const delivery = {
-       delivery_address: event.adresse,
-       delivery_destination : event.destination,
-       delivery_comment : event.comm,
-       isRendu: isRenduChecked,
-       isDecharged: isDechargeChecked
+      delivery_address: delivery_address,
+      delivery_destination: delivery_destination,
+      delivery_comment: delivery_comment,
+      isRendu: isRendu,
+      isDecharged: isDecharged,
     };
     const facture = {
       payment_reference: event.reference,
       operator: event.payment_operator,
-      payment_bank: event.bank,
-      payment_type: event.payment_type,
+      payment_mode: event.payment_type,
       payment_date: event.payment_date,
     };
-    console.log(event)
     const formData = new FormData();
-    formData.append("order_Amount", finalTotal);
+    formData.append("order_Amount", ttc);
 
-    formData.append("deliverRef", 1);
-
-    formData.append("customerRef", 1);
-
-    formData.append("customerID", 2);
+    formData.append("customerID", 4);
 
     formData.append("items", JSON.stringify(items));
+    console.log("FILE😍😍");
+    console.log(event.payment_justification);
+    // formData.append("justificatif", event.payment_justification[0]);
+    // Append multiple files to the 'justificatif' field
 
-    formData.append("justificatif", event.payment_justification[0]);
+    // Iterate over the FileList and append each file individually
+    // for (let i = 0; i < event.payment_justification.length; i++) {
+    //   formData.append("justificatif", event.payment_justification[i]);
+    // }
+    
+    const justificatifFiles=[];
+    // Iterate over the FileList and add each file to the array
+    // for (let i = 0; i < event.payment_justification.length; i++) {
+    //   justificatifFiles.push(event.payment_justification[i]);
+    // }
+
+    for (let i = 0; i < event.payment_justification.length; i++) {
+      formData.append("justificatif", event.payment_justification[i]);
+    }
     formData.append("facture", JSON.stringify(facture));
     formData.append("delivery", JSON.stringify(delivery));
-    // formData.append("facture.payment_reference", event.reference);
-    // formData.append("facture.operator", event.payment_operator);
-    // formData.append("facture.payment_bank", event.bank);
-    // formData.append("facture.payment_type", event.payment_date);
+    formData.append("justificatif",JSON.stringify(justificatifFiles));
 
     // -------------
     ///TRYING TO ADD ORDER
     const payload = {
       orderRequest: formData,
-      itemList: items,
+      
     };
 
     try {
       dispatchOrders(addOrder(payload));
-      swal({
+      // dispatchOrders(cartActions.clearCart());
+      // dispatchOrders(formActions.reinitializeShippingInfos());
+
+      Swal.fire({
         title: "Commande enregistrée!",
+        width: 300,
         text: `Votre commande a bien été enregistrée et est en cours de traitement!\nMerci de votre fidelité😊!!`,
         icon: "success",
         button: "OK!",
       });
-      dispatchOrders(cartActions.clearCart());
     } catch (error) {
-      console.log("%c" + error, "color:purple");
-    }
+       const Toast = Swal.mixin({
+         toast: true,
+         position: "top",
+         timer: 1000,
+         timerProgressBar: true,
+         customClass: {
+           popup: "bg-green-600",
+         },
+         showConfirmButton: false,
+       });
+ Toast.fire(
+   "Une erreur a été rencontrée, veuillez réessayer!",
+   "",
+   // text: `Votre commande a bien été enregistrée et est en cours de traitement!\nMerci de votre fidelité😊!!`,
+   "error"
+ );     }
   };
-  const changeHandler = (event) => {
-    console.log("😂 mo ki beuss nako di");
-    console.log(event.target.files[0]);
-    setSelectedFile(event.target.files[0]);
+  const handleFileSelect = (event) => {
+    const files = event.target.files;
+    const filesArray = Array.from(files);
+    setSelectedFiles(filesArray);
   };
-
   return (
     <div>
       <Row>
@@ -152,9 +184,6 @@ const CheckoutContent = ({ totalPrice, name }) => {
           <div className=" mx-auto mt-12 px-8 py-12 shadow-lg rounded-xl">
             <form onSubmit={handleSubmit(handleFileChange)}>
               <div className="">
-                {/* <span className="text-3xl flex items-center justify-center rounded-l border border-gray-100 border-r-0 py-1 px-2 bg-gray-300  text-black">
-              Payer par :
-            </span> */}
                 <fieldset>
                   <legend>Paiement</legend>
                   <hr />
@@ -179,9 +208,13 @@ const CheckoutContent = ({ totalPrice, name }) => {
                       required
                     >
                       <option value="">----</option>
-                      <option value="1">Cheque</option>
-                      <option value="2">Virement</option>
-                      <option value="0">Transfert</option>
+                      {payModes.map((pay) => {
+                        return (
+                          <option key={pay.id} value={pay.id}>
+                            {pay.libelle}--{pay.id}
+                          </option>
+                        );
+                      })}
                     </select>
                     <div className="invalid-feedback">
                       Vous devez choisir le type de paiement effectué
@@ -196,7 +229,7 @@ const CheckoutContent = ({ totalPrice, name }) => {
                       </div>
                     )}
                   </div>
-                  {selectedPaymentOpt === "0" ? (
+                  {selectedPaymentOpt === "1" ? (
                     <div className="form-group">
                       Operateur:{" "}
                       <select
@@ -211,16 +244,21 @@ const CheckoutContent = ({ totalPrice, name }) => {
                         })}
                       >
                         <option value="">-----</option>
-                        {operators.map((operator) => {
-                          return (
-                            <option
-                              key={operator.operator_id}
-                              value={operator.operator_id}
-                            >
-                              {operator.operator_name}
-                            </option>
-                          );
-                        })}
+                        {operators
+                          .filter((operator) => {
+                            return operator.type === "OPERATEUR";
+                          })
+                          .map((operator) => {
+                            return (
+                              <option
+                                key={operator.id}
+                                value={operator.id}
+                                // onChange={()=>setpayM(oper)}
+                              >
+                                {operator.name}
+                              </option>
+                            );
+                          })}
                       </select>
                       {errors.payment_operator && (
                         <div>
@@ -230,29 +268,43 @@ const CheckoutContent = ({ totalPrice, name }) => {
                         </div>
                       )}
                     </div>
-                  ) : selectedPaymentOpt === "1" ||
-                    selectedPaymentOpt === "2" ? (
+                  ) : selectedPaymentOpt === "2" ||
+                    selectedPaymentOpt === "3" ? (
+                    // TODO : TEST WITH OPERATOR ID RATHER THAN WRITING DOWN MANUALLY IT
                     <div className="form-group">
-                      Banque:
-                      <input
-                        type="text"
-                        className={`form-control ${
-                          errors.bank ? "is-invalid" : ""
+                      Banque :{" "}
+                      <select
+                        className={`form-select ${
+                          errors.payment_operator ? "is-invalid" : ""
                         }`}
-                        name="bank"
-                        id="bank"
-                        {...register("bank", {
+                        // required
+                        {...register("payment_operator", {
                           required: true,
-                          pattern: /^[a-zA-Z]+$/,
                         })}
-                      />
-                      {errors.bank && (
+                      >
+                        <option value="">-----</option>
+                        <option value="">----EWFRWE4-</option>
+                        {operators
+                          .filter((operator) => {
+                            return operator.type === "BANQUE";
+                          })
+                          .map((operator) => {
+                            return (
+                              <option
+                                key={operator.id}
+                                value={operator.id}
+                                // onChange={()=>setpayM(oper)}
+                              >
+                                {operator.name}
+                              </option>
+                            );
+                          })}
+                      </select>
+                      {errors.payment_operator && (
                         <div>
-                          <hr />
                           <span className="text text-danger">
-                            Saisie incorrecte
+                            Vous devez choisir une banque
                           </span>
-                          <hr />
                         </div>
                       )}
                     </div>
@@ -284,25 +336,35 @@ const CheckoutContent = ({ totalPrice, name }) => {
                       </div>
                     )}
                   </div>
+
                   <div className="form-group">
-                    Date:
+                    <label>Date:</label>
                     <input
                       type="date"
                       name="payment_date"
                       id="payment_date"
                       className={`form-control 
                     ${errors.payment_date ? "is-invalid" : ""}`}
+                      // {...register("payment_date", {
+                      //   required: true,
+                      // })}
+                      // required
                       {...register("payment_date", {
-                        required: true,
+                        required: "La date est requise",
+                        max: {
+                          value: currentDate,
+                          message:
+                            "Veuillez sélectionner une date antérieure ou égale à la date courante",
+                        },
                       })}
-                      required
                     />
                   </div>
                   {errors.payment_date && (
-                    <div>
-                      <span className="text text-danger">Date invalide</span>
-                    </div>
+                    <span className="text text-danger">
+                      {errors.payment_date.message}
+                    </span>
                   )}
+
                   <div className="form-group">
                     Montant:
                     <input
@@ -315,7 +377,7 @@ const CheckoutContent = ({ totalPrice, name }) => {
                       {...register("montant", {
                         required: true,
                         pattern: /^(\d*\.)?\d+$/,
-                        validate: (value) => value == finalTotal,
+                        validate: (value) => value == ttc,
                       })}
                     />
                     {errors.montant && (
@@ -327,7 +389,7 @@ const CheckoutContent = ({ totalPrice, name }) => {
                         <br />
                         <span className="text text-warning">
                           *** Doit etre egale au MontantTTC de la commande{" "}
-                          {formatPrice(finalTotal)}
+                          {formatPrice(ttc)}
                         </span>
                         <hr />
                       </div>
@@ -344,16 +406,19 @@ const CheckoutContent = ({ totalPrice, name }) => {
                       type="file"
                       className="form-control w-full rounded-r"
                       name="payment_justification"
-                      onChange={changeHandler}
+                      onChange={handleFileSelect}
+                      // onChange={changeHandler}
                       {...register("payment_justification", {
+                        validate: validateFiles,
                         required: true,
                       })}
+                      multiple
                     />
                   </div>
                   {errors.payment_justification && (
                     <div>
                       <span className="text text-danger">
-                        Vous devez joindre un justificatif de paiement
+                        {errors.payment_justification.message}
                       </span>
                     </div>
                   )}
@@ -361,133 +426,6 @@ const CheckoutContent = ({ totalPrice, name }) => {
                 <br />
                 <hr />
                 <hr />
-                <fieldset>
-                  <legend>Livraison</legend>
-                  <hr />
-                  <div className="form-check">
-                    <input
-                      type="checkbox"
-                      name="rendu"
-                      id="rendu"
-                      className="form-check-input"
-                      value="rendu"
-                      onChange={(e) => {
-                        {
-                          setRenduChecked(e.target.checked);
-                          setTotal(finalTotal + transport);
-                          if (!e.target.checked) {
-                            setDechargeChecked(false);
-                            setDechargement(0);
-                            setTotal(finalTotal - dechargement);
-                            handleRendu();
-                          }
-                        }
-                      }}
-                    />
-                    <label className="form-check-label" htmlFor="rendu">
-                      Rendu
-                    </label>
-                  </div>
-                  {/* {!isRenduChecked && <div>{console.log("momkay")}</div>} */}
-                  {isRenduChecked && (
-                    <div>
-                      {/* <h1>------{isRenduChecked}---------</h1>
-                {console.log(isRenduChecked + "🥺🥺bi moy cocher🥺")} */}
-                      <div className="form-group">
-                        Destination: selectbox
-                        <input
-                          type="text"
-                          name="destination"
-                          id="destination"
-                          className={`form-control ${
-                            errors.destination ? "is-invalid" : ""
-                          }`}
-                          {...register("destination", {
-                            required: true,
-                            pattern: /^[a-zA-Z\s]+$/,
-                          })}
-                        />
-                      </div>
-                      {errors.destination && (
-                        <div>
-                          <span className="text text-danger">
-                            Destination invalide
-                          </span>
-                        </div>
-                      )}
-
-                      <div className="form-group">
-                        Adresse:
-                        <input
-                          type="text"
-                          name="adresse"
-                          id="adresse"
-                          placeholder="Rue,villa,....."
-                          className={`form-control ${
-                            errors.adresse ? "is-invalid" : ""
-                          }`}
-                          {...register("adresse", {
-                            required: true,
-                            pattern: /^[a-zA-Z0-9\s,'-]*$/,
-                          })}
-                        />
-                      </div>
-                      {errors.adresse && (
-                        <div>
-                          <span className="text text-danger">
-                            Adresse invalide
-                          </span>
-                        </div>
-                      )}
-                      <br />
-                      <div className="input-group">
-                        <span className="input-group-text">Commentaire</span>
-                        <textarea
-                          name="comm"
-                          aria-label="With textarea"
-                          className={`form-control ${
-                            errors.comm ? "is-invalid" : ""
-                          }`}
-                          {...register("comm", {
-                            pattern: /^[a-zA-Z0-9\s,'-]*$/,
-                          })}
-                        ></textarea>
-                      </div>
-                      {errors.comm && (
-                        <div>
-                          <span className="text text-danger">
-                            Saisie invalide
-                          </span>
-                        </div>
-                      )}
-                      <br />
-                      <div className="form-group">
-                        <input
-                          type="checkbox"
-                          name="manu"
-                          id="manu"
-                          className="form-check-input"
-                          onChange={(e) => {
-                            {
-                              setDechargeChecked(e.target.checked);
-                              setDechargement(totalQuantity * 400);
-                              setTotal(finalTotal + totalQuantity * 400);
-                              if (!e.target.checked) {
-                                setDechargement(0);
-                                handleDecharg();
-                              }
-
-                              console.log("Decharg\t" + e.target.checked);
-                            }
-                          }}
-                        />
-                        <label className="form-check-label" htmlFor="manu">
-                          Dechargement/ ManuTention:
-                        </label>
-                      </div>
-                    </div>
-                  )}
-                </fieldset>
               </div>
               <div className="w-[80%] m-auto border rounded">
                 <button
@@ -504,8 +442,7 @@ const CheckoutContent = ({ totalPrice, name }) => {
           {" "}
           <div className="mx-auto px-8 py-12 shadow-lg rounded-xl">
             <h2 className="capitalize text-3xl font-bold tracking-wider mb-10 leading-relaxed">
-              Hello, <b>Nom client </b>
-              {name}
+              Hello {name}, <b>Nom client </b>
             </h2>
             <div className="flex justify-between items-center">
               <p className="text-lg capitalize mb-4">Quantité commandée:</p>
@@ -522,41 +459,22 @@ const CheckoutContent = ({ totalPrice, name }) => {
               <span className="italic font-semibold">{formatPrice(tc)}</span>
             </div>
             <div className="flex justify-between items-center">
-              <p className="text-lg capitalize mb-4">
-                Redevance Consommation:{" "}
-              </p>
+              <p className="text-lg capitalize mb-4">Redevance Habitat: </p>
               <span className="italic font-semibold">{formatPrice(rh)}</span>
             </div>
             <div className="flex justify-between items-center">
-              <p className="text-lg capitalize mb-4">TVA: </p>
-              <span className="italic font-semibold">{formatPrice(tva)}</span>
+              <p className="text-lg capitalize mb-4">TVA: ({tva}%) </p>
+              <span className="italic font-semibold">
+                {formatPrice(Montant_Tva)}
+              </span>
             </div>
-
-            {isRenduChecked && (
-              <div className="flex justify-between items-center">
-                <p className="text-lg capitalize mb-4">Transport </p>
-                <span className="italic font-semibold">
-                  {formatPrice(transport)}{" "}
-                </span>
-              </div>
-            )}
-            {isDechargeChecked && (
-              <div className="flex justify-between items-center">
-                <p className="text-lg capitalize mb-4">ManuTention </p>
-                <span className="italic font-semibold">
-                  {formatPrice(dechargement)}{" "}
-                </span>
-              </div>
-            )}
 
             <hr className="my-6" />
             <div className="flex justify-between items-center">
               <p className="text-xl capitalize mb-4 font-bold">
                 Montant TTC :{" "}
               </p>
-              <span className="italic font-bold">
-                {formatPrice(finalTotal)}
-              </span>
+              <span className="italic font-bold">{formatPrice(ttc)}</span>
             </div>
           </div>
         </Col>

@@ -12,7 +12,11 @@ import { formatPrice } from "../utils/helpers";
 import TheSpinner from "../layout/TheSpinner";
 // -----------------JUST FOR TEST PURPOSE
 import product_img from "../assets/cemiib-ll32-5rce.jpg";
-import { getCustomerOrdersById, getOrders, getOrdersById } from "../store/actions/oder-action";
+import {
+  getCustomerOrdersById,
+  getOrders,
+  getOrdersById,
+} from "../store/actions/oder-action";
 import { Col, Row } from "reactstrap";
 
 const containerVariants = {
@@ -98,13 +102,13 @@ const CustomerOrderDetail = () => {
                 </Link> 
                   </div>*/
   }
-  // const { facture_id, justificatif, payment_date, paymentStatus } = facture;
+  // const { id, justificatif, payment_date, paymentStatus } = facture;
   // const {
   //   customerID,
-  //   customerFirstName,
-  //   customerLastName,
-  //   customerAddress,
-  //   customerPhoneNumber,
+  //   name,
+  //   surname,
+  //   address,
+  //   phoneNumber,
   //   account
   // } = customer;
   //   const formattedDate = new Date(order_Date);
@@ -136,10 +140,10 @@ const CustomerOrderDetail = () => {
                     <div key={orders.customer.customerID}>
                       {orders.customer.customerID}
                     </div>
-                    <div>{orders.customer.customerFirstName}</div>
-                    <div>{orders.customer.customerLastName}</div>
-                    <div>{orders.customer.customerAddress}</div>
-                    <div>{orders.customer.customerPhoneNumber}</div>
+                    <div>{orders.customer.name}</div>
+                    <div>{orders.customer.surname}</div>
+                    <div>{orders.customer.address}</div>
+                    <div>{orders.customer.phoneNumber}</div>
                   </div> */}
 
               <div>

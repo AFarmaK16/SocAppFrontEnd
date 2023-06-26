@@ -1,23 +1,21 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { formatPrice } from "../../utils/helpers";
-import { HiChevronDoubleRight } from 'react-icons/hi';
-
-
+import { HiChevronDoubleRight } from "react-icons/hi";
 
 const ListView = ({ products }) => {
   return (
     <div>
       {products.map((product) => {
         const {
-          product_id,
+          id,
           product_name,
           product_description,
-          product_price,
+          tarification,
           product__image,
         } = product;
         return (
-          <div key={product_id} className="flex mb-8">
+          <div key={id} className="flex mb-8">
             <img
               className="w-[300px] h-[200px] object-contain mb-4 rounded"
               src={product__image}
@@ -28,13 +26,13 @@ const ListView = ({ products }) => {
                 {product_name}
               </h3>
               <h4 className="mb-2 text-secondary-100 italic font-bold">
-                {formatPrice(product_price)}
+                {formatPrice(tarification.montant)}
               </h4>
               <p className="max-w-2xl mb-3 text-gray-500">
                 {product_description.substring(0, 150)}...
               </p>
               <Link
-                to={`/products/${product_id}`}
+                to={`/products/${id}`}
                 className="text-sm uppercase bg-secondary-100 text-white rounded-md font-bold py-1 px-2 ml-auto shadow-lg"
               >
                 Details
