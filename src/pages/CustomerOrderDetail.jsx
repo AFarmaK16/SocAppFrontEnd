@@ -10,30 +10,12 @@ import AddToCart from "../components/productDetail/AddToCart";
 import { getProductDetails } from "../store/actions/products-actions";
 import { formatPrice } from "../utils/helpers";
 import TheSpinner from "../layout/TheSpinner";
+
 // -----------------JUST FOR TEST PURPOSE
 import product_img from "../assets/cemiib-ll32-5rce.jpg";
-import {
-  getCustomerOrdersById,
-  getOrders,
-  getOrdersById,
-} from "../store/actions/oder-action";
+
 // import { Col, Modal, ModalBody, ModalHeader, Row } from "reactstrap";
 import { Modal } from "react-bootstrap";
-// import {
-//   Button,
-//   Card,
-//   CardHeader,
-//   CardBody,
-//   FormGroup,
-//   Form,
-//   Input,
-//   InputGroupAddon,
-//   InputGroupText,
-//   InputGroup,
-//   Modal,
-//   Row,
-//   Col,
-// } from "reactstrap";
 import { isEmptyArray } from "formik";
 import { CardImg, CardSubtitle, CardTitle,Carousel, CarouselCaption, CarouselControl, CarouselIndicators, CarouselItem, Col, Row, Table } from "reactstrap";
 import { AiFillFile } from "react-icons/ai";
@@ -52,6 +34,7 @@ const containerVariants = {
   },
 };
 const CustomerOrderDetail = (props) => {
+  const token = localStorage.getItem("token");
   const order = props.orders.find((ord) => ord.order_id === props.order_id);
   //  const formattedDate = new Date(order.order_Date);
   const [showJustificatif, setShowJustificatif] = useState(false);
@@ -83,17 +66,7 @@ const CustomerOrderDetail = (props) => {
    if (animating) return;
    setActiveIndex(newIndex);
  };
-  // const {
-  //   order_id,
-  //   order_Date,
-  //   order_Amount,
-  //   order_status,
-  //   deliverRef,
-  //   customerRef,
-  //   customer,
-  //   facture,
-  //   orderItems,
-  // } = order;
+
   console.log(order);
 
   let nbTonnes = 0;
@@ -123,17 +96,9 @@ const CustomerOrderDetail = (props) => {
                 </Modal.Title>
               </Modal.Header>
               <Modal.Body className="card-body">
-                {/* <CardImg src={order.facture.justificatifURI} top alt="uiuiuh" /> */}
                 <Row className="flex gap-6">
                   <Col className="">
-                    <div className="d-flex items-center">
-                      {/* <div className="flex-grow border-t h-px mr-3"></div> */}
-
-                      {/* <span className="bg-green-400 text-white rounded-full p-1.5 uppercase ">
-                      Informations du Client
-                    </span> */}
-                      {/* <div className="flex-grow border-t h-px mr-3"></div> */}
-                    </div>
+                    <div className="d-flex items-center"></div>
                     <h1 className="text-xl font-bold">Client</h1>
                     <div className="pl-4">
                       {" "}
@@ -152,23 +117,27 @@ const CustomerOrderDetail = (props) => {
                     {" "}
                     {order.delivery !== null && (
                       <div className="">
-                        {/* <div className="border border-green-700 rounded-full shadow-md shadow-green-300"> */}
                         <h1 className=" text-xl font-bold">Livraison</h1>
-                        {/* </div> */}
                         <div className="pl-4">
                           {" "}
-                          <div>
-                            {/* <b>Destination :</b> */}
-                            {order.delivery.destination.nom} &nbsp;[
-                            {formatPrice(
-                              order.delivery.destination.tarification.montant
-                            )}
-                            &nbsp;/TON&nbsp;]
-                          </div>
-                          <div>
-                            {/* <b>Adresse :</b> */}
-                            {order.delivery.delivery_address}
-                          </div>
+                          <div>{order.delivery.destination.nom} &nbsp;</div>
+                          <div>{order.delivery.delivery_address}</div>
+                          {order.order_status == "EN_ATTENTE_DE_LIVRAISON" && (
+                            <div>
+                              {" "}
+                              <div>
+                                <b>Conducteur</b> : {order.delivery.driver}
+                              </div>
+                              <div>
+                                <b>Immatriculation</b> :{" "}
+                                {order.delivery.truckIM}
+                              </div>
+                              <div>
+                                <b> Date de livraison</b> :{" "}
+                                {order.delivery.deliverDate}
+                              </div>
+                            </div>
+                          )}
                           {order.delivery.decharged && (
                             <div>
                               <b>Déchargement :</b>OUI
@@ -186,19 +155,11 @@ const CustomerOrderDetail = (props) => {
                   </Col>
                 </Row>
 
-                {/* <div className="flex my-2 text-sm font-semibold items-center text-gray-800"> */}
-                {/* <div className="d-flex items-center"> */}
                 <Row className="flex gap-8 pt-5">
                   {" "}
                   <Col>
                     {" "}
-                    <div className="text-xl font-bold">
-                      {/* <span className="bg-green-400 text-white rounded-full p-1.5 uppercase "> */}
-                      Détails Commande
-                    </div>
-                    {/* </span> */}
-                    {/* <div className="flex-grow border-t h-px mr-3"></div> */}
-                    {/* </div> */}
+                    <div className="text-xl font-bold">Détails Commande</div>
                     <div>
                       <b>Statut: </b>
                       {order.order_status}
@@ -243,18 +204,18 @@ const CustomerOrderDetail = (props) => {
                 </Row>
 
                 <div className="pt-5">
-                  {/* <div className="border border-green-700 rounded-full shadow-md shadow-green-300 "> */}
                   <h1 className=" text-xl p-2 font-bold">Produits commandés</h1>
-                  {/* </div> */}
                   <Table>
                     <thead>
-                      <th></th> <th>#</th>
-                      <th>Nom</th>
-                      <th>Prix Unitaire</th>
-                      <th>
-                        Quantité &nbsp;(<i>TON</i>)
-                      </th>
-                      <th>Total</th>
+                      <tr>
+                        <th>&nbsp;</th> <th>#</th>
+                        <th>Nom</th>
+                        <th>Prix Unitaire</th>
+                        <th>
+                          Quantité &nbsp;(<i>TON</i>)
+                        </th>
+                        <th>Total</th>
+                      </tr>
                     </thead>
                     <tbody>
                       {order.orderItems.map((item) => {
@@ -281,7 +242,7 @@ const CustomerOrderDetail = (props) => {
                       {order.delivery !== null && (
                         <tr>
                           <th>Livraison</th> <td></td>
-                          <td></td>
+                          <td>{order.delivery.destination.nom}</td>
                           <td>
                             {formatPrice(
                               order.delivery.destination.tarification.montant
@@ -345,6 +306,7 @@ const CustomerOrderDetail = (props) => {
                           >
                             <img
                               src={justificatifURI}
+                              headers={{ Authorization: `Bearer ${token}` }}
                               alt={`Justificatif ${index + 1}`}
                             />
                             <CarouselCaption
@@ -369,11 +331,6 @@ const CustomerOrderDetail = (props) => {
                         onClickHandler={next}
                         className="bg-slate-600 border-2 rounded-full w-5"
                       />
-                      {/* <CarouselIndicators
-                        items={order.facture.justificatifURIs}
-                        activeIndex={activeIndex}
-                        onClickHandler={goToIndex}
-                      /> */}
                     </Carousel>
                     <img
                       src={order.facture.justificatifURI}
@@ -383,11 +340,9 @@ const CustomerOrderDetail = (props) => {
                         objectFit: "cover",
                       }}
                     />
-                    {/* <div>HEY</div> */}
                   </Modal.Body>
                 </Modal>
               </Modal.Body>
-              {/* </div> */}
             </div>
           </div>
         </Modal>

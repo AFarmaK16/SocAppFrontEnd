@@ -3,7 +3,7 @@ import { createSlice } from "@reduxjs/toolkit";
 const initialState = {
   users: [],
   filteredUsers: [],
-  userDetails: [],
+  userDetails: null,
   totalUsers: 0,
 
 };

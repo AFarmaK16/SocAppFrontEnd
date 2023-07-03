@@ -1,12 +1,6 @@
 import React, { useEffect } from "react";
-
-import PageHero from "../layout/PageHero";
 import OrdersList from "../components/orders/OrdersList";
-import { motion } from "framer-motion";
-import { getOrders } from "../store/actions/oder-action";
-import { useDispatch, useSelector } from "react-redux";
-import { Button } from "reactstrap";
-import { PlusIcon, PlusSmIcon } from "@heroicons/react/solid";
+
 
 
 const containerVariants = {
@@ -24,18 +18,7 @@ const containerVariants = {
 };
 
 const Orders = (props) => {
-  // const dispatchOrders = useDispatch();
-  // useEffect(() => {
-  //   dispatchOrders(getOrders());
-  // }, [dispatchOrders]);
 
-  // const orders = useSelector((state) => state.orders.filteredOrders);
-  // let count = 0;
-  // for (const order in orders) {
-  //   if (orders[order].order_status === "ATTENTE") {
-  //     count++;
-  //   }
-  // }
   return (
     <div
       variants={containerVariants}
@@ -43,13 +26,8 @@ const Orders = (props) => {
       animate="visible"
       exit="exit"
     >
-      {/* <PageHero title="Commandes" alert={count} /> */}
       <div className=" mx-auto">
-        {/* <Button className="btn btn-success" size="">
-          <div className=" border rounded">+</div>
-          <PlusSmIcon/>
-          Nouveau
-        </Button> */}
+
         <OrdersList {...props}/>
       </div>
     </div>

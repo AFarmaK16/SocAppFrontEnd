@@ -6,6 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Col, Row } from "reactstrap";
 import {
   addOrder,
+  calculateTTc,
   // getBanks,
   getOperators,
   getPaymentModes,
@@ -15,6 +16,7 @@ import { cartActions } from "../../store/cart-slice";
 import { formActions } from "../../store/form-slice";
 
 const CheckoutContent = ({ totalPrice, name, deliveryData }) => {
+  const token = localStorage.getItem("token");
   // alert("hello")
   // console.log(deliveryData);
   const dispatchOrders = useDispatch();
@@ -38,7 +40,6 @@ const CheckoutContent = ({ totalPrice, name, deliveryData }) => {
     dispatchOrders(getPaymentModes());
   }, [dispatchOrders]);
   const payModes = useSelector((state) => state.orders.paymentMode);
-
 
   const operators = useSelector((state) => state.orders.operators);
   const [selectedPaymentOpt, setSelectedPaymentOpt] = useState(null);
@@ -90,60 +91,75 @@ const CheckoutContent = ({ totalPrice, name, deliveryData }) => {
 
     return true;
   };
+
+  const delivery = {
+    delivery_address: delivery_address,
+    delivery_destination: delivery_destination,
+    delivery_comment: delivery_comment,
+    isRendu: isRendu,
+    isDecharged: isDecharged,
+  };
+  
+    const formData1 = new FormData();
+    formData1.append("items", JSON.stringify(items));
+    formData1.append("delivery", JSON.stringify(delivery));
+    formData1.append("isDecharged", delivery.isDecharged);
+    const payload1 = {
+      ttcRequest: formData1,
+    };
+
+const [ttcResult,setTTc] = useState(0);
+    const  calculateTTcResult = dispatchOrders(calculateTTc(payload1))
+  .then((total) => {
+   setTTc(total) ;
+    console.log(total); // This should log the value returned by the API call.
+  })
+  .catch((error) => {
+    console.log(error); // Handle any errors that might occur during the API call.
+  });
+
+    // const total = JSON.stringify(dispatchOrders(calculateTTc(payload1)));
+    console.log("The total os " + typeof ttcResult);
+    console.log("The total os "+ttcResult)
   const handleFileChange = async (event) => {
-    const delivery = {
-      delivery_address: delivery_address,
-      delivery_destination: delivery_destination,
-      delivery_comment: delivery_comment,
-      isRendu: isRendu,
-      isDecharged: isDecharged,
-    };
-    const facture = {
-      payment_reference: event.reference,
-      operator: event.payment_operator,
-      payment_mode: event.payment_type,
-      payment_date: event.payment_date,
-    };
+  const facture = {
+    payment_reference: event.reference,
+    operator: event.payment_operator,
+    payment_mode: event.payment_type,
+    payment_date: event.payment_date,
+  };
+
+     
     const formData = new FormData();
-    formData.append("order_Amount", ttc);
+    formData.append("order_Amount", ttcResult);
 
     formData.append("customerID", 4);
 
     formData.append("items", JSON.stringify(items));
     console.log("FILE😍😍");
     console.log(event.payment_justification);
-    // formData.append("justificatif", event.payment_justification[0]);
-    // Append multiple files to the 'justificatif' field
+  
+    const justificatifFiles = [];
 
-    // Iterate over the FileList and append each file individually
-    // for (let i = 0; i < event.payment_justification.length; i++) {
-    //   formData.append("justificatif", event.payment_justification[i]);
-    // }
-    
-    const justificatifFiles=[];
-    // Iterate over the FileList and add each file to the array
-    // for (let i = 0; i < event.payment_justification.length; i++) {
-    //   justificatifFiles.push(event.payment_justification[i]);
-    // }
 
     for (let i = 0; i < event.payment_justification.length; i++) {
       formData.append("justificatif", event.payment_justification[i]);
     }
     formData.append("facture", JSON.stringify(facture));
     formData.append("delivery", JSON.stringify(delivery));
-    formData.append("justificatif",JSON.stringify(justificatifFiles));
+    formData.append("justificatif", JSON.stringify(justificatifFiles));
 
     // -------------
     ///TRYING TO ADD ORDER
     const payload = {
       orderRequest: formData,
-      
+      token: token,
     };
 
     try {
       dispatchOrders(addOrder(payload));
-      // dispatchOrders(cartActions.clearCart());
-      // dispatchOrders(formActions.reinitializeShippingInfos());
+      dispatchOrders(cartActions.clearCart());
+      dispatchOrders(formActions.reinitializeShippingInfos());
 
       Swal.fire({
         title: "Commande enregistrée!",
@@ -153,22 +169,23 @@ const CheckoutContent = ({ totalPrice, name, deliveryData }) => {
         button: "OK!",
       });
     } catch (error) {
-       const Toast = Swal.mixin({
-         toast: true,
-         position: "top",
-         timer: 1000,
-         timerProgressBar: true,
-         customClass: {
-           popup: "bg-green-600",
-         },
-         showConfirmButton: false,
-       });
- Toast.fire(
-   "Une erreur a été rencontrée, veuillez réessayer!",
-   "",
-   // text: `Votre commande a bien été enregistrée et est en cours de traitement!\nMerci de votre fidelité😊!!`,
-   "error"
- );     }
+      const Toast = Swal.mixin({
+        toast: true,
+        position: "top",
+        timer: 1000,
+        timerProgressBar: true,
+        customClass: {
+          popup: "bg-green-600",
+        },
+        showConfirmButton: false,
+      });
+      Toast.fire(
+        "Une erreur a été rencontrée, veuillez réessayer!",
+        "",
+        // text: `Votre commande a bien été enregistrée et est en cours de traitement!\nMerci de votre fidelité😊!!`,
+        "error"
+      );
+    }
   };
   const handleFileSelect = (event) => {
     const files = event.target.files;
@@ -186,6 +203,7 @@ const CheckoutContent = ({ totalPrice, name, deliveryData }) => {
               <div className="">
                 <fieldset>
                   <legend>Paiement</legend>
+                  <legend></legend>
                   <hr />
                   <div className="form-group">
                     <label
@@ -283,7 +301,6 @@ const CheckoutContent = ({ totalPrice, name, deliveryData }) => {
                         })}
                       >
                         <option value="">-----</option>
-                        <option value="">----EWFRWE4-</option>
                         {operators
                           .filter((operator) => {
                             return operator.type === "BANQUE";
@@ -377,7 +394,7 @@ const CheckoutContent = ({ totalPrice, name, deliveryData }) => {
                       {...register("montant", {
                         required: true,
                         pattern: /^(\d*\.)?\d+$/,
-                        validate: (value) => value == ttc,
+                        validate: (value) => value == ttcResult,
                       })}
                     />
                     {errors.montant && (
@@ -389,7 +406,7 @@ const CheckoutContent = ({ totalPrice, name, deliveryData }) => {
                         <br />
                         <span className="text text-warning">
                           *** Doit etre egale au MontantTTC de la commande{" "}
-                          {formatPrice(ttc)}
+                          {formatPrice(ttcResult)}
                         </span>
                         <hr />
                       </div>
@@ -474,7 +491,7 @@ const CheckoutContent = ({ totalPrice, name, deliveryData }) => {
               <p className="text-xl capitalize mb-4 font-bold">
                 Montant TTC :{" "}
               </p>
-              <span className="italic font-bold">{formatPrice(ttc)}</span>
+              <span className="italic font-bold">{formatPrice(ttcResult)}</span>
             </div>
           </div>
         </Col>

@@ -19,6 +19,26 @@ import {
 } from "../../store/actions/admin-action";
 
 const TheSettingsItem = ({ tabContent, update, type }) => {
+  const token = localStorage.getItem("token");
+   let title = "";
+   switch (type) {
+     case "tarification":
+       title = "La tarification";
+       // console.log("dieulna tarif");
+       break;
+     case "destination":
+       title = "La destination";
+       // console.log("dieulna dest");
+       break;
+     // break;
+     case "payMode":
+       title = "Le mode de paiement";
+       break;
+     case "payType":
+       title = "Le type de paiement";
+       break;
+
+   }
   const dispatch = useDispatch();
   // console.log(type);
   const tarificationOptions = useSelector(
@@ -29,24 +49,17 @@ const TheSettingsItem = ({ tabContent, update, type }) => {
     switch (type) {
       case "tarification": //😁😀😀
         dispatch(delTarif(id));
-        // console.log("dieulna tarif");
-        console.log("EXECEUTION DE    delTarif(id);");
 
         break;
       case "destination": //😁😀😀
         dispatch(delDestination(id));
-        console.log("EXECEUTION DE   delDestination(id);");
-
-        // console.log("dieulna dest");
         break;
       // break;
       case "payMode": //😁😀😀
         dispatch(delPayMode(id));
-        console.log("EXECEUTION DE  delPayMode(id)");
         break;
       case "payType": //😁😀😀
         dispatch(delPayType(id));
-        console.log("EXECEUTION DE delPayType(id)");
 
         break;
 
@@ -55,7 +68,7 @@ const TheSettingsItem = ({ tabContent, update, type }) => {
       // break;
     }
     Swal.fire({
-      title: `Etes-vous sûr de vouloir supprimer le produit #${id} du catalogue?`,
+      html: `Etes-vous sûr de vouloir supprimer ${title} #${id} ?`,
       icon: "question",
       width: 300,
       showCancelButton: true,
@@ -101,7 +114,7 @@ const TheSettingsItem = ({ tabContent, update, type }) => {
 
   const handleUpdate = (id, nom, tarificationCode) => {
     Swal.fire({
-      title: `Mise à jour de la destination <b>${nom}</b> #${id} `,
+      title: `Mise à jour de ${title} <b>${nom}</b> #${id} `,
       icon: "info",
       html: `<Card class="card-body">
               <Form>
@@ -132,17 +145,7 @@ const TheSettingsItem = ({ tabContent, update, type }) => {
       confirmButtonColor: "#F6BD60",
       cancelButtonColor: "#C9184A",
       allowOutsideClick: false,
-      // preConfirm: () => {
-      //  Swal.mixin({
-      //    toast: true,
-      //    position: "top",
-      //    timer: 2000,
-      //    timerProgressBar: true,
-      //    customClass: {
-      //      popup: "bg-green-200",
-      //    },
-      //    showConfirmButton: true,
-      //  }).fire("Etes-vous-sure de vouloir effectué cette modification?", "", "warning");
+
       // },
     }).then((response) => {
       if (response.isConfirmed) {
@@ -153,20 +156,21 @@ const TheSettingsItem = ({ tabContent, update, type }) => {
             tarification: document.getElementById("swal-input2").value,
           },
           id: id,
+          token: token,
         };
-          const Toast = Swal.mixin({
-            toast: true,
-            position: "top",
-            timer: 1000,
-            timerProgressBar: true,
-            customClass: {
-              popup: "bg-green-600",
-            },
-            showConfirmButton: false,
-          });
+        const Toast = Swal.mixin({
+          toast: true,
+          position: "top",
+          timer: 1000,
+          timerProgressBar: true,
+          customClass: {
+            popup: "bg-green-600",
+          },
+          showConfirmButton: false,
+        });
         try {
           dispatch(updateDestination(payload));
-        
+
           Toast.fire(
             `Le tarif ${
               document.getElementById("swal-input2").value
@@ -177,12 +181,12 @@ const TheSettingsItem = ({ tabContent, update, type }) => {
             window.location.reload();
           });
         } catch (error) {
-                Toast.fire(
-                  "Une erreur a été rencontrée, veuillez réessayer!",
-                  "",
-                  // text: `Votre commande a bien été enregistrée et est en cours de traitement!\nMerci de votre fidelité😊!!`,
-                  "error"
-                );
+          Toast.fire(
+            "Une erreur a été rencontrée, veuillez réessayer!",
+            "",
+            // text: `Votre commande a bien été enregistrée et est en cours de traitement!\nMerci de votre fidelité😊!!`,
+            "error"
+          );
         }
       }
     });
@@ -240,51 +244,7 @@ const TheSettingsItem = ({ tabContent, update, type }) => {
           <AiOutlineDelete onClick={() => handleDelete(tabContent.id)} />
         </div>
       </td>
-      {/* : key === "validity" && value === true ? (<span>&nbsp;</span>) : key ===
-      "validity" && value === false ? (<Badge color="danger"> NON</Badge>) : (
-      String(value) )} */}
-      {/* <td>{account.id}</td>
-      <td>{account.username}</td>
-
-      {account.customer !== null ? (
-        <>
-          <td>
-            <Badge color="success">{account.role}</Badge>
-          </td>
-          <td>{account.customer.name.toUpperCase()}</td>
-          <td>{account.customer.surname.toUpperCase()}</td>
-          <td>{account.customer.address}</td>
-          <td>{account.customer.phoneNumber}</td>
-        </>
-      ) : account.user !== null ? (
-        <>
-          <td>
-            {account.role === "ADMIN" ? (
-              <Badge color="warning">{account.role}</Badge>
-            ) : (
-              <Badge color="info">{account.role}</Badge>
-            )}
-          </td>
-          <td>{account.user.name.toUpperCase()}</td>
-          <td>{account.user.surname.toUpperCase()}</td>
-        </>
-      ) : (
-        <></>
-      )}
-
-      <td>{formattedDate.toLocaleString("fr-FR")}</td>
-
-      <td>
-        <button
-          className="btn btn-danger "
-          onClick={() => {
-            setModalShow(true);
-            setselectedOrder(account.id);
-          }}
-        >
-          Bloquer
-        </button>
-      </td> */}
+  
     </tr>
   );
 };

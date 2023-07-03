@@ -6,40 +6,7 @@ import api from "../../utils/api";
 import { settingsActions } from "../admin-slice";
 import { useDispatch } from "react-redux";
 
-export const manageCreation = ({ addRequest, table }) => {
-   return async (dispatch) => {
-  console.log(addRequest)
-    //  addPayType(addRequest);
-  switch (table) {
-    case "tarification":
-      addTarif(addRequest);
-      // console.log("dieulna tarif");
-        console.log("EXECEUTION DE    addTarif(addRequest);");
-
-      break;
-    case "destination":
-      addDestination(addRequest);
-        console.log("EXECEUTION DE   addDestination(addRequest);");
-
-      // console.log("dieulna dest");
-      break;
-    // break;
-    case "payMode":
-      addPayMode(addRequest)
-        console.log("EXECEUTION DE  addPayMode(addRequest)");
-      break;
-    case "payType":
-    //  momo(addRequest)
-     console.log("EXECEUTION DE addPayType(addRequest)");
-
-      break;
-
-    // default:
-    //   tableContent = destinations;
-    // break;
-  }
-   }
-};
+const token = localStorage.getItem("token");
 //--------------------ACCOUNTS
 export const addCustomer = ( accountRequest ) => {
   //✔😁😀
@@ -56,7 +23,7 @@ export const addCustomer = ( accountRequest ) => {
           headers: {
             // "Content-Type": "multipart/form-data",
             "Content-Type": "application/json",
-            // // Authorization: "Bearer " + token,
+            Authorization: "Bearer " + token,
           },
           // withCredentials: true,
         }
@@ -69,15 +36,13 @@ export const addCustomer = ( accountRequest ) => {
       const message = await postData();
       console.log(" %c  : " + message, "color:pink");
 
-      // dispatch(getOrders());
-      // dispatch(ordersActions.addOrder(addRequest));
       dispatch(uiActions.addOrderLoading());
     } catch (error) {
       console.log(error);
     }
   };
 };
-export const delAccount = (id) => {
+export const delAccount = (id ) => {
   //✔😁😀
   return async (dispatch) => {
     dispatch(uiActions.addOrderLoading());
@@ -92,7 +57,7 @@ export const delAccount = (id) => {
           headers: {
             // "Content-Type": "multipart/form-data",
             "Content-Type": "application/json",
-            // // Authorization: "Bearer " + token,
+            Authorization: "Bearer " + token,
           },
           // withCredentials: true,
         }
@@ -105,22 +70,18 @@ export const delAccount = (id) => {
       const message = await postData();
       console.log(" %c  : " + message, "color:pink");
 
-      // dispatch(getOrders());
-      // dispatch(ordersActions.addOrder(addRequest));
+  
       dispatch(uiActions.addOrderLoading());
     } catch (error) {
       console.log(error);
     }
   };
 };
-export const blockAccount = (id) => {
+export const blockAccount = (id ) => {
   //✔😁😀
   return async (dispatch) => {
     dispatch(uiActions.addOrderLoading());
-    // await api.get("/sanctum/csrf-cookie");
-console.log ("niou bloquer ko")
     const postData = async () => {
-      // console.log(id)
       const response = await axios.put(
         `http://localhost:8081/api/v1/accounts/block/${id}`,
         id,
@@ -128,7 +89,7 @@ console.log ("niou bloquer ko")
           headers: {
             // "Content-Type": "multipart/form-data",
             "Content-Type": "application/json",
-            // // Authorization: "Bearer " + token,
+           Authorization: "Bearer " + token,
           },
           // withCredentials: true,
         }
@@ -141,22 +102,20 @@ console.log ("niou bloquer ko")
       const message = await postData();
       console.log(" %c  : " + message, "color:pink");
 
-      // dispatch(getOrders());
-      // dispatch(ordersActions.addOrder(addRequest));
       dispatch(uiActions.addOrderLoading());
     } catch (error) {
       console.log(error);
     }
   };
 };
-export const unLockAccount = (id) => {
+export const unLockAccount = (id ) => {
   //✔😁😀
   return async (dispatch) => {
     dispatch(uiActions.addOrderLoading());
     // await api.get("/sanctum/csrf-cookie");
     console.log("niou bloquer ko");
     const postData = async () => {
-      // console.log(id)
+      // console.log(id )
       const response = await axios.put(
         `http://localhost:8081/api/v1/accounts/unlock/${id}`,
         id,
@@ -164,7 +123,7 @@ export const unLockAccount = (id) => {
           headers: {
             // "Content-Type": "multipart/form-data",
             "Content-Type": "application/json",
-            // // Authorization: "Bearer " + token,
+           Authorization: "Bearer " + token,
           },
           // withCredentials: true,
         }
@@ -177,15 +136,13 @@ export const unLockAccount = (id) => {
       const message = await postData();
       console.log(" %c  : " + message, "color:pink");
 
-      // dispatch(getOrders());
-      // dispatch(ordersActions.addOrder(addRequest));
       dispatch(uiActions.addOrderLoading());
     } catch (error) {
       console.log(error);
     }
   };
 };
-export const addUser = (accountRequest) => {
+export const addUser = (accountRequest ) => {
   //✔😁😀
   return async (dispatch) => {
     dispatch(uiActions.addOrderLoading());
@@ -200,7 +157,7 @@ export const addUser = (accountRequest) => {
           headers: {
             // "Content-Type": "multipart/form-data",
             "Content-Type": "application/json",
-            // // Authorization: "Bearer " + token,
+            Authorization: "Bearer " +token,
           },
           // withCredentials: true,
         }
@@ -213,38 +170,15 @@ export const addUser = (accountRequest) => {
       const message = await postData();
       console.log(" %c  : " + message, "color:pink");
 
-      // dispatch(getOrders());
-      // dispatch(ordersActions.addOrder(addRequest));
       dispatch(uiActions.addOrderLoading());
     } catch (error) {
       console.log(error);
     }
   };
 };
-// -------------------TARIFICATION
-// export const updateTarif = (id) => {
-//   return async (dispatch) => {
-//     dispatch(uiActions.validateOrderLoading());
-// console.log(JSON.stringify(id)+" 😩")
-//     const postData = async () => {
-//       const response = await axios.put(
-//         `http://localhost:8081/api/v1/orders/validate/${id}`,
-//       );
-//       const data = response.data;
-//       return data;
-//     };
 
-//     try {
-//       const message = await postData();
-//       console.log(" %c message : " + message, "color:pink");
-//       dispatch(uiActions.validateOrderLoading());
-//     } catch (error) {
-//       console.log(error);
-//     }
-//   };
-// };
 
-export const addTarif = ({ addRequest }) => {//✔😁😀
+export const addTarif = ({ addRequest  }) => {//✔😁😀
   return async (dispatch) => {
     dispatch(uiActions.addOrderLoading());
     // await api.get("/sanctum/csrf-cookie");
@@ -258,7 +192,7 @@ export const addTarif = ({ addRequest }) => {//✔😁😀
           headers: {
             // "Content-Type": "multipart/form-data",
             "Content-Type": "application/json",
-            // // Authorization: "Bearer " + token,
+           Authorization: "Bearer " + token,
           },
           // withCredentials: true,
         }
@@ -271,22 +205,20 @@ export const addTarif = ({ addRequest }) => {//✔😁😀
       const message = await postData();
       console.log(" %c  : " + message, "color:pink");
 
-      // dispatch(getOrders());
-      // dispatch(ordersActions.addOrder(addRequest));
       dispatch(uiActions.addOrderLoading());
     } catch (error) {
       console.log(error);
     }
   };
 };
-export const delTarif = ( id ) => {
+export const delTarif = ( id  ) => {
   //✔😁😀
   return async (dispatch) => {
     dispatch(uiActions.addOrderLoading());
     // await api.get("/sanctum/csrf-cookie");
 
     const postData = async () => {
-      // console.log(id)
+      // console.log(id )
       const response = await axios.put(
         `http://localhost:8081/api/v1/tarifs/delete/${id}`,
         id,
@@ -294,7 +226,7 @@ export const delTarif = ( id ) => {
           headers: {
             // "Content-Type": "multipart/form-data",
             "Content-Type": "application/json",
-            // // Authorization: "Bearer " + token,
+           Authorization: "Bearer " + token,
           },
           // withCredentials: true,
         }
@@ -307,8 +239,6 @@ export const delTarif = ( id ) => {
       const message = await postData();
       console.log(" %c  : " + message, "color:pink");
 
-      // dispatch(getOrders());
-      // dispatch(ordersActions.addOrder(addRequest));
       dispatch(uiActions.addOrderLoading());
     } catch (error) {
       console.log(error);
@@ -317,10 +247,18 @@ export const delTarif = ( id ) => {
 };
 
 
-export const getTarifById = async({ id}) => {
+export const getTarifById = async({ id }) => {
    const fetchData = async () => {
      const response = await axios.get(
-       `http://localhost:8081/api/v1/tarifs/list/${id}`
+       `http://localhost:8081/api/v1/tarifs/list/${id}`,
+       {
+         headers: {
+           // "Content-Type": "multipart/form-data",
+           "Content-Type": "application/json",
+           Authorization: "Bearer " + token,
+         },
+         // withCredentials: true,
+       }
      );
 
      const data = await response.data;
@@ -346,7 +284,15 @@ export const getTarification= () => {
     // dispatch(uiActions.operatorsLoading());
     const fetchData = async () => {
       const response = await axios.get(
-        `http://localhost:8081/api/v1/tarifs/list/all`
+        `http://localhost:8081/api/v1/tarifs/list/all`,
+        {
+          headers: {
+            // "Content-Type": "multipart/form-data",
+            "Content-Type": "application/json",
+            Authorization: "Bearer " + token,
+          },
+          // withCredentials: true,
+        }
       );
 
       const data = await response.data;
@@ -370,7 +316,15 @@ export const getDestinations = () => {
     dispatch(uiActions.destinationLoading());
     const fetchData = async () => {
       const response = await axios.get(
-        `http://localhost:8081/api/v1/orderSettings/destinations`
+        `http://localhost:8081/api/v1/orderSettings/destinations`,
+        {
+          headers: {
+            // "Content-Type": "multipart/form-data",
+            "Content-Type": "application/json",
+            Authorization: "Bearer " + token,
+          },
+          // withCredentials: true,
+        }
       );
 
       const data = await response.data;
@@ -392,7 +346,15 @@ export const getPaymentModes = () => {
     dispatch(uiActions.paymentMLoading());
     const fetchData = async () => {
       const response = await axios.get(
-        `http://localhost:8081/api/v1/orderSettings/paymentType`
+        `http://localhost:8081/api/v1/orderSettings/paymentType`,
+        {
+          headers: {
+            // "Content-Type": "multipart/form-data",
+            "Content-Type": "application/json",
+            Authorization: "Bearer " + token,
+          },
+          // withCredentials: true,
+        }
       );
 
       const data = await response.data;
@@ -414,14 +376,22 @@ export const getPaymentModes = () => {
 
 
 //DESTINATION
-export const updateDestination = ({ updateRequest,id}) => {
+export const updateDestination = ({ updateRequest,id }) => {
   return async (dispatch) => {
     dispatch(uiActions.validateOrderLoading());
     console.log(JSON.stringify(updateRequest) + " 😩 idDest  bi " + id);
     const postData = async () => {
       const response = await axios.put(
         `http://localhost:8081/api/v1/orderSettings/destinations/update/${id}`,
-        updateRequest
+        updateRequest,
+        {
+          headers: {
+            // "Content-Type": "multipart/form-data",
+            "Content-Type": "application/json",
+            Authorization: "Bearer " + token,
+          },
+          // withCredentials: true,
+        }
       );
       const data = response.data;
       return data;
@@ -437,7 +407,7 @@ export const updateDestination = ({ updateRequest,id}) => {
   };
 };
 
-export const addDestination = ({ addRequest }) => {
+export const addDestination = ({ addRequest  }) => {
   return async (dispatch) => {
     dispatch(uiActions.addOrderLoading());
     // await api.get("/sanctum/csrf-cookie");
@@ -451,7 +421,7 @@ export const addDestination = ({ addRequest }) => {
           headers: {
             // "Content-Type": "multipart/form-data",
             "Content-Type": "application/json",
-            // // Authorization: "Bearer " + token,
+           Authorization: "Bearer " + token,
           },
           // withCredentials: true,
         }
@@ -464,21 +434,19 @@ export const addDestination = ({ addRequest }) => {
       const message = await postData();
       console.log(" %c  : " + message, "color:pink");
 
-      // dispatch(getOrders());
-      // dispatch(ordersActions.addOrder(addRequest));
       dispatch(uiActions.addOrderLoading());
     } catch (error) {
       console.log(error);
     }
   };
 };
-export const delDestination = ( id ) => {
+export const delDestination = ( id  ) => {
   return async (dispatch) => {
     dispatch(uiActions.addOrderLoading());
     // await api.get("/sanctum/csrf-cookie");
 
     const postData = async () => {
-      // console.log(id)
+      // console.log(id )
       const response = await axios.put(
         `http://localhost:8081/api/v1/orderSettings/destinations/delete/${id}`,
         id,
@@ -486,7 +454,7 @@ export const delDestination = ( id ) => {
           headers: {
             // "Content-Type": "multipart/form-data",
             "Content-Type": "application/json",
-            // // Authorization: "Bearer " + token,
+           Authorization: "Bearer " + token,
           },
           // withCredentials: true,
         }
@@ -499,8 +467,6 @@ export const delDestination = ( id ) => {
       const message = await postData();
       console.log(" %c message : " + message, "color:pink");
 
-      // dispatch(getOrders());
-      // dispatch(ordersActions.addOrder(addRequest));
       dispatch(uiActions.addOrderLoading());
     } catch (error) {
       console.log(error);
@@ -508,10 +474,18 @@ export const delDestination = ( id ) => {
   };
 };
 
-export const getDestinationById = async ({ id }) => {
+export const getDestinationById = async ({ id  }) => {
   const fetchData = async () => {
     const response = await axios.get(
-      `http://localhost:8081/api/v1/tarifs/list/${id}`
+      `http://localhost:8081/api/v1/tarifs/list/${id}`,
+      {
+        headers: {
+          // "Content-Type": "multipart/form-data",
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + token,
+        },
+        // withCredentials: true,
+      }
     );
 
     const data = await response.data;
@@ -535,10 +509,18 @@ export const getDestinationById = async ({ id }) => {
 
 
 
-export const getOpById = async ({ id }) => {
+export const getOpById = async ({ id  }) => {
   const fetchData = async () => {
     const response = await axios.get(
-      `http://localhost:8081/api/v1/tarifs/list/${id}`
+      `http://localhost:8081/api/v1/tarifs/list/${id}`,
+      {
+        headers: {
+          // "Content-Type": "multipart/form-data",
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + token,
+        },
+        // withCredentials: true,
+      }
     );
 
     const data = await response.data;
@@ -559,13 +541,21 @@ export const getOpById = async ({ id }) => {
 
 
 //----------------------------------PAYMENTMODE
-export const updatePayMode = (id) => {
+export const updatePayMode = (id ) => {
   return async (dispatch) => {
     dispatch(uiActions.validateOrderLoading());
-    console.log(JSON.stringify(id) + " 😩");
+    console.log(JSON.stringify(id ) + " 😩");
     const postData = async () => {
       const response = await axios.put(
         `http://localhost:8081/api/v1/orders/validate/${id}`,
+         {
+          headers: {
+            // "Content-Type": "multipart/form-data",
+            "Content-Type": "application/json",
+           Authorization: "Bearer " + token,
+          },
+          // withCredentials: true,
+        },
         console.log(`http://localhost:8081/api/v1/orders/validate/${id}`)
       );
       const data = response.data;
@@ -582,7 +572,7 @@ export const updatePayMode = (id) => {
   };
 };
 
-export const addPayMode = ({ addRequest }) => {
+export const addPayMode = ({ addRequest  }) => {
 
   return async (dispatch) => {
     dispatch(uiActions.addOrderLoading());
@@ -596,7 +586,7 @@ export const addPayMode = ({ addRequest }) => {
           headers: {
             // "Content-Type": "multipart/form-data",
             "Content-Type": "application/json",
-            // // Authorization: "Bearer " + token,
+           Authorization: "Bearer " + token,
           },
           // withCredentials: true,
         }
@@ -609,15 +599,13 @@ export const addPayMode = ({ addRequest }) => {
       const message = await postData();
       console.log(" %c  : " + message, "color:pink");
 
-      // dispatch(getOrders());
-      // dispatch(ordersActions.addOrder(addRequest));
       dispatch(uiActions.addOrderLoading());
     } catch (error) {
       console.log(error);
     }
   };
 };
-export const delPayMode = ( id ) => {
+export const delPayMode = ( id  ) => {
   return async (dispatch) => {
     dispatch(uiActions.addOrderLoading());
     // await api.get("/sanctum/csrf-cookie");
@@ -630,7 +618,7 @@ export const delPayMode = ( id ) => {
           headers: {
             // "Content-Type": "multipart/form-data",
             "Content-Type": "application/json",
-            // // Authorization: "Bearer " + token,
+           Authorization: "Bearer " + token,
           },
           // withCredentials: true,
         }
@@ -643,8 +631,6 @@ export const delPayMode = ( id ) => {
       const message = await postData();
       console.log(" %c  : " + message, "color:pink");
 
-      // dispatch(getOrders());
-      // dispatch(ordersActions.addOrder(addRequest));
       dispatch(uiActions.addOrderLoading());
     } catch (error) {
       console.log(error);
@@ -653,10 +639,18 @@ export const delPayMode = ( id ) => {
 };
 
 
-export const getPayModeByID = async ({ id }) => {
+export const getPayModeByID = async ({ id  }) => {
   const fetchData = async () => {
     const response = await axios.get(
-      `http://localhost:8081/api/v1/tarifs/list/${id}`
+      `http://localhost:8081/api/v1/tarifs/list/${id}`,
+      {
+        headers: {
+          // "Content-Type": "multipart/form-data",
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + token,
+        },
+        // withCredentials: true,
+      }
     );
 
     const data = await response.data;
@@ -675,7 +669,7 @@ export const getPayModeByID = async ({ id }) => {
   }
 };
 //---------------------------------PAYMENTTYPE
-export const addPayType = ({ addRequest }) => {// 😁😀😀
+export const addPayType = ({ addRequest  }) => {// 😁😀😀
 
   return async (dispatch) => {
     dispatch(uiActions.addOrderLoading());
@@ -690,7 +684,7 @@ export const addPayType = ({ addRequest }) => {// 😁😀😀
           headers: {
             // "Content-Type": "multipart/form-data",
             "Content-Type": "application/json",
-            // // Authorization: "Bearer " + token,
+           Authorization: "Bearer " + token,
           },
           // withCredentials: true,
         }
@@ -703,15 +697,13 @@ export const addPayType = ({ addRequest }) => {// 😁😀😀
       const message = await postData();
       console.log(" %c  : " + message, "color:pink");
 
-      // dispatch(getOrders());
-      // dispatch(ordersActions.addOrder(addRequest));
       dispatch(uiActions.addOrderLoading());
     } catch (error) {
       console.log(error);
     }
   };
 };
-export const delPayType = ( id ) => {
+export const delPayType = ( id  ) => {
   // 😁😀😀
 
   return async (dispatch) => {
@@ -719,7 +711,7 @@ export const delPayType = ( id ) => {
     // await api.get("/sanctum/csrf-cookie");
 
     const postData = async () => {
-      console.log(id);
+      console.log(id );
       const response = await axios.put(
         `http://localhost:8081/api/v1/orderSettings/paymentType/delete/${id}`,
         id,
@@ -727,7 +719,7 @@ export const delPayType = ( id ) => {
           headers: {
             // "Content-Type": "multipart/form-data",
             "Content-Type": "application/json",
-            // // Authorization: "Bearer " + token,
+           Authorization: "Bearer " + token,
           },
           // withCredentials: true,
         }
@@ -740,8 +732,6 @@ export const delPayType = ( id ) => {
       const message = await postData();
       console.log(" %c  : " + message, "color:pink");
 
-      // dispatch(getOrders());
-      // dispatch(ordersActions.addOrder(addRequest));
       dispatch(uiActions.addOrderLoading());
     } catch (error) {
       console.log(error);

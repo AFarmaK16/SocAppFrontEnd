@@ -119,11 +119,11 @@ const CheckoutContent = ({ totalPrice, name }) => {
     ///TRYING TO ADD ORDER
     const payload = {
       orderRequest: order_data,
+      token: token
     };
 
     try {
-      // console.log("JSON.stringify(payload.orderRequest)");
-      // console.log(payload.orderRequest);
+
       dispatchOrders(addOrder(payload));
       swal({
         title: "Order Added!",

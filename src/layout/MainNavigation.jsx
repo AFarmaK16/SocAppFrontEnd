@@ -20,9 +20,9 @@ import {
 const MainNavigation = () => {
   const [showNav, setShowNav] = useState(false);
   const dispatch = useDispatch();
-  const isAuthenticated = true;
-  // const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
-  const token = useSelector((state) => state.auth.token);
+  const isAuthenticated = useSelector((state) => state.auth.isAuth);
+  console.log(useSelector((state) => state.auth.isAuth));
+  const token = localStorage.getItem("token");
   const [showDropdown, setShowDropdown] = useState(false);
 
   const toggleDropdown = () => {
@@ -33,6 +33,7 @@ const MainNavigation = () => {
   };
 
   const logoutUser = () => {
+    console.log("let's log out ");
     dispatch(logout(token));
   };
 
@@ -125,82 +126,10 @@ const MainNavigation = () => {
               </NavLink>
             </li>
 
-            {/* <li>
-              {isAuthenticated && (
-                <UncontrolledDropdown>
-                  <DropdownToggle
-                    caret
-                    className="nav-link ml-2 p-2 lg:text-lg font-semibold"
-                    tag="a"
-                  >
-                    Admin
-                  </DropdownToggle>
-                  <DropdownMenu>
-                    <DropdownItem>
-                      {" "}
-                      <NavLink
-                        className="ml-2 p-2 lg:text-lg font-semibold"
-                        to="/orders"
-                      >
-                        Commandes
-                      </NavLink>
-                    </DropdownItem>
-                    <DropdownItem>
-                      <NavLink
-                        className="ml-2 p-2 lg:text-lg font-semibold"
-                        to="/allFactures"
-                      >
-                        Factures
-                      </NavLink>
-                    </DropdownItem>
-
-                  </DropdownMenu>
-                </UncontrolledDropdown>
-              )}
-            </li> */}
-            <li>
-              <UncontrolledDropdown>
-                <DropdownToggle
-                  caret
-                  className="nav-link ml-2 p-2 lg:text-lg font-semibold"
-                  tag="a"
-                >
-                  Mes commandes
-                </DropdownToggle>
-                <DropdownMenu>
-                  {/* <DropdownItem>
-                    {" "}
-                    <NavLink
-                      className="ml-2 p-2 lg:text-lg font-semibold"
-                      to="/checkout"
-                    >
-                      Valider Commande
-                    </NavLink>
-                  </DropdownItem> */}
-                  <DropdownItem>
-                    {" "}
-                    <NavLink
-                      className="ml-2 p-2 lg:text-lg font-semibold"
-                      to="/order-history"
-                    >
-                      Historique des commandes
-                    </NavLink>
-                  </DropdownItem>
-                  <DropdownItem>
-                    <NavLink
-                      className="ml-2 p-2 lg:text-lg font-semibold"
-                      to="/payment-history"
-                    >
-                      Historique des factures
-                    </NavLink>
-                  </DropdownItem>
-                </DropdownMenu>
-              </UncontrolledDropdown>
-            </li>
+          
           </ul>
         </div>
         <div className="hidden md:flex">
-          <NavCartButton />
           {!isAuthenticated && (
             <NavLink to="/login">
               <motion.button
@@ -211,16 +140,6 @@ const MainNavigation = () => {
                 Login
               </motion.button>
             </NavLink>
-          )}
-          {isAuthenticated && (
-            <motion.button
-              onClick={logoutUser}
-              className="border-success border-4 font-bold px-4 py-2 ml-2 rounded-full shadow-lg"
-              variants={buttonVariants}
-              whileHover="hover"
-            >
-              Logout
-            </motion.button>
           )}
         </div>
         <div className="md:hidden cursor-pointer" onClick={navHandler}>
@@ -249,104 +168,16 @@ const MainNavigation = () => {
             Products
           </NavLink>
         </li>
-        {/* <li className="border-b-2 border-zinc-300 w-full mt-4 text-lg font-semibold text-gray-600">
-          {isAuthenticated && (
-            <UncontrolledDropdown>
-              <DropdownToggle
-                caret
-                className="nav-link ml-2 p-2 lg:text-lg font-semibold"
-                tag="a"
-              >
-                Admin
-              </DropdownToggle>
-              <DropdownMenu>
-                <DropdownItem>
-                  <NavLink
-                    className="ml-2 p-2 lg:text-lg font-semibold"
-                    to="/orders"
-                  >
-                    Commandes
-                  </NavLink>
-                </DropdownItem>
-                <DropdownItem>
-                  <NavLink
-                    className="ml-2 p-2 lg:text-lg font-semibold"
-                    to="/allFactures"
-                  >
-                    Factures
-                  </NavLink>
-                </DropdownItem>
-                <DropdownItem>
-                  <NavLink
-                    className="ml-2 p-2 lg:text-lg font-semibold"
-                    to="/admin/dashboard/addproduct"
-                  >
-                    Gerer Produits
-                  </NavLink>
-                </DropdownItem>
-                <DropdownItem>
-                  <NavLink
-                    className="ml-2 p-2 lg:text-lg font-semibold"
-                    to="/manageProducts"
-                  >
-                    Dashboard
-                  </NavLink>
-                </DropdownItem>
-              </DropdownMenu>
-            </UncontrolledDropdown>
-          )}
-        </li> */}
-        <li className="border-b-2 border-zinc-300 w-full mt-4 text-lg font-semibold text-gray-600">
-          <UncontrolledDropdown>
-            <DropdownToggle
-              caret
-              className="nav-link ml-2 p-2 lg:text-lg font-semibold"
-              tag="a"
-            >
-              Mes commandes
-            </DropdownToggle>
-            <DropdownMenu>
-              <DropdownItem>
-                {" "}
-                <NavLink
-                  className="ml-2 p-2 lg:text-lg font-semibold"
-                  to="/checkout"
-                >
-                  Valider Commande
-                </NavLink>
-              </DropdownItem>
-              <DropdownItem>
-                {" "}
-                <NavLink
-                  className="ml-2 p-2 lg:text-lg font-semibold"
-                  to="/order-history"
-                >
-                  Historique des commandes
-                </NavLink>
-              </DropdownItem>
-              <DropdownItem>
-                <NavLink
-                  className="ml-2 p-2 lg:text-lg font-semibold"
-                  to="/payment-history"
-                >
-                  Historique des factures
-                </NavLink>
-              </DropdownItem>
-            </DropdownMenu>
-          </UncontrolledDropdown>
-        </li>
+       
 
         <div className="flex flex-col items-center m-4 space-y-4">
-          <div onClick={navHandler}>
-            <NavCartButton />
-          </div>
           {!isAuthenticated && (
             <NavLink
               onClick={navHandler}
               to="/login"
               className="border-primary border-4 text-primary font-bold px-9 py-2 ml-2 rounded-full shadow-lg"
             >
-              Login
+              Se connecter
             </NavLink>
           )}
           {isAuthenticated && (
@@ -354,7 +185,7 @@ const MainNavigation = () => {
               onClick={logoutUser}
               className="border-primary border-4 text-primary font-bold px-9 py-2 ml-2 rounded-full shadow-lg"
             >
-              Logout
+              Deconnexion
             </button>
           )}
         </div>

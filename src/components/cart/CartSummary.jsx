@@ -1,27 +1,31 @@
-import React from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { Link } from 'react-router-dom';
-import { formatPrice } from '../../utils/helpers';
-import { cartActions } from '../../store/cart-slice';
+import React from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { Link } from "react-router-dom";
+import { formatPrice } from "../../utils/helpers";
+import { cartActions } from "../../store/cart-slice";
 
-
-const CartSummary = ({ totalPrice, transport,dechargement }) => {
-  const tva= 18/100;
+const CartSummary = ({ totalPrice, transport, dechargement }) => {
+  const token = localStorage.getItem("token");
+  const tva = 18 / 100;
   const dispatch = useDispatch();
-  const isAuthenticated = true;
+  const isAuthenticated = useSelector((state) => state.auth.isAuth);
   // console.log("lii dh mofi eksi "+transport)
   const totalQuantity = useSelector((state) =>
     state.cart.totalQuantity.toFixed(2)
   );
-     const payload = {
+  const payload = {
+    totalPrice,
+    token: token,
+  };
 
-       totalPrice,
-     };
-  //  dispatch(cartActions.setTotalPrice(payload));
-  // const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
-  const totalRedevance = totalQuantity * 2000
-    const totalTaxeCons = 3000 * totalQuantity;
-const Montant_Tva = totalPrice * tva + transport * tva + dechargement * tva +(totalRedevance * tva )+(totalTaxeCons * tva);
+  const totalRedevance = totalQuantity * 2000;
+  const totalTaxeCons = 3000 * totalQuantity;
+  const Montant_Tva =
+    totalPrice * tva +
+    transport * tva +
+    dechargement * tva +
+    totalRedevance * tva +
+    totalTaxeCons * tva;
   return (
     <div className="flex flex-col border-2 border-solid border-green-700 rounded-xl text-center p-5 ">
       {/* <h2 className="uppercase text-2xl tracking-wide">order summary</h2> */}
@@ -58,7 +62,14 @@ const Montant_Tva = totalPrice * tva + transport * tva + dechargement * tva +(to
       <div className="my-4 flex justify-between">
         <span className="capitalize text-xl font-bold">Total TTC:</span>
         <span className="italic">
-          {formatPrice(totalPrice + Montant_Tva + transport + dechargement+totalTaxeCons+totalRedevance)}
+          {formatPrice(
+            totalPrice +
+              Montant_Tva +
+              transport +
+              dechargement +
+              totalTaxeCons +
+              totalRedevance
+          )}
         </span>
       </div>
 
@@ -81,6 +92,5 @@ const Montant_Tva = totalPrice * tva + transport * tva + dechargement * tva +(to
     </div>
   );
 };
-
 
 export default CartSummary;

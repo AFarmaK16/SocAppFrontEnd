@@ -7,15 +7,14 @@ import { HiChevronDoubleLeft } from "react-icons/hi";
 import { useDispatch, useSelector } from "react-redux";
 import { updateProduct } from "../../store/actions/products-actions";
 import swal from "sweetalert";
-import TheSpinner from '../../layout/TheSpinner';
-
+import TheSpinner from "../../layout/TheSpinner";
 
 const ProductUpdate = () => {
   const { productId } = useParams();
   const navigate = useNavigate();
   const location = useLocation();
   const { product } = location.state;
-  const token = useSelector((state) => state.auth.token);
+  const token = localStorage.getItem("token");
   const loading = useSelector((state) => state.ui.updateProductLoading);
   const dispatch = useDispatch();
 
@@ -37,7 +36,6 @@ const ProductUpdate = () => {
       brand: Yup.string().required("Required"),
     }),
     onSubmit: async (values) => {
-      
       try {
         // await dispatch(updateProduct({ product: values, id: productId, token }));
         swal({
@@ -46,11 +44,7 @@ const ProductUpdate = () => {
           icon: "success",
           button: "OK!",
         });
-        
-      } catch (error) {
-        
-      }
-      
+      } catch (error) {}
     },
   });
 
@@ -235,7 +229,9 @@ const ProductUpdate = () => {
                 type="checkbox"
                 name="shipping"
                 id="shipping"
-                onChange={() => formik.setFieldValue('shipping', !formik.values.shipping)}
+                onChange={() =>
+                  formik.setFieldValue("shipping", !formik.values.shipping)
+                }
                 value={formik.values.shipping}
                 className="form-checkbox"
               />
@@ -244,14 +240,16 @@ const ProductUpdate = () => {
               </label>
             </div>
             <hr />
-            {loading ? <TheSpinner /> : 
-            <button
-              type="submit"
-              className="px-4 py-2 block my-12 ml-auto font-bold uppercase text-secondary-100 border border-secondary-100 hover:text-white hover:bg-secondary-100 rounded-md"
-            >
-              Update Product
-            </button>
-            }
+            {loading ? (
+              <TheSpinner />
+            ) : (
+              <button
+                type="submit"
+                className="px-4 py-2 block my-12 ml-auto font-bold uppercase text-secondary-100 border border-secondary-100 hover:text-white hover:bg-secondary-100 rounded-md"
+              >
+                Update Product
+              </button>
+            )}
           </form>
         </div>
       </div>

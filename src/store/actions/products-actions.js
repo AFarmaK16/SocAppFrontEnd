@@ -4,7 +4,7 @@ import { productsActions } from "../products-slice";
 import { uiActions } from "../ui-slice";
 import api from "../../utils/api";
 
-const token = "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJsaW5kYSIsImlhdCI6MTY4NDE0NDkwOSwiZXhwIjoxNjg0MTQ2MzQ5fQ.XxoxNyqaSDA70l1-Yf6s2MQFk4NHnDywn468lpVhXfk";
+const token = localStorage.getItem("token")
 export const getProducts = () => {
   return async (dispatch) => {
     dispatch(uiActions.productsLoading());
@@ -40,7 +40,7 @@ export const getProductDetails = (id) => {
     dispatch(uiActions.pDetailLoading());
     const fetchData = async () => {
       const response = await axios.get(
-        `http://localhost:8081/api/v1/products/${id}`
+        `http://localhost:8081/api/v1/products/lists/${id}`
       );
 
       const data = await response.data;
@@ -58,7 +58,7 @@ export const getProductDetails = (id) => {
   };
 };
 
-// export const addProduct = ({ product, token }) => {
+
 //   return async (dispatch) => {
 //     dispatch(uiActions.addPrductLoading());
 //     // await api.get("/sanctum/csrf-cookie");
@@ -104,7 +104,7 @@ export const addProduct = ({ addRequest }) => {
           headers: {
             // "Content-Type": "multipart/form-data",
             "Content-Type": "application/json",
-            // // Authorization: "Bearer " + token,
+             Authorization: "Bearer " + token,
           },
           // withCredentials: true,
         }
@@ -132,12 +132,12 @@ export const deleteProduct = (id) => {
     const putData = async () => {
       const response = await axios.put(
         `http://localhost:8081/api/v1/products/delete/${id}`,
-        console.log( `http://localhost:8081/api/v1/products/delete/${id}`)
-        // {
-        //   // headers: {
-        //   //   // Authorization: "Bearer " + token,
-        //   // },
-        // }
+        console.log( `http://localhost:8081/api/v1/products/delete/${id}`),
+         {
+            headers: {
+            Authorization: "Bearer " + token,
+            },
+         }
       );
       const data = response.data;
       return data;
@@ -165,11 +165,11 @@ console.log(payload)
       const response = await axios.put(
         `http://localhost:8081/api/v1/products/update/${payload.id}`,
         payload.addRequest,
-        // {
-        //   headers: {
-        //     Authorization: "Bearer " + token,
-        //   },
-        // }
+        {
+          headers: {
+            Authorization: "Bearer " + token,
+          },
+        }
       );
       const data = response.data;
       return data;

@@ -6,26 +6,28 @@ import product_img from "../../assets/cemiib-ll32-5rce.jpg";
 import { formatPrice } from "../../utils/helpers";
 import { Card, CardBody, CardImg } from "reactstrap";
 import { FaTrash } from "react-icons/fa";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { cartActions } from "../../store/cart-slice";
 
 const CartItem = ({ cart }) => {
+  const token = localStorage.getItem("token");
   //  console.log(
   //    "In CartItem the cart passed in params is " +
   //     JSON.stringify(cart)
   //     //  Object.getOwnPropertyNames(cart).length
   //  );
   const dispatch = useDispatch();
-  const dropItemFromCart = (itemId,product) => {
+  const dropItemFromCart = (itemId, product) => {
     const payload = {
       ...product,
+      token: token,
     };
     dispatch(cartActions.dropItemFromCart(payload));
   };
   return (
     <>
       {cart.map((product) => {
-        console.log("mogui "+product)
+        console.log("mogui " + product);
         return (
           <div
             key={product.id}

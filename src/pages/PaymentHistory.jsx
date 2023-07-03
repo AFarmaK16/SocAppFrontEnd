@@ -7,9 +7,7 @@ import PageHero from "../layout/PageHero";
 import { formatPrice } from "../utils/helpers";
 import { Badge, Card, CardBody, CardHeader, Col, Row, Table } from "reactstrap";
 import {
-  getCustomerOrders,
-  getOrders,
-  getOrdersById,
+  getCustomerOrders
 } from "../store/actions/oder-action";
 import { FaSearch } from "react-icons/fa";
 import { isEmptyArray } from "formik";
@@ -17,6 +15,7 @@ import { GiCardKingHearts } from "react-icons/gi";
 import { MdDetails } from "react-icons/md";
 
 const PaymentHistory = () => {
+   const userID = useSelector((state) => state.auth.userID);
   const containerVariants = {
     hidden: {
       opacity: 0,
@@ -35,8 +34,8 @@ const PaymentHistory = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(getCustomerOrders(4));
-  }, [dispatch, 4]);
+    dispatch(getCustomerOrders(userID));
+  }, [dispatch, userID]);
 
   const loading = useSelector((state) => state.ui.customerOrdersLoading);
   const orders = useSelector((state) => state.orders.filteredOrders);
@@ -59,7 +58,7 @@ const PaymentHistory = () => {
             <div>
               <h4>Il semble que vous n'ayez pas encore passé de commande</h4>{" "}
               <Link
-                to="/products"
+                to="/customer/c/products"
                 className="uppercase  px-4 py-2 rounded text-green font-semibold shadow-lg"
               >
                 Passer une commande
@@ -140,7 +139,6 @@ const PaymentHistory = () => {
                                   : "primary"
                               }`}
                               className="text-white"
-                              
                             >
                               {facture.paymentStatus}
                             </Badge>

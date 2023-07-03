@@ -34,7 +34,7 @@ import {
 } from "@heroicons/react/solid";
 import { BiDotsHorizontal, BiFilter, BiFilterAlt } from "react-icons/bi";
 import Swal from "sweetalert2";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { deliverOrder, validateOrder } from "../../store/actions/oder-action";
 import { AiOutlineEdit } from "react-icons/ai";
 import { MdDownloadDone } from "react-icons/md";
@@ -42,7 +42,11 @@ import { Tab, Tabs, TabsHeader } from "@material-tailwind/react";
 import { BsFilterLeft } from "react-icons/bs";
 // import { Tab, Tabs } from "react-bootstrap";
 
-const OrderGridView = ({ orders, role }) => {
+const OrderGridView = ({ orders}) => {
+   const { isAdmin, isCustomer, isComm, isAdv } = useSelector(
+     (state) => state.auth
+   );
+  const token = localStorage.getItem("token");
   const [modalShow, setModalShow] = useState(false);
   const [search, setSearch] = useState("");
   const [selectedOrder, setselectedOrder] = useState();
@@ -53,21 +57,11 @@ const OrderGridView = ({ orders, role }) => {
   // const [countOrder, setcountOrder] = useState(orders.length);
   const changeFilter = (option) => {
     setFilter(option);
-    // let count = 0
-    //   for (const order in orders) {
-    //     if ( === option) {
-    //       count++;
-    //     }
-    //     else{
-    //       count=orders.length
-    //     }
 
-    //   }
-    //   setcountOrder(count);
   };
   let pendingOrders = 0;
   let validOrders = 0;
-  // let deliveredOrders = 0;
+  let deliveredOrders = 0;
 
   for (const order in orders) {
     if (orders[order].order_status === "ATTENTE") {
@@ -76,9 +70,9 @@ const OrderGridView = ({ orders, role }) => {
     if (orders[order].order_status === "VALIDEE") {
       validOrders++;
     }
-    // if (orders[order].order_status === "LIVREE") {
-    //   deliveredOrders++;
-    // }
+    if (orders[order].order_status === "EN_ATTENTE_DE_LIVRAISON") {
+      deliveredOrders++;
+    }
   }
   // console.log(pendingOrders + "/" + validOrders + "/" + deliveredOrders);
   function handleValidation(id) {
@@ -132,20 +126,75 @@ const OrderGridView = ({ orders, role }) => {
   }
   function editOrderState(id) {
     Swal.fire({
-      // title: `<hr/><p>Voulez vous marquer la commande #${id} comme <b><i>livrée</i></b>? </p>`,
       icon: "info",
       width: 300,
-      html: `<hr/><p>Voulez vous marquer la commande #${id} comme <b><i>livrée</i></b>? </p>`,
+      title: `<hr/><p>Marquer la commande #${id} <b><i>livrée</i></b> </p>`,
+      html: `
+      <hr/>
+      <form id="deliveryForm">
+      <div class="form-group">
+          <label for="driver">Chauffeur :</label>
+          <input type="text" class="form-control" id="swal-input1" required>
+        </div>
+        <div class="form-group">
+          <label for="truckRegistration">Immatriculation du camion :</label>
+          <input type="text" class="form-control" id="swal-input2" required>
+        </div>
+        
+        <div class="form-group">
+          <label for="date">Date :</label>
+          <input type="date" class="form-control" id="swal-input3" required>
+        </div>
+      </form>
+    `,
       showCancelButton: true,
-      cancelButtonText: "NON",
-      confirmButtonText: "OUI",
+      cancelButtonText: "Annuler",
+      confirmButtonText: "Enregistrer",
       confirmButtonColor: "#198754",
       cancelButtonColor: "red",
       allowOutsideClick: false,
+      preConfirm: () => {
+        const driver = document.getElementById("swal-input1").value;
+        const truckRegistration = document.getElementById("swal-input2").value;
+
+        const date = document.getElementById("swal-input3").value;
+        const today = new Date().toISOString().split("T")[0];
+
+        if (date < today) {
+          Swal.showValidationMessage(
+            "La date ne peut pas être antérieure à la date d'aujourd'hui"
+          );
+        }
+        if (!/^[A-Za-z0-9-]+\s*$/i.test(truckRegistration)) {
+          Swal.showValidationMessage(
+            "Numéro d'immatriculation du camion invalide"
+          );
+        }
+
+        if (!/^[A-Za-z\s]+$/.test(driver)) {
+          Swal.showValidationMessage("Nom du chauffeur invalide");
+        }
+
+        return {
+          truckRegistration: truckRegistration,
+          driver: driver,
+          date: date,
+        };
+      },
     }).then((response) => {
       if (response.isConfirmed) {
-        //Action to perform when the user click on the confirm button
-        console.log(`gunaydin Ögrençi ${id}`);
+        const deliveryDetails = response.value;
+        const payload = {
+          deliverRequest: {
+            driver: document.getElementById("swal-input1").value,
+            truckIM: document.getElementById("swal-input2").value,
+            deliverDate: document.getElementById("swal-input3").value,
+          },
+          id: id,
+          token: token,
+        };
+        //Action to perform when the user clicks on the confirm button
+
         const Toast = Swal.mixin({
           toast: true,
           position: "top",
@@ -156,30 +205,27 @@ const OrderGridView = ({ orders, role }) => {
           },
           showConfirmButton: false,
         });
-        try {
-          dispatchOrders(deliverOrder(id));
 
-          Toast.fire(
-            "Modification effectuée avec succés!",
-            "",
-            // text: `Votre commande a bien été enregistrée et est en cours de traitement!\nMerci de votre fidelité😊!!`,
-            "success"
-          ).then(function () {
-            window.location.reload();
-          });
+        try {
+          dispatchOrders(deliverOrder(payload));
+
+          Toast.fire("Modification effectuée avec succès!", "", "success").then(
+            function () {
+              window.location.reload();
+            }
+          );
         } catch (error) {
           Toast.fire(
             "Une erreur a été rencontrée, veuillez réessayer!",
             "",
-            // text: `Votre commande a bien été enregistrée et est en cours de traitement!\nMerci de votre fidelité😊!!`,
             "error"
           );
         }
       }
     });
   }
-  // console.log(role)
-  // console.log(orders)
+
+
   return (
     <div className="mt-16 space-y-16 w-[80vw] mx-auto">
       <Card>
@@ -198,20 +244,20 @@ const OrderGridView = ({ orders, role }) => {
               <option className="  rounded-full " value={"all"}>
                 Toutes
               </option>{" "}
-              {role === 2 && (
+              {isAdv && (
                 <option className="   rounded-full " value={"ATTENTE"}>
                   En Attente{" "}
-                  {/* <span className=" top-0 start-100 translate-middle badge rounded-pill bg-danger">
-                    {pendingOrders}
-                  </span> */}
                 </option>
               )}
               <option className="  rounded-full " value={"VALIDEE"}>
                 Validées
               </option>{" "}
-              {/* <option className="  rounded-full " value={"LIVREE"}>
-                Livrées
-              </option> */}
+              <option
+                className="  rounded-full "
+                value={"EN_ATTENTE_DE_LIVRAISON"}
+              >
+                En Attente de livraison
+              </option>
             </select>
           </div>
           <div className="rounded-lg  w-72 p-4 bg-white flex  transform hover:scale-105 transition duration-500">
@@ -257,32 +303,31 @@ const OrderGridView = ({ orders, role }) => {
               {" "}
               Total: &nbsp;
               <span className="   rounded-md bg-blue-200 text-blue-700  p-2 ">
-                {role === 1 ? (
+                {isComm ? (
                   <span>{validOrders}</span>
                 ) : (
                   <span>{orders.length}</span>
                 )}
               </span>
-             
             </div>
-            
-            {/* <div>
+
+            <div>
               {" "}
               Livrées: &nbsp;
               <span className="    rounded-md bg-blue-100 text-blue-600  p-2">
                 {deliveredOrders}
               </span>
-            </div> */}
-            {role === 2 && (
-              <div>
-                {" "}
-                Validées : &nbsp;
-                <span className="    rounded-md bg-green-100 text-green-600  p-2">
-                  {validOrders}
-                </span>
-              </div>
-            )}
-            {role === 2 && (
+            </div>
+            {/* {isAdv && ( */}
+            <div>
+              {" "}
+              Validées : &nbsp;
+              <span className="    rounded-md bg-green-100 text-green-600  p-2">
+                {validOrders}
+              </span>
+            </div>
+            {/* )} */}
+            {isAdv && (
               <div>
                 {" "}
                 En attente : &nbsp;
@@ -316,7 +361,7 @@ const OrderGridView = ({ orders, role }) => {
               <Tab>ORANGE</Tab>
             </TabsHeader>
           </Tabs> */}
-              {/* {role === 2 && (
+              {/* {isAdv && (
                 <button
                   className="btn   rounded-full "
                   onClick={() => changeFilter("ATTENTE")}
@@ -343,21 +388,17 @@ const OrderGridView = ({ orders, role }) => {
             <tbody>
               {orders
                 .filter((order) => {
-                  if (role === 1) {
-                    return (
-                      order.order_status !== "ATTENTE" &&
-                      order.order_status !== "LIVREE"
-                    );
+                  if (isComm) {
+                    return order.order_status !== "ATTENTE";
                   } else {
                     return order;
                   }
                 })
                 .filter((order) => {
                   if (filtre === "all") {
-                    console.log("fii la");
                     return order;
                   } else {
-                    console.log("2 yi la");
+                    console.log(orders);
                     return order.order_status === filtre;
                   }
                 })
@@ -374,6 +415,7 @@ const OrderGridView = ({ orders, role }) => {
                     order_status,
                     customer,
                     orderItems,
+                    delivery,
                     facture,
                   } = order;
                   const formattedDate = new Date(order_Date);
@@ -413,7 +455,7 @@ const OrderGridView = ({ orders, role }) => {
                         </span>{" "}
                         {/* <div className="vr mx-2 ml-2"></div> */}
                         {order_status === "ATTENTE" ? (
-                          role === 2 ? (
+                          isAdv ? (
                             <button
                               className="btn flex bg-blue-200  text-blue-800"
                               onClick={() => {
@@ -428,40 +470,39 @@ const OrderGridView = ({ orders, role }) => {
                         ) : (
                           ""
                         )}
-                        {
-                          // order_status === "LIVREE" ? (
-                          // role === 1 && order_status !== "LIVREE" ? (
-                          //   <button
-                          //     className="btn flex bg-slate-200  text-white-800"
-                          //     onClick={() => {
-                          //       editOrderState(order_id);
-                          //     }}
-                          //   >
-                          //     <PencilAltIcon
-                          //       className="h-5 w-5"
-                          //       id="deliveredOrder"
-                          //     />
-                          //     <Tooltip
-                          //       autohide
-                          //       flip
-                          //       isOpen={tooltipOpen}
-                          //       target={"deliveredOrder"}
-                          //       toggle={toggle}
-                          //     >
-                          //       Marquer comme{" "}
-                          //       <i>
-                          //         <b>livrée</b>
-                          //       </i>
-                          //     </Tooltip>
-                          //   </button>
-                          // ) : (
-                          //   ""
-                          // )
-                          // ) : (
-                          //   ""
-                          // )
-                        }
-                        {/* {order_status === "ATTENTE" && role === 2 ? (
+                        {order_status === "VALIDEE" && delivery !== null ? (
+                          isComm &&
+                          order_status !== "EN_ATTENTE_DE_LIVRAISON" ? (
+                            <button
+                              className="btn flex bg-slate-200  text-white-800"
+                              onClick={() => {
+                                editOrderState(order_id);
+                              }}
+                            >
+                              <PencilAltIcon
+                                className="h-5 w-5"
+                                id="deliveredOrder"
+                              />
+                              <Tooltip
+                                autohide
+                                flip
+                                isOpen={tooltipOpen}
+                                target={"deliveredOrder"}
+                                toggle={toggle}
+                              >
+                                Marquer comme{" "}
+                                <i>
+                                  <b>livrée</b>
+                                </i>
+                              </Tooltip>
+                            </button>
+                          ) : (
+                            ""
+                          )
+                        ) : (
+                          ""
+                        )}
+                        {/* {order_status === "ATTENTE" && isAdv ? (
                           <button
                             className="btn flex bg-blue-200  text-blue-800"
                             onClick={() => {

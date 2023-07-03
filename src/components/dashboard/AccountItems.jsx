@@ -16,105 +16,18 @@ import {
   delAccount,
   unLockAccount,
 } from "../../store/actions/admin-action";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { FaUnlock } from "react-icons/fa";
 import { CheckIcon, XIcon } from "@heroicons/react/solid";
 
 const AccountItems = ({ account, update, type }) => {
+  const token = localStorage.getItem("token");
   const [modalShow, setModalShow] = useState(false);
 
   const [selectedOrder, setselectedOrder] = useState();
   const formattedDate = new Date(account.dateOuverture);
   const dispatch = useDispatch();
-  // console.log(account);
-  //   const handleUpdate = () => {
-  //     Swal.fire({
-  //       title: `Mise à jour  du compte ${product.product_label} #${product.id} `,
-  //       icon: "info",
-  //       width: 700,
-  //       html: `<Card class="card-body">
-  //               <Form>
-  //             <div class="form-group">
-  //  Nom Qualité Produit : <input id="swal-input1" class="swal2-input bg-green-200 " value="${
-  //    product.product_label
-  //  }" placeholder="Nom" />
-  // </div>
-  // <br/>
-  //           <div class="form-group">
-  //           Code Qualité Produit : <input id="swal-input2" class="swal2-input bg-green-200 " value="${
-  //             product.product_label
-  //           }" placeholder="Nom" disabled/>
-  //           </div>
-  //           <br/>
-  //           <div class=" form-group">
-  //             <label>Tarification:</label> <select id="swal-input3" class="swal2-input form-select">
-  //               ${tarificationOptions
-  //                 .map(
-  //                   (option) =>
-  //                     `<option value="${option.id}"
-  //                       ${
-  //                         option.id === product.tarification.id ? "selected" : ""
-  //                       }>${option.montant}</option>`
-  //                 )
-  //                 .join("")}
 
-  //             </select>
-  //           </div>
-  //           <br/>
-  //           <div class="form-group">
-  //           Description: <textArea  id="swal-input4" class="swal2-input bg-green-200 form-control" value="${
-  //             product.product_description
-  //           }" placeholder="Ce produit ...." cols="50" rows="10" /></textArea>
-  //           </div>
-  //           <br/>
-  //               </Form>
-  //             </Card>
-  //       `,
-  //       showCancelButton: true,
-  //       cancelButtonText: "Annuler",
-  //       confirmButtonText: "Modifier",
-  //       confirmButtonColor: "#F6BD60",
-  //       cancelButtonColor: "#C9184A",
-  //       allowOutsideClick: false,
-  //     }).then((response) => {
-  //       if (response.isConfirmed) {
-  //         //Action to perform when the user click on the confirm button
-  //         console.log(`gunaydin Ögrençi ${product.id}`);
-  //         const payload = {
-  //           addRequest: {
-  //             product_type: document.getElementById("swal-input2").value,
-  //             tarification: document.getElementById("swal-input3").value,
-  //             product_description: document.getElementById("swal-input4").value,
-  //           },
-  //           id: product.id,
-  //         };
-  //         try {
-  //           dispatch(updateProduct(payload));
-  //           const Toast = Swal.mixin({
-  //             toast: true,
-  //             position: "top",
-  //             timer: 1000,
-  //             timerProgressBar: true,
-  //             customClass: {
-  //               popup: "bg-green-600",
-  //             },
-  //             showConfirmButton: false,
-  //           });
-  //           Toast.fire(
-  //             `Le tarif ${
-  //               document.getElementById("swal-input2").value
-  //             } a été affecté à la destinationnom} avec succés`,
-  //             "",
-  //             "success"
-  //           ).then(function () {
-  //             // window.location.reload();
-  //           });
-  //         } catch (error) {
-  //           console.log("%c" + error, "color:red");
-  //         }
-  //       }
-  //     });
-  //   };
   const handleDelete = () => {
     Swal.fire({
       title: `Etes-vous sur de vouloir supprimer/bloquer le compte #${account.id} de l'utilisateur ${account.username} ?`,
@@ -145,7 +58,7 @@ const AccountItems = ({ account, update, type }) => {
           showConfirmButton: false,
         });
         try {
-          dispatch(blockAccount(account.id));
+          dispatch(blockAccount(account.id, token));
 
           Toast.fire(
             "Compte bloqué avec succés!",
@@ -178,7 +91,7 @@ const AccountItems = ({ account, update, type }) => {
           showConfirmButton: false,
         });
         try {
-          dispatch(delAccount(account.id));
+          dispatch(delAccount(account.id, token));
           Toast.fire(
             "Compte supprimé avec succés!",
             "",
@@ -225,7 +138,7 @@ const AccountItems = ({ account, update, type }) => {
           showConfirmButton: false,
         });
         try {
-          dispatch(unLockAccount(account.id));
+          dispatch(unLockAccount(account.id, token));
           Toast.fire(
             "Compte bloqué avec succés!",
             "",

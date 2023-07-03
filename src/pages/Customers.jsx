@@ -3,7 +3,6 @@ import React, { useEffect } from "react";
 import PageHero from "../layout/PageHero";
 import OrdersList from "../components/orders/OrdersList";
 import { motion } from "framer-motion";
-import { getOrders } from "../store/actions/oder-action";
 import { useDispatch, useSelector } from "react-redux";
 import UsersList from "../components/users/UsersList";
 import { getUsers } from "../store/actions/user-action";

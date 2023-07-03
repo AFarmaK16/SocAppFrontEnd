@@ -156,7 +156,7 @@ title = " Types de paiement";
             <span className="inline-flex mr-3 text-green-600">
               <MdAddCircle />{" "}
             </span>
-            Ajouter un compte
+           Nouveau
           </button>
         </div>
         <Table

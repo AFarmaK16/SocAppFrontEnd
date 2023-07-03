@@ -16,6 +16,7 @@ import { Card, CardHeader } from "reactstrap";
 import { formFields } from "../../layout/Fields";
 
 const ProductItem = ({ product, update }) => {
+  const token = localStorage.getItem("token");
   const tarificationOptions = useSelector(
     (state) => state.settings.tarifications
   );
@@ -46,7 +47,7 @@ const ProductItem = ({ product, update }) => {
           showConfirmButton: false,
         });
         try {
-          dispatch(deleteProduct(id));
+          dispatch(deleteProduct(id, token));
           Toast.fire("Produit supprimé avec succés!", "", "success").then(
             function () {
               window.location.reload();
@@ -126,6 +127,7 @@ const ProductItem = ({ product, update }) => {
             product_description: document.getElementById("swal-input4").value,
           },
           id: product.id,
+          token: token,
         };
         const Toast = Swal.mixin({
           toast: true,

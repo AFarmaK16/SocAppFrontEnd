@@ -2,13 +2,14 @@ import axios from "axios";
 
 let api = axios.create({
     baseURL: 'http://localhost:8081',
-    headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json',
-    },
+    // headers: {
+    //     'Accept': 'application/json',
+    //     'Content-Type': 'application/json',
+    // },
     withCredentials: true
 });
 
+//SETTING THE TOKEN IN THE REQUEST HEADER
 // api.interceptors.request.use(request => {
 //     request.headers.common['Accept']       = 'application/json*';
 //     request.headers.common['Content-Type'] = 'application/json';

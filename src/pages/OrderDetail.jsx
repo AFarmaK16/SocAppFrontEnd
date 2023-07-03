@@ -23,24 +23,19 @@ const containerVariants = {
 };
 
 const OrderDetail = () => {
+  const token = localStorage.getItem("token");
   const { orderId } = useParams();
   const dispatchOrders = useDispatch();
   const loading = useSelector((state) => state.ui.orderDetailLoading);
 
   useEffect(() => {
-    dispatchOrders(getOrdersById(orderId));
+    dispatchOrders(getOrdersById(orderId, token));
   }, [dispatchOrders, orderId]);
 
   // const product = useSelector((state) => state.products.productDetails);
   const order = useSelector((state) => state.orders.orderDetails);
-  // alert(order)
 
-  // const [orders,setOrder] = useState(useSelector((state) => state.orders.ordersDetails));
-  // console.log("-----------------ORDER ITEM");
-  // console.log(loading);
   console.log(order);
-  // console.log("-----------------ORDER ITEM");
-  // const { id, login, password, role, dateOuverture, userRefID } = account;
 
   const {
     order_id,
@@ -53,15 +48,7 @@ const OrderDetail = () => {
     facture,
     // orderItems,
   } = order;
-  // const {
-  //   customerID,
-  //   name,
-  //   surname,
-  //   address,
-  //   phoneNumber,
-  //   account
-  // } = order.customer;
-  // const { id, quantity, product } = order.orderItems;
+
 
   const nbTonnes = 0;
 
@@ -89,36 +76,15 @@ const OrderDetail = () => {
               <TheSpinner />
             ) : (
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-16">
-                {/* <ProductImages order_image={order_image} /> */}
                 <h1>CUSTOMER INFORMATION</h1>
                 <hr />
                 <div>
-                  {/* <div key={customer}>
-                {customer}
-              </div> */}
                   <h1>hey</h1>
                   <div>{customer.name}</div>
                   <div>{customer.surname}</div>
                   <div>{customer.address}</div>
                   <div>{customer.phoneNumber}</div>
-                  {/* {order.customer.map((customer) => {
-                    const {
-                      customerID,
-                      name,
-                      surname,
-                      address,
-                      phoneNumber,
-                      account
-                    } = customer;
-                    return (
-            <div>
-               <div>{name}</div>
-              <div>{surname}</div>
-              <div>{address}</div>
-              <div>{phoneNumber}</div>
-            </div>
-                    )
-                  })} */}
+                
                 </div>
 
                 <div>
@@ -137,35 +103,17 @@ const OrderDetail = () => {
                     </div>
                   </div>
                   <p className="text-lg  tracking-wider text-gray-600">
-                    {/* <p className="text-lg font-semibold text-secondary-100 tracking-widest italic my-4"> */}
                     <b>Montant TTC </b> {formatPrice(order_Amount)}
                   </p>
                   <p className="text-lg  tracking-wider text-gray-600">
-                    {/* <p className="text-lg font-semibold text-secondary-100 tracking-widest italic my-4"> */}
-                    {/* <b>Nombre de produits: </b> {orderItems.length} */}
                   </p>
 
                   <hr className="my-6" />
                   <p className="text-lg  tracking-wider text-gray-600">
-                    {/* <p className="max-w-3xl tracking-wider leading-8 text-gray-500 mb-6"> */}
                     <b> Details Commandes:</b>
                   </p>
                   <hr />
-                  {/* <div>
-                {orders.orderItems.map((item) => {
-                  nbTonnes += item.quantity;
-                  return (
-                    <ol key={item.id}>
-                      <h1>{item.product.product_label}</h1>
-                      <li>{item.product.product_price}</li>
-                      <li>Quantity: {item.quantity}</li>
-                      <li>{item.product.product_type}</li>
-                      <li>{item.product.product_description}</li>
-                      <li>{item.product.product_imag}</li>
-                    </ol>
-                  );
-                })}
-              </div> */}
+                
                   <p className="text-lg  tracking-wider text-gray-600">
                     <b>Nombre total de tonnes: </b> {nbTonnes}
                   </p>

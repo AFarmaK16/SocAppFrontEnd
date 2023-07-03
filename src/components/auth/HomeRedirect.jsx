@@ -1,13 +1,26 @@
 import React from "react";
 import { useSelector } from "react-redux";
 import { Navigate, Outlet } from "react-router-dom";
+import MainNavigation from "../../layout/MainNavigation";
+import CustomerDashBoard from "../../pages/dashboard/CustomerDashBoard";
 
 
 const LoginRedirect = () => {
-    const { isAdmin } = useSelector((state) => state.auth);
+    const  isCustomer = useSelector((state) => state.auth.isCustomer);
+    console.log(useSelector((state) => state.auth.isCustomer));
+    console.log(isCustomer);
+    const { isAuthenticated } = useSelector((state) => state.auth.isAuth);
 
-    return (
-        isAdmin ?  <Navigate to='/admin/dashboard' replace /> : <Outlet />
+    return isCustomer ? (
+      //   <Navigate to="/customer/products" replace />
+      <div>
+        {" "}
+        <CustomerDashBoard /> <Outlet />
+      </div>
+    ) : (
+      <div>
+        <MainNavigation /> /<Outlet />
+      </div>
     );
 
 };

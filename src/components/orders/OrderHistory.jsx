@@ -20,15 +20,14 @@ import {
 } from "reactstrap";
 
 import {
-  getCustomerOrders,
-  getOrders,
-  getOrdersById,
+  getCustomerOrders 
 } from "../../store/actions/oder-action";
 import { FaSearch } from "react-icons/fa";
 import { isEmptyArray } from "formik";
 import { DotsHorizontalIcon, InformationCircleIcon } from "@heroicons/react/solid";
 
 const OrderHistory = () => {
+    const userID = useSelector((state) => state.auth.userID);
   const containerVariants = {
     hidden: {
       opacity: 0,
@@ -46,9 +45,7 @@ const OrderHistory = () => {
   const nbTonnes = 0;
   const dispatch = useDispatch();
 
-  useEffect(() => {
-    dispatch(getCustomerOrders(4));
-  }, [dispatch, 4]);
+
     
   const [modalShow, setModalShow] = useState(false);
   
@@ -57,16 +54,14 @@ const OrderHistory = () => {
   const [selectedOrder, setselectedOrder] = useState();
   const loading = useSelector((state) => state.ui.customerOrdersLoading);
   const orders = useSelector((state) => state.orders.filteredOrders);
-  console.log(orders)
+  // console.log(orders)
   let count = 0;
   for (const order in orders) {
     if (orders[order].order_status === "ATTENTE") {
       count++;
     }
   }
-  // alert(product)
-  // console.log("ord:")
-  console.log(loading);
+
 
   return (
     
@@ -84,7 +79,7 @@ const OrderHistory = () => {
             <div>
               <h4>Il semble que vous n'ayez pas encore passé de commande</h4>{" "}
               <Link
-                to="/products"
+                to="/customer/c/products"
                 className="uppercase  px-4 py-2 rounded text-green font-semibold shadow-lg"
               >
                 Passer une commande
@@ -93,19 +88,8 @@ const OrderHistory = () => {
             </div>
           ) : (
             <div>
-              {/* {orders.map((order) => {
-                const {
-                  order_id,
-                  order_Date,
-                  order_Amount,
-                  order_status,
-                  customer,
-                  orderItems,
-                  facture,
-                } = order;
-                const formattedDate = new Date(order_Date); */}
-                {/* return ( */}
-                  <Card>
+
+                  <Card className="table table-reponsive">
                     <CardHeader>
                       <InputGroup>
                         <InputGroupText>

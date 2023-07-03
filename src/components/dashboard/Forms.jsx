@@ -15,6 +15,7 @@ import {
 import Swal from "sweetalert2";
 import { addProduct } from "../../store/actions/products-actions";
 const Forms = (props) => {
+  const token = localStorage.getItem("token");
   const dispatch = useDispatch();
   const {
     register,
@@ -31,7 +32,6 @@ const Forms = (props) => {
       { label: "Nom", name: "name", type: "text" },
       { label: "Prenom", name: "surname", type: "text" },
       { label: "Identifiant", name: "username", type: "text" },
-      { label: "Mot de passe", name: "password", type: "password" },
       { label: "Role", name: "role", type: "select" },
     ],
     product: [
@@ -67,8 +67,9 @@ const Forms = (props) => {
 
   const selectedRole = watch("role");
   const roleOptions = [
-    { label: "Administrateur Vente", value: "ADMIN" },
+    { label: "Administrateur Vente", value: "ADV" },
     { label: "Commercial", value: "COMMERCIAL" },
+    { label: "Administrateur", value: "ADMIN" },
   ];
   const payOptions = [
     { label: "Banque", value: 0 },
@@ -224,111 +225,10 @@ const Forms = (props) => {
     });
   };
   const renderExtraInputs = () => {
-    // if (
-    //   // field.name === "role" &&
-    //   props.usertype === "users"
-    // ) {
-    //   return (
-    //     <div className="grid grid-rows-2 gap-4">
-    //       {/* <div> */}
-    //       <Col className="relative z-0 border-bottom">
-    //         <input
-    //           id="employeename"
-    //           className="block py-2.5 px-0 w-full text-sm  text-black bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-slate-500 focus:outline-none focus:ring-0 focus:border-slate-600 peer"
-    //           type="text"
-    //           {...register("employeename", {
-    //             required: true,
-    //             pattern: /^[a-zA-Z\s]*$/,
-    //           })}
-    //           placeholder=" "
-    //         />
-    //         {errors.employeename && (
-    //           <span className="error text-danger">
-    //             **Ce champ est obligatoire.
-    //           </span>
-    //         )}
-    //         <label
-    //           htmlFor="employeename"
-    //           className="absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-slate-600 peer-focus:dark:text-slate-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
-    //         >
-    //           {" "}
-    //           Nom:
-    //         </label>
-    //       </Col>
-    //       <Col className="relative z-0 border-bottom ">
-    //         <input
-    //           id="employeesurname"
-    //           className="block py-2.5 px-0 w-full text-sm  text-black bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-slate-500 focus:outline-none focus:ring-0 focus:border-slate-600 peer"
-    //           type="text"
-    //           {...register("employeesurname", { required: true })}
-    //           placeholder=" "
-    //         />
-    //         <label
-    //           htmlFor="employeesurname"
-    //           className="absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-slate-600 peer-focus:dark:text-slate-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
-    //         >
-    //           {" "}
-    //           Prénom:
-    //         </label>
-    //         {errors.employeesurname && (
-    //           <span className="error text-danger">
-    //             **Ce champ est obligatoire.
-    //           </span>
-    //         )}
-    //       </Col>
-    //     </div>
-    //   );
-    // } else
     if (props.usertype === "CUSTOMER") {
       // console.log("usersr");
       return (
         <>
-          {/* <div> */}
-          {/* <div className="grid grid-cols-2 gap-4"> */}
-          {/* <div className=" relative z-0 border-bottom ">
-            <input
-              id="name"
-              className={` block py-2.5 px-0 w-full text-sm  text-black bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-slate-500 focus:outline-none focus:ring-0 focus:border-slate-600 peer
-                 ${errors.name ? "is-invalid" : ""}`}
-              type="text"
-              {...register("name", { required: true })}
-              placeholder=" "
-            />
-            {errors.name && (
-              <span className="error text-danger">
-                **Ce champ est obligatoire.
-              </span>
-            )}{" "}
-            <label
-              htmlFor="name"
-              className="absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-slate-600 peer-focus:dark:text-slate-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
-            >
-              Nom
-            </label>
-          </div>
-          <br />
-          <div className=" relative z-0 border-bottom">
-            <input
-              id="surname"
-              className={`block py-2.5 px-0 w-full text-sm  text-black bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-slate-500 focus:outline-none focus:ring-0 focus:border-slate-600 peer
-                 ${errors.surname ? "is-invalid" : ""}`}
-              type="text"
-              {...register("surname", { required: true })}
-              placeholder=" "
-            />
-            {errors.surname && (
-              <span className="error text-danger">
-                **Ce champ est obligatoire.
-              </span>
-            )}{" "}
-            <label
-              htmlFor="surname"
-              className="absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-slate-600 peer-focus:dark:text-slate-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
-            >
-              Prenom
-            </label>
-          </div>
-          <br /> */}
           <div className=" relative z-0 border-bottom ">
             {" "}
             <input
@@ -384,57 +284,48 @@ const Forms = (props) => {
     // Handle form submission
     const payload = {
       addRequest: data,
+      token: token,
       // table: props.about,
     };
 
     console.log(data);
-      const Toast = Swal.mixin({
-        toast: true,
-        position: "top",
-        timer: 1000,
-        timerProgressBar: true,
-        customClass: {
-          popup: "bg-green-600",
-        },
-        showConfirmButton: false,
-      });
+    const Toast = Swal.mixin({
+      toast: true,
+      position: "top",
+      timer: 1000,
+      timerProgressBar: true,
+      customClass: {
+        popup: "bg-green-600",
+      },
+      showConfirmButton: false,
+    });
     try {
       switch (props.about) {
         case "tarification": //😁😀😀
           dispatch(addTarif(payload));
-          // console.log("dieulna tarif");
-          console.log("EXECEUTION DE    addTarif(payload);");
 
           break;
         case "destination": //😁😀😀
           dispatch(addDestination(payload));
-          console.log("EXECEUTION DE   addDestination(payload);");
 
-          // console.log("dieulna dest");
           break;
         // break;
         case "payMode": //😁😀😀
           dispatch(addPayMode(payload));
-          console.log("EXECEUTION DE  addPayMode(payload)");
+
           break;
         case "payType": //😁😀😀
           dispatch(addPayType(payload));
-          console.log("EXECEUTION DE addPayType(payload)");
 
           break;
         case "product": //😁😀😀
           dispatch(addProduct(payload));
           // console.log("dieulna tarif");
-          console.log("EXECEUTION DE    addTarif(payload);");
 
           break;
         case "account": //😁😀😀 password: data.password, username: data.username, role: data.role
           accountRequest.append("username", data.username);
-          accountRequest.append("password", data.password);
-          // const payload = {
-          //   accountRequest: accountRequest,
-          // };
-          //
+
           if (props.usertype === "users") {
             const user = {
               name: data.name,
@@ -442,7 +333,7 @@ const Forms = (props) => {
             };
             accountRequest.append("role", data.role);
             accountRequest.append("user", JSON.stringify(user));
-            dispatch(addUser(accountRequest));
+            dispatch(addUser(accountRequest, token));
           } else {
             const customer = {
               name: data.name,
@@ -452,33 +343,27 @@ const Forms = (props) => {
             };
             accountRequest.append("customer", JSON.stringify(customer));
 
-            dispatch(addCustomer(accountRequest)); //😁😀
+            dispatch(addCustomer(accountRequest, token)); //😁😀
           }
-          // console.log("dieulna tarif");
-          console.log("EXECEUTION DE    addTarif(payload);");
 
           break;
-        // default:
-        //   tableContent = destinations;
-        // break;
       }
-      // dispatch(manageCreation(payload));
 
-    
       Toast.fire(
-         "Opération effectuée avec succés !","",
+        "Opération effectuée avec succés !",
+        "",
         // text: `Votre commande a bien été enregistrée et est en cours de traitement!\nMerci de votre fidelité😊!!`,
         "success"
       ).then(function () {
         window.location.reload();
       });
     } catch (error) {
-       Toast.fire(
-         "Une erreur a été rencontrée, veuillez réessayer!",
-         "",
-         // text: `Votre commande a bien été enregistrée et est en cours de traitement!\nMerci de votre fidelité😊!!`,
-         "error"
-       )
+      Toast.fire(
+        "Une erreur a été rencontrée, veuillez réessayer!",
+        "",
+        // text: `Votre commande a bien été enregistrée et est en cours de traitement!\nMerci de votre fidelité😊!!`,
+        "error"
+      );
     }
   };
 

@@ -2,8 +2,10 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { formatPrice } from "../../utils/helpers";
 import { HiChevronDoubleRight } from "react-icons/hi";
+import { useSelector } from "react-redux";
 
 const ListView = ({ products }) => {
+   const isAuthenticated = useSelector((state) => state.auth.isAuth);
   return (
     <div>
       {products.map((product) => {
@@ -14,6 +16,8 @@ const ListView = ({ products }) => {
           tarification,
           product__image,
         } = product;
+   
+
         return (
           <div key={id} className="flex mb-8">
             <img
@@ -31,6 +35,7 @@ const ListView = ({ products }) => {
               <p className="max-w-2xl mb-3 text-gray-500">
                 {product_description.substring(0, 150)}...
               </p>
+              
               <Link
                 to={`/products/${id}`}
                 className="text-sm uppercase bg-secondary-100 text-white rounded-md font-bold py-1 px-2 ml-auto shadow-lg"

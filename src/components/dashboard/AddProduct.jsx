@@ -13,24 +13,22 @@ import TheSpinner from "../../layout/TheSpinner";
 
 const AddProduct = () => {
   const dispatch = useDispatch();
-  const token = useSelector((state) => state.auth.token);
+  const token = localStorage.getItem("token");
   const loading = useSelector((state) => state.ui.addPrductLoading);
   const [tnail, setTnail] = useState("");
   const [pImages, setPImages] = useState("");
 
   const thumbnailHandler = (file) => {
-    console.log('thumbnail: ', file);
+    console.log("thumbnail: ", file);
     setTnail(file);
   };
 
-
   const imagesHandler = (event) => {
     const imageArray = [];
-    for (let i=0; i < event.target.files.length; i++) {
+    for (let i = 0; i < event.target.files.length; i++) {
       imageArray.push(event.target.files[i]);
     }
     setPImages(imageArray);
-
   };
 
   const initialValues = {
@@ -54,24 +52,24 @@ const AddProduct = () => {
     }),
     onSubmit: async (values) => {
       const formData = new FormData();
-      formData.append('thumbnail', tnail);
+      formData.append("thumbnail", tnail);
 
-      for (let i=0; i < pImages.length; i++) {
-        formData.append('images[]', pImages[i]);
-      } 
+      for (let i = 0; i < pImages.length; i++) {
+        formData.append("images[]", pImages[i]);
+      }
 
-      formData.append('name', values.name);
-      formData.append('description', values.description);
-      formData.append('price', values.price);
-      formData.append('category', values.category);
-      formData.append('brand', values.brand);
-      formData.append('sku', formik.values.sku);
+      formData.append("name", values.name);
+      formData.append("description", values.description);
+      formData.append("price", values.price);
+      formData.append("category", values.category);
+      formData.append("brand", values.brand);
+      formData.append("sku", formik.values.sku);
       const shippingValue = formik.values.shipping ? 1 : 0;
-      formData.append('shipping', shippingValue);
+      formData.append("shipping", shippingValue);
 
       const payload = {
         product: formData,
-        token
+        token,
       };
 
       try {
@@ -83,7 +81,6 @@ const AddProduct = () => {
           icon: "success",
           button: "OK!",
         });
-        
       } catch (error) {
         console.log(error);
       }

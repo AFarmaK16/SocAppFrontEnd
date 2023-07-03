@@ -7,9 +7,7 @@ import CartSummary from "./CartSummary";
 import { cartActions } from "../../store/cart-slice";
 import { formatPrice } from "../../utils/helpers";
 import { useForm } from "react-hook-form";
-import {
-  //  getBanks, 
-   getDestinations } from "../../store/actions/oder-action";
+import { getDestinations } from "../../store/actions/oder-action";
 import { formActions } from "../../store/form-slice";
 import { Alert, Card, CardBody } from "reactstrap";
 
@@ -22,9 +20,10 @@ const CartContent = ({
   totalPrice,
   totalQuantity,
 }) => {
+  const token = localStorage.getItem("token");
   const tva = 18 / 100;
-    const totalRedevance = totalQuantity * 2000;
-    const totalTaxeCons = 3000 * totalQuantity;
+  const totalRedevance = totalQuantity * 2000;
+  const totalTaxeCons = 3000 * totalQuantity;
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(getDestinations());
@@ -47,7 +46,7 @@ const CartContent = ({
   const clearCart = () => {
     dispatch(cartActions.clearCart());
   };
-      console.log("tot bi " + totalPrice);
+  console.log("tot bi " + totalPrice);
   const handleRendu = (tarif) => {
     // alert(isRenduChecked)
     //  if (!isRenduChecked) {
@@ -70,37 +69,25 @@ const CartContent = ({
     //if rendu is unchecked
     //  dechargement = 400 * totalQuantity.toFixed(2);
     setTotalP(totalP - totalQuantity.toFixed(2) * 400);
-    // setTotalP(totalP + totalQuantity.toFixed(2) * 400);
-    //    const payload = {
 
-    //      totalPrice,
-    //    };
-    //  dispatch(cartActions.addDecharg());
-    // setRenduChecked(e.target.checked);
-    // if (isDechargeChecked) {
-    //   finalTotal += dechargement;
-    // } else {
-    // 😀
-    // setTotal(finalTotal - dechargement);
-    //  += ;
     console.log(totalPrice + " ehh manla");
     // }
     // console.log(" rendu " + e.target.checked);
   };
-      const Montant_Tva =
-        totalP * tva + transport * tva + dechargement * tva + totalRedevance*tva+totalTaxeCons*tva;
-      const ttc = totalP + Montant_Tva + transport + dechargement+totalRedevance+totalTaxeCons;
+  const Montant_Tva =
+    totalP * tva +
+    transport * tva +
+    dechargement * tva +
+    totalRedevance * tva +
+    totalTaxeCons * tva;
+  const ttc =
+    totalP +
+    Montant_Tva +
+    transport +
+    dechargement +
+    totalRedevance +
+    totalTaxeCons;
   const handleFormSubmit = async (event) => {
-    //  const { name, value } = event.target;
-    // setDeliveryData((deliveryData)=>({
-    //   ...deliveryData,
-    //    [name]: value,
-    // }));
-    // const formData = new FormData(event.target);
-    // const formValues = Object.fromEntries(formData.entries());
-
-
-
     console.log("CONTENU");
     console.log(event);
     // alert("youpiii" + totalQuantity.toFixed(2));
@@ -113,6 +100,7 @@ const CartContent = ({
       isDecharged: isDechargeChecked,
       ttc: ttc,
       Montant_Tva: Montant_Tva,
+      token: token,
     };
     dispatch(formActions.saveShippingInfos(payload));
   };

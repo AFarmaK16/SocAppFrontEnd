@@ -12,7 +12,6 @@ import { formatPrice } from "../utils/helpers";
 import TheSpinner from "../layout/TheSpinner";
 // -----------------JUST FOR TEST PURPOSE
 import product_img from "../assets/cemiib-ll32-5rce.jpg";
-import { getOrders, getOrdersById } from "../store/actions/oder-action";
 import { Col, Row } from "reactstrap";
 
 const containerVariants = {
@@ -34,17 +33,15 @@ const ProductDetail = () => {
   const dispatch = useDispatch();
   const dispatchOrders = useDispatch();
   const loading = useSelector((state) => state.ui.productDetailLoading);
+    const isAuthenticated = useSelector((state) => state.auth.isAuth);
 
   useEffect(() => {
     dispatch(getProductDetails(productId));
   }, [dispatch, productId]);
-  //  useEffect(() => {
-  //    dispatchOrders(getOrders());
-  //  }, [dispatchOrders]);
+
 
   const product = useSelector((state) => state.products.productDetails);
-  //     const orders = useSelector((state) => state.orders.filteredOrders);
-  //     // alert(product)
+
   console.log(product)
   const {
     id,
@@ -77,12 +74,22 @@ const {montant}= tarification || {};
     >
       <PageHero title={product_label} product />
       <div className="mt-16 space-y-16 w-[80vw] mx-auto">
-        <Link
-          to="/products"
-          className="uppercasepx-4 py-2 rounded text-white font-semibold shadow-lg"
-        >
-          <button className="btn btn-success">Retour</button>
-        </Link>
+        {isAuthenticated ? (
+          <Link
+            to="/customer/c/products"
+            className="uppercasepx-4 py-2 rounded text-white font-semibold shadow-lg"
+          >
+            <button className="btn btn-success">Retour</button>
+          </Link>
+        ) : (
+          <Link
+            to="/products"
+            className="uppercasepx-4 py-2 rounded text-white font-semibold shadow-lg"
+          >
+            <button className="btn btn-success">Retour</button>
+          </Link>
+        )}
+
         {loading ? (
           <TheSpinner />
         ) : (
@@ -132,7 +139,7 @@ const {montant}= tarification || {};
             </Col>
             <div>
               <br />
-              <AddToCart product={product} />
+              {isAuthenticated && <AddToCart product={product} />}
             </div>
           </div>
         )}

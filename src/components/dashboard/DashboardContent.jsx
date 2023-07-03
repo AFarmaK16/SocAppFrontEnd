@@ -5,59 +5,52 @@ import BarChart from "../../charts/BarChart";
 import LineChart from "../../charts/LineChart";
 import DoughnutChart from "../../charts/DoughnutChart";
 import RadarChart from "../../charts/RadarChart";
+import { useDispatch, useSelector } from "react-redux";
+import { getUserById } from "../../store/actions/user-action";
+import { useEffect } from "react";
 
 const DashboardContent = () => {
+    const user = useSelector((state) => state.auth.user);
+    const role = useSelector((state) => state.auth.role);
+  const dispatch = useDispatch();
+
+         const userID = useSelector((state) => state.auth.userID);
+
+         useEffect(() => {
+           dispatch(getUserById(userID));
+         }, [dispatch, userID]);
+  const accountData = useSelector((state) => state.users.userDetails);
+  console.log(accountData)
+
+
   return (
     <div className="">
       {/* start banner */}
       <div className="bg-indigo-200 m-7 p-6">
         <div className="text-4xl text-gray-800 font-medium">
-        Bonjour, ...
+          Bonjour,{role} &nbsp;
+          {user}
+          {/* <b>
+            {accountData.customer ? (
+              <span>
+                {accountData.customer.name} &nbsp;{" "}
+                {accountData.customer.surname}
+              </span>
+            ) : (
+              <span>
+                {accountData.user.name} &nbsp;{" "}
+                {accountData.user.surname}
+              </span>
+            )}
+          </b> */}
         </div>
-        <div className="mt-4">
-          {/* These are the stats for today, have a good day. */}
-        </div>
+        <div className="mt-4"></div>
       </div>
-      {/* end banner */}
 
       <div className="flex m-7 space-x-6">
-        <div className="w-1/2 bg-white p-4">
-          <span className="text-amber-400 text-2xl">
-            <FaWallet />
-          </span>
-          <h2 className="font-bold text-xl text-gray-700">
-           BAR
-          </h2>
-          <h3 className="uppercase my-3 font-bold text-sm text-gray-400">
-            products
-          </h3>
-          <div className="flex items-center">
-            <span className="font-bold text-3xl mr-2">$24,780</span>
-            <span className="bg-green-500 rounded-full p-1 text-white text-sm font-bold align-text-top">
-              +49%
-            </span>
-          </div>
+        <div className="w-100 bg-white p-4">
           <BarChart />
         </div>
-        <div className="w-1/2 bg-white p-4">
-          <span className="text-amber-400 text-2xl">
-            <FaWallet />
-            <FaStore/>
-          </span>
-          <h2 className="font-bold text-xl text-gray-700">
-            LINE
-          </h2>
-          <h3 className="uppercase my-3 font-bold text-sm text-gray-400">
-            products
-          </h3>
-          <div className="flex items-center">
-            <span className="font-bold text-3xl mr-2">$24,780</span>
-            <span className="bg-red-500 rounded-full p-1 text-white text-sm font-bold align-text-top">
-              -9%
-            </span>
-          </div>
-          <LineChart />
-        </div>
       </div>
 
       <div className="flex m-7 space-x-6">
@@ -65,37 +58,11 @@ const DashboardContent = () => {
           <span className="text-amber-400 text-2xl">
             <FaWallet />
           </span>
-          <h2 className="font-bold text-xl text-gray-700">
-            DOGNUT
-          </h2>
-          <h3 className="uppercase my-3 font-bold text-sm text-gray-400">
-            products
-          </h3>
-          <div className="flex items-center">
-            <span className="font-bold text-3xl mr-2">$24,780</span>
-            <span className="bg-green-500 rounded-full p-1 text-white text-sm font-bold align-text-top">
-              +49%
-            </span>
-          </div>
+
           <DoughnutChart />
         </div>
         <div className="w-1/2 bg-white p-4">
-          <span className="text-amber-400 text-2xl">
-            <FaWallet />
-          </span>
-          <h2 className="font-bold text-xl text-gray-700">
-           RADAR 
-          </h2>
-          <h3 className="uppercase my-3 font-bold text-sm text-gray-400">
-            products
-          </h3>
-          <div className="flex items-center">
-            <span className="font-bold text-3xl mr-2">$24,780</span>
-            <span className="bg-red-500 rounded-full p-1 text-white text-sm font-bold align-text-top">
-              -9%
-            </span>
-          </div>
-          <RadarChart />
+          <LineChart />
         </div>
       </div>
     </div>

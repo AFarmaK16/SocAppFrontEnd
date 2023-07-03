@@ -5,7 +5,7 @@ import { Provider } from "react-redux";
 
 import { PersistGate } from "redux-persist/integration/react";
 import { persistStore } from "redux-persist";
-// import { CookieProvider } from "react-cookie";
+// import { CookieProvider } from "react-cookie"; //TODO for react to handle csrf cookie
 import "bootstrap/dist/css/bootstrap.min.css";
 
 import "./index.css";

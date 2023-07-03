@@ -2,7 +2,7 @@ import React from "react";
 
 const Footer = () => {
   return (
-    <div className="bottom-0 left-0 w-full">
+    <div className="fixed bottom-0 left-0 w-full">
       <div className="flex justify-center items-center text-center h-20 bg-[#222] text-white md:tracking-widest leading-tight font-semibold">
         <h4>
           &copy; {new Date().getFullYear()}
@@ -16,3 +16,4 @@ const Footer = () => {
 };
 
 export default Footer;
+
