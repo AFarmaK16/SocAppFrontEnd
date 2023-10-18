@@ -245,6 +245,16 @@ const TheSidebar = (props) => {
               </span>
             </Link>
             <Link
+              to="/comm/dashboard/orders"
+              className="border-b-2 pb-3 hover:bg-green-300 hover:shadow-lg hover:rounded-full hover:text-white transform hover:scale-105 transition duration-500 "
+            >
+              <span className="inline-flex mr-3 text-green-600">
+                <BiStore />{" "}
+              </span>
+              Livreurs
+            
+            </Link>
+            <Link
               to="/comm/dashboard/profile"
               className="border-b-2 pb-3 hover:bg-green-300 hover:shadow-lg hover:rounded-full hover:text-white transform hover:scale-105 transition duration-500 "
             >
@@ -252,7 +262,6 @@ const TheSidebar = (props) => {
                 <RiProfileFill />{" "}
               </span>
               Profile
-             
             </Link>
           </ListGroupItem>
         ) : (
@@ -287,7 +296,6 @@ const TheSidebar = (props) => {
                 <RiProfileFill />{" "}
               </span>
               Profile
-            
             </Link>
           </ListGroupItem>
         )

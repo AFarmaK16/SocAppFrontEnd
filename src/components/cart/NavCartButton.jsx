@@ -29,7 +29,7 @@ const NavCartButton = () => {
         whileHover="hover"
       >
         <Link
-          to="/customer/checkout"
+          to="/customer/c/checkout"
           className="flex justify-between items-center"
         >
           {/* <span className="w-[1.35rem] h-[1.35rem] mr-2"> */}

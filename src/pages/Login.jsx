@@ -10,6 +10,7 @@ import { login, verifyCode } from "../store/actions/auth-actions";
 import TheSpinner from "../layout/TheSpinner";
 import { useForm } from "react-hook-form";
 import { Alert } from "reactstrap";
+import { authActions } from "../store/auth-slice";
 
 const containerVariants = {
   hidden: {
@@ -27,6 +28,7 @@ const containerVariants = {
 
 const Login = () => {
   const dispatch = useDispatch();
+   dispatch(authActions.restart());
   // const loading = useSelector((state) => state.ui.loginLoading);
   const [errorMessage, setErrorMessage] = useState("");
   const [verificationCode, setVerificationCode] = useState("");
@@ -44,7 +46,7 @@ const Login = () => {
       password: data.password,
       // itemList: items,
     };
-
+ 
     try {
       const authenticationResponse = await dispatch(login(payload));
       console.log(authenticationResponse)
@@ -101,9 +103,9 @@ const Login = () => {
       exit="exit"
     >
       <div className="w-[400px] sm:w-[400px] rounded shadow-xl border-2 border-solid px-4 sm:px-8 py-20 mx-auto">
-        <h2 className="text-3xl uppercase tracking-wider font-bold text-center mb-12 select-none">
-          <span className="text-primary">SOCOCIM</span>
-          &nbsp;
+        <h2 className=" uppercase tracking-wider font-bold text-center mb-12 select-none">
+          <span className="text-3xl text-success">SOCOCIM</span>
+          <br />
           <span className="text-secondary-200">INDUSTRIES</span>
         </h2>
         {errorMessage && (
@@ -210,7 +212,7 @@ const Login = () => {
             )}
             <button
               type="submit"
-              className="px-4 py-2 block mt-3 ml-auto text-primary border border-primary hover:text-white hover:bg-primary rounded-md"
+              className="px-4 py-2 block mt-3 ml-auto text-success border border-success hover:text-white hover:bg-primary rounded-md"
             >
               <span className="inline-flex justify-items-center mr-1">
                 <FiLogIn />{" "}
@@ -220,11 +222,9 @@ const Login = () => {
           </form>
         )}
         <p className="text-center mt-6">
-          .
-          {/* Vous n'avez pas de compte?{" "}
           <Link to="/register" className="text-primary">
-            Creer un compte
-          </Link>{" "} */}
+            Mot de passe oublié?{" "}
+          </Link>
         </p>
       </div>
     </motion.div>

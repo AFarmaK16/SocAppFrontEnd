@@ -229,7 +229,7 @@ const [ttcResult,setTTc] = useState(0);
                       {payModes.map((pay) => {
                         return (
                           <option key={pay.id} value={pay.id}>
-                            {pay.libelle}--{pay.id}
+                            {pay.libelle}
                           </option>
                         );
                       })}
@@ -406,7 +406,7 @@ const [ttcResult,setTTc] = useState(0);
                         <br />
                         <span className="text text-warning">
                           *** Doit etre egale au MontantTTC de la commande{" "}
-                          {formatPrice(ttcResult)}
+                          {/* {formatPrice(ttcResult)} */}
                         </span>
                         <hr />
                       </div>
@@ -458,9 +458,9 @@ const [ttcResult,setTTc] = useState(0);
         <Col>
           {" "}
           <div className="mx-auto px-8 py-12 shadow-lg rounded-xl">
-            <h2 className="capitalize text-3xl font-bold tracking-wider mb-10 leading-relaxed">
-              Hello {name}, <b>Nom client </b>
-            </h2>
+            {/* <h2 className="capitalize text-3xl font-bold tracking-wider mb-10 leading-relaxed">
+              Bo {name}, <b>Nom client </b>
+            </h2> */}
             <div className="flex justify-between items-center">
               <p className="text-lg capitalize mb-4">Quantité commandée:</p>
               <span className="italic font-semibold">{totalQuantity} TON</span>

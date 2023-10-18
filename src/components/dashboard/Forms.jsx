@@ -164,8 +164,7 @@ const Forms = (props) => {
             <select {...register(field.name)} className="form-select ">
               {tarificationOptions.map((option) => (
                 <option key={option.id + 2} value={option.id}>
-                  {option.id}
-                  ----- {option.montant}
+                  {option.montant}
                 </option>
               ))}
             </select>

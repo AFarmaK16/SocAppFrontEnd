@@ -122,22 +122,30 @@ const CustomerOrderDetail = (props) => {
                           {" "}
                           <div>{order.delivery.destination.nom} &nbsp;</div>
                           <div>{order.delivery.delivery_address}</div>
-                          {order.order_status == "EN_ATTENTE_DE_LIVRAISON" && (
-                            <div>
-                              {" "}
+                          <div>
+                            <b>Statut: </b> &nbsp;{order.order_status}
+                          </div>
+                          {order.order_status == "LIVREE" ||
+                            (order.order_status == "PARTIELLEMENT_LIVREE" && (
                               <div>
-                                <b>Conducteur</b> : {order.delivery.driver}
+                                {" "}
+                                <div>
+                                  <b>Conducteur</b> : {order.delivery.driver}
+                                </div>
+                                <div>
+                                  <b>Immatriculation</b> :{" "}
+                                  {order.delivery.truckIM}
+                                </div>
+                                <div>
+                                  <b> Date de livraison</b> :{" "}
+                                  {order.delivery.deliverDate}
+                                </div>
+                                <div>
+                                  <b> Quantité livrée </b> :{" "}
+                                  {order.delivery.deliveredQuantity}
+                                </div>
                               </div>
-                              <div>
-                                <b>Immatriculation</b> :{" "}
-                                {order.delivery.truckIM}
-                              </div>
-                              <div>
-                                <b> Date de livraison</b> :{" "}
-                                {order.delivery.deliverDate}
-                              </div>
-                            </div>
-                          )}
+                            ))}
                           {order.delivery.decharged && (
                             <div>
                               <b>Déchargement :</b>OUI
@@ -249,7 +257,7 @@ const CustomerOrderDetail = (props) => {
                             )}{" "}
                             / TON
                           </td>
-                          <td></td>
+                          <td>{nbTonnes}</td>
                           <td>
                             {formatPrice(
                               order.delivery.destination.tarification.montant *

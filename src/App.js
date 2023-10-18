@@ -125,7 +125,16 @@ const App = () => {
 
           <Route element={<RegisterRedirect />}>
             <Route path="/register" element={<Register />} />
-          </Route>
+          
+          </Route> 
+           <Route
+              path="/changePassForm"
+              element={
+                <Profile
+                action="changePass"
+                />
+              }
+            />
 
           <Route path="*" element={<NotFound />} />
         </Routes>

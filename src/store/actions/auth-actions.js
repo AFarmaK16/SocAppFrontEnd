@@ -77,32 +77,104 @@ export const verifyCode = (payload) => {
     }
   };
 };
-
-
-
-export const register = (payload) => {
-    return async dispatch => {
-        dispatch(uiActions.registerLoading())
-        // await api.get('/sanctum/csrf-cookie');
-
-        const postData = async () => {
-            const response = await api.post("/api/register", payload);
-
-            const data = await response.data;
-            return data;
-        };
-
-        try {
-            const user = await postData();
-            await dispatch(authActions.register(user));
-            dispatch(uiActions.registerLoading());
-        } catch (error) {
-            console.log(error);
+export const verifyResetCode = (payload) => {
+  return async (dispatch) => {
+    dispatch(uiActions.loginLoading());
+    console.log(payload);
+    const postData = async () => {
+      const response = await axios.post(
+        `http://localhost:8081/api/v1/auth/verifyCode/${payload.otpCode}`,
+        payload,
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
         }
+      );
+
+      const data = response.data;
+      return data;
+    };
+
+    try {
+      const message = await postData();
+
+       await dispatch(authActions.register(payload));
+    } catch (error) {
+      throw new Error(error.response.data); // Throw the error message
     }
+  };
 };
 
 
+
+export const generateCode = (payload) => {
+  return async (dispatch) => {
+    dispatch(uiActions.loginLoading());
+    console.log(payload);
+    const postData = async () => {
+      const response = await axios.post(
+        `http://localhost:8081/api/v1/auth/passwordresetcode`,
+        payload,
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+
+      const data = response.data;
+      return data;
+    };
+
+    try {
+        const message = await postData();
+       
+      //  await dispatch(authActions.register(payload));
+        return message
+    } catch (error) {
+      console.log(error)
+      throw new Error(error.response.data); // Throw the error message
+    }
+  };
+};
+
+
+
+export const resetPassword = (payload) => {
+   return async (dispatch) => {
+     dispatch(uiActions.updateUserLoading());
+     console.log(JSON.stringify(payload) + " 😩");
+ 
+
+     const postData = async () => {
+       const response = await axios.put(
+         "http://localhost:8081/api/v1/auth/resetpassword",
+         payload,
+         {
+           headers: {
+             "Content-Type": "application/json",
+           },
+         }
+       );
+
+       const data = await response.data;
+       return data;
+     };
+
+     try {
+      //  const message = await postData();
+      //  console.log(" %c message : " + message, "color:pink" + "finMessage");
+      //  return message;
+      const credentials = await postData();
+      localStorage.setItem("token", credentials.token);
+      await dispatch(authActions.login(credentials));
+     } catch (error) {
+        throw new Error(error.response.data); 
+       console.log(error);
+     }
+   };
+};
 export const logout = () => {
     console.log(token)
      return async (dispatch) => {

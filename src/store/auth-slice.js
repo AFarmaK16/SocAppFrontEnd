@@ -12,6 +12,7 @@ const initialState = {
     userID: null,
     role: null,
     username:'',
+    userResetPass: null,
     token:  localStorage.getItem("token")
 };
 
@@ -22,10 +23,13 @@ const authSlice = createSlice({
     initialState,
     reducers: {
         login(state, action) {
+            console.log("WE HERE ");
+
             state.role = action.payload.role;
             // const user = action.payload.user;
             state.user = action.payload.username;
             state.userID = action.payload.id;
+            state.userResetPass = null;
             state.token = localStorage.getItem("token");
             console.log(action.payload);
             switch (action.payload.role) {
@@ -54,17 +58,19 @@ const authSlice = createSlice({
             window.location.reload();
         },
         register(state, action) {
-            const user = action.payload.user;
-            state.user = user;
-            state.token = localStorage.getItem("token");
-            state.isAuthenticated = true;
-            state.isAdmin = false;
+          console.log("😡🥇🥇")
+          console.log(action.payload)
+            state.userResetPass =action.payload.username;
+               console.log("username is " + state.userResetPass);
         },
 
         logout(state) {
             // state = initialState;
             Object.assign(state, initialState);
             //  window.location.href = "/login";
+        },
+        restart(state){
+            Object.assign(state, initialState);
         }
 
     }

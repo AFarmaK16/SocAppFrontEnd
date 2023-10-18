@@ -18,7 +18,7 @@ const LoginRedirect = () => {
       ) : isComm ? (
         <Navigate to="/comm/dashboard" replace />
       ) : isCustomer ? (
-        <Navigate to="/customer" replace />
+        <Navigate to="/customer/c" replace />
       ) : (
         <Outlet />
       )}

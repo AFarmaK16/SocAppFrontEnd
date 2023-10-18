@@ -127,9 +127,9 @@ export const updateUser = (payload) => {
     try {
       const message = await postData();
       console.log(" %c message : " + message, "color:pink" + "finMessage");
-      localStorage.clear();
-      document.cookie =
-        "username=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+      // localStorage.clear();
+      // document.cookie =
+      //   "username=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
       window.location.reload();
       dispatchAccount(uiActions.updateUserLoading());
     } catch (error) {

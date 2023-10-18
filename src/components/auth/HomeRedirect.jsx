@@ -12,7 +12,6 @@ const LoginRedirect = () => {
     const { isAuthenticated } = useSelector((state) => state.auth.isAuth);
 
     return isCustomer ? (
-      //   <Navigate to="/customer/products" replace />
       <div>
         {" "}
         <CustomerDashBoard /> <Outlet />
